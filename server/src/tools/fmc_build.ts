@@ -6,6 +6,7 @@ import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { kitParams } from "../fmc/brief.js";
 import { baselineOf, boq, kitCodes, statusLegend } from "../fmc/build.js";
+import { buildParamsUnbound, buildParamsUnboundMessage } from "../fmc/kitcrs.js";
 
 const win = path.win32;
 const CODE = "FMC_Keynote_Code", STATUS = "FMC_Construction_Status", PACKAGE = "FMC_Trade_Package";
@@ -63,6 +64,14 @@ export async function runFmcBuild(args: FmcBuildArgs) {
     const facts = await withRevitConnection((c) => c.sendRaw("fmc_build_facts", { code_param: CODE, status_param: STATUS, package_param: PACKAGE, categories }, 300000));
     const model = String(facts?.model ?? "").trim();
     if (!model) return reply({ refused: true, reasons: ["Revit didn't say which model is open, so its quantities can't be kept apart from another model's: open the model and measure again"] }, true);
+    const unbound = buildParamsUnbound((facts?.params_in_model ?? {}) as Record<string, boolean>);
+    if (unbound.length) {
+      return reply({
+        refused: true, ok: false, model, elements: facts?.elements ?? 0, params_in_model: facts?.params_in_model ?? {},
+        kit_change_request: "K-15", measured: 0,
+        reasons: [buildParamsUnboundMessage(unbound)],
+      }, true);
+    }
     const file = baselineFile(config, args.project_folder, model);
     let baseline: { saved: string; quantities: Record<string, number | null> } | null = null;
     try { baseline = JSON.parse(fs.readFileSync(file, "utf8")); } catch { /* no baseline yet */ }

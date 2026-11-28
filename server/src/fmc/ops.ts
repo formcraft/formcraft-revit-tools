@@ -11,13 +11,26 @@ import { z } from "zod";
 import { isInside } from "./policy.js";
 import { SpParam } from "./specs.js";
 import { MaterialDb } from "./materials.js";
+import { graphicsProblems } from "./familygraphics.js";
+import { CurveNode, arcPoints, outlineProblems, segmentsMeet, smoothOps } from "./curves.js";
+import { expandLanguage, languageProblems, withLineWeights } from "./recipelang.js";
+import { B15_OPS, b15Problems } from "./ops_b15.js";
 
 const mm = z.number().finite();
 // Fixed-length arrays, not z.tuple: a tuple becomes JSON Schema "items": [a, b], which the Claude API rejects
 // ("items must be object,boolean"), and the whole tool drops out of the client. schemas.test.ts checks every tool.
 const point = z.array(mm).length(2).describe("[x, y] in mm");
+/** An outline node (owner 26 Oct, fmc/curves.ts): [x, y] a straight line to it, { to, through } a 3-point arc, { to, spline } a smooth curve. */
+const node = z.union([point, z.object({ to: point, through: point.optional().describe("a point on the arc"),
+  spline: z.array(point).min(1).optional().describe("points the smooth curve passes through on its way to `to`") })]);
+const smoothing = {
+  smooth: z.boolean().optional().describe("smooth a traced outline: corners kept, the stretches between them as splines (default: outlines of 24 points or more)"),
+  smooth_tolerance_mm: z.number().positive().optional().describe("how far the smoothed curve may leave the traced points (default 0.5 mm)"),
+};
 const point3 = z.array(mm).length(3).describe("[x, y, z] in mm");
 const VIEWS = ["plan", "front", "right"] as const;
+/** Views a 2D op may draw in: annotation is the one view of an annotation, tag or title block family. */
+const VIEWS_2D = ["plan", "front", "right", "annotation"] as const;
 // A point as the crossing of two named reference planes: an end drawn there is locked to both, so it follows them.
 const planeEnd = z.object({ planes: z.array(z.string().min(1)).length(2)
   .describe("two reference planes that cross in the view (in plan: a left/right plane and a front/back plane); {k} is the leaf number in a repeat") });
@@ -25,11 +38,25 @@ const end = z.union([point, planeEnd]);
 const visibility = {
   coarse: z.boolean().optional(), medium: z.boolean().optional(), fine: z.boolean().optional(),
 };
+/** Model elements also have view visibility (as set_visibility on a solid): plan/RCP, front/back, left/right. */
+const modelVisibility = { ...visibility, plan_rcp: z.boolean().optional(), front_back: z.boolean().optional(), left_right: z.boolean().optional() };
 // A corner of a parametric sweep path: where two named reference planes (or a level, such as Ref. Level) cross in the
 // path plane view. Two names, an array with .length(2), never z.tuple (see point).
 const corner = z.array(z.string().min(1)).length(2).describe("[plane, plane]: where two named reference planes (or a level) cross");
 const segmentOffset = z.union([mm, z.string().min(1)])
   .describe("mm, or a Length parameter's name (\"-Name\" for the other way): the segment sits this far off the plane it runs along");
+const sweptBlendShape = {
+  name: z.string().min(1),
+  path: z.array(point3).length(2).describe("[[x, y, z], [x, y, z]] mm: a straight path from the bottom profile to the top one"),
+  bottom: z.array(node).min(3).describe("closed profile [u, v] in mm at the path's start, square to it (u across, v up; v along +y for a vertical path)"),
+  top: z.array(node).min(3).describe("closed profile [u, v] in mm at the path's end"),
+  subcategory: z.string().optional(),
+};
+const regionShape = {
+  name: z.string().min(1),
+  view: z.enum(["plan", "front", "right", "annotation"]).default("plan"),
+  points: z.array(node).min(3).describe("closed outline in the view's plane, mm (lines and 3-point arcs; spline nodes are drawn as straight segments)"),
+};
 const sweepShape = {
   name: z.string().min(1),
   path: z.array(point).min(2).optional().describe("a fixed polyline in mm in the path plane: it never follows a parameter (use path_planes)"),
@@ -44,7 +71,8 @@ const sweepShape = {
     "path_planes: a reference plane parallel to the path plane that hosts the path sketch, so the sweep follows it (e.g. Frame Ext); otherwise the path sits at `at`"),
   path_plane: z.enum(VIEWS).default("plan").describe("plan: [x, y] at height `at`; front: [x, z] at y = `at`; right: [y, z] at x = `at`"),
   at: mm.default(0),
-  profile: z.array(point).min(3).optional().describe("a closed profile in mm, local to the start of the path (x across, y up)"),
+  profile: z.array(node).min(2).optional().describe("a closed profile in mm, local to the start of the path (x across, y up); nodes may be arcs or splines"),
+  ...smoothing,
   profile_family: z.string().optional().describe("or a loaded profile family (FMC_Profile_*), loaded earlier with load_family"),
   profile_type: z.string().optional(),
   subcategory: z.string().optional(),
@@ -70,6 +98,7 @@ const lockTo = z.union([z.string().min(1), z.object({ plane: z.string().min(1), 
 export const lockPlane = (l: string | { plane: string } | undefined) => (typeof l === "string" ? l : l?.plane);
 
 export const OP = z.discriminatedUnion("op", [
+  ...B15_OPS, // B15: fmc_fam_dim, fmc_fam_visibility, fmc_fam_material, fmc_fam_category (ops_b15.ts)
   z.object({ op: z.literal("set_category"), name: z.string().min(1).describe("Revit category name, e.g. Generic Models, or OST_ name") }),
   z.object({ op: z.literal("set_family_params"), name: z.literal("family"), work_plane_based: z.boolean().optional(),
     always_vertical: z.boolean().optional(), shared: z.boolean().optional(), room_calculation_point: z.boolean().optional(),
@@ -92,14 +121,24 @@ export const OP = z.discriminatedUnion("op", [
     offset: mm.default(300).describe("where the dimension line sits, mm from the first plane") }),
   z.object({ op: z.literal("extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
-    points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
+    points: z.array(node).min(2).optional().describe("or a closed outline in mm (not locked); nodes may be arcs { to, through } or splines { to, spline }"),
+    outline_planes: z.array(corner).min(3).optional().describe(
+      "G011: or a closed outline whose corners are crossings of named planes, in order, e.g. [[\"Left\",\"Front\"],[\"Right\",\"Front\"],[\"Right\",\"Back\"]," +
+      "[\"Notch\",\"Back\"],[\"Notch\",\"Mid\"],[\"Left\",\"Mid\"]]. The loop closes back to the first corner; neighbouring corners share exactly one " +
+      "plane and each edge is locked to it, so an L, U or T outline follows its planes like rect does. A lock Revit can't make fails the op"),
+    ...smoothing,
     start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to (the start moves onto it first, F-064)"),
     end_plane: z.string().optional().describe("a level reference plane, or a level such as Upper Ref. Level, the top goes onto and is locked to (the end moves onto it first)"),
     view: z.string().optional(),
     sketch: z.enum(["plan", "front", "right"]).optional().describe("plan (default): points [x, y], depth up; front: [x, z], depth toward the viewer (-y); right: [y, z], depth along +x (F-059)") }),
   z.object({ op: z.literal("void_extrusion"), name: z.string().min(1),
     rect: z.array(z.string().min(1)).length(4).optional().describe("left, right, front, back reference planes; each side is locked to its plane"),
-    points: z.array(point).min(3).optional().describe("or a closed outline in mm (not locked)"),
+    points: z.array(node).min(2).optional().describe("or a closed outline in mm (not locked); nodes may be arcs { to, through } or splines { to, spline }"),
+    outline_planes: z.array(corner).min(3).optional().describe(
+      "G011: or a closed outline whose corners are crossings of named planes, in order, e.g. [[\"Left\",\"Front\"],[\"Right\",\"Front\"],[\"Right\",\"Back\"]," +
+      "[\"Notch\",\"Back\"],[\"Notch\",\"Mid\"],[\"Left\",\"Mid\"]]. The loop closes back to the first corner; neighbouring corners share exactly one " +
+      "plane and each edge is locked to it, so an L, U or T outline follows its planes like rect does. A lock Revit can't make fails the op"),
+    ...smoothing,
     start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional().describe("a plane or level the bottom goes onto and is locked to"),
     end_plane: z.string().optional().describe("a level reference plane, or a level, the top goes onto and is locked to"),
     view: z.string().optional(),
@@ -118,20 +157,70 @@ export const OP = z.discriminatedUnion("op", [
   // face locks, equal dimensions, nested families.
   z.object({ op: z.literal("add_subcategory"), name: z.string().min(1).describe("e.g. Frame, Panel, Glass, Plan Swing, Elevation Swing, Clearance"),
     line_weight_projection: z.number().int().min(1).max(16).optional(), line_weight_cut: z.number().int().min(1).max(16).optional(),
-    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b]"),
-    material: z.string().optional().describe("an FMC_ material already in the family") }),
+    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b] line colour: black or dark grey (FAM-044); the finish colour goes on the material"),
+    material: z.string().optional().describe("an FMC_ material already in the family"),
+    line_pattern: z.string().optional().describe("projection line pattern by name, e.g. Dash or Hidden (Solid for none); the closest pattern the family has is used, and a family with none like it keeps solid lines with a note"),
+    keep_graphics: z.boolean().optional().describe("a deliberate exception to FAM-044's line colours and pens") }),
   z.object({ op: z.literal("set_subcategory"), name: z.string().min(1).describe("the solid or line set, by op name"),
     subcategory: z.string().min(1) }),
   z.object({ op: z.literal("sweep"), ...sweepShape }),
   z.object({ op: z.literal("void_sweep"), ...sweepShape }),
   z.object({ op: z.literal("revolution"), name: z.string().min(1),
-    profile: z.array(point).min(3).describe("closed profile as [r, z] in mm: distance from the axis, height"),
-    axis_at: point.default([0, 0]).describe("axis z: [x, y] in plan; axis y: [x, z]; axis x: [y, z] (mm)"),
+    profile: z.array(node).min(2).optional().describe("closed profile as [r, z] in mm: distance from the axis, height; nodes may be arcs or splines (fixed: use profile_planes to follow parameters)"),
+    profile_planes: z.array(corner).min(3).optional().describe(
+      "G011: or the profile as a closed loop of plane crossings in the revolution's sketch plane (axis z: the front plane through the axis; " +
+      "axis y and x: the level plane at the axis), e.g. [[\"Axis\",\"Knob Base\"],[\"Knob Radius\",\"Knob Base\"],[\"Knob Radius\",\"Knob Top\"],[\"Axis\",\"Knob Top\"]]. " +
+      "Each edge is locked to the plane its corners share, so a radius plane labelled with a parameter makes the curved part follow the type (L001-F20)"),
+    axis_planes: z.array(z.string().min(1)).length(2).optional().describe(
+      "G011: the two named planes whose crossing the axis runs along, so the axis follows them: axis z [left/right plane, front/back plane]; " +
+      "axis y [left/right plane, level plane]; axis x [front/back plane, level plane]. The sketch is hosted on the second plane and the axis line is locked to the first"),
+    ...smoothing,
+    axis_at: point.default([0, 0]).describe("axis z: [x, y] in plan; axis y: [x, z]; axis x: [y, z] (mm); with axis_planes, where the planes cross now"),
     axis: z.enum(["z", "y", "x"]).optional().describe("z (default, vertical); y: faces the viewer, profile [r, depth toward -y]; x: profile [r, depth along +x] (knobs, ports, nozzles, LEDs)"),
     start_deg: z.number().default(0), end_deg: z.number().default(360), subcategory: z.string().optional() }),
   z.object({ op: z.literal("blend"), name: z.string().min(1),
-    base: z.array(point).min(3).describe("closed base outline in plan, mm"), top: z.array(point).min(3).describe("closed top outline in plan, mm"),
+    base: z.array(node).min(2).describe("closed base outline in plan, mm (arcs and splines allowed)"), top: z.array(node).min(2).describe("closed top outline in plan, mm"),
+    ...smoothing,
     start: mm.default(0), end: mm.default(1000), subcategory: z.string().optional() }),
+  // FE-02 (fmc_fam_form): a swept blend, solid or void: a straight path from one profile to another (Revit NewSweptBlend).
+  z.object({ op: z.literal("swept_blend"), ...sweptBlendShape }),
+  z.object({ op: z.literal("void_swept_blend"), ...sweptBlendShape }),
+  // FE-03 (fmc_fam_2d): filled and masking regions, view-specific, in the view's plane (Revit FilledRegion).
+  z.object({ op: z.literal("filled_region"), ...regionShape,
+    region_type: z.string().optional().describe("a FilledRegionType in the family by name (default: the first one)") }),
+  z.object({ op: z.literal("masking_region"), ...regionShape }),
+  // FE-03 / FE-05: detail lines in one view (annotation, tag and title block families draw with these).
+  z.object({ op: z.literal("detail_lines"), name: z.string().min(1).describe("one name for the set"),
+    view: z.enum(VIEWS_2D).default("plan"), points: z.array(point).min(2).describe("a polyline in the view's plane, mm"),
+    closed: z.boolean().optional().describe("join the last point to the first"),
+    line_style: z.string().optional().describe("a line style (subcategory of Lines) by name") }),
+  // FE-05: a text note in an annotation, tag or title block family (Revit TextNote).
+  z.object({ op: z.literal("text_note"), name: z.string().min(1), view: z.enum(VIEWS_2D).default("annotation"),
+    text: z.string().min(1).max(500), at: point.describe("the text's origin, mm in the view's plane"),
+    text_type: z.string().optional().describe("a TextNoteType by name (default: the family's default)") }),
+  // FE-03 (fmc_fam_2d, builder16): model lines and model text in a family, with detail-level and view visibility
+  // (Revit FamilyElementVisibility, Model). They show in every view the flags allow, unlike detail lines and regions.
+  z.object({ op: z.literal("model_lines"), name: z.string().min(1).describe("one name for the set"),
+    plane: z.enum(VIEWS).default("plan").describe("plan: [x, y] at height `at`; front: [x, z] at y = `at`; right: [y, z] at x = `at`"),
+    at: mm.default(0), points: z.array(point).min(2).describe("a polyline in the plane, mm (fixed: it doesn't follow parameters)"),
+    closed: z.boolean().optional().describe("join the last point to the first"),
+    subcategory: z.string().min(1).optional().describe("a subcategory of the family category (add_subcategory makes it; FAM-044 pens and colours)"),
+    ...modelVisibility }),
+  z.object({ op: z.literal("model_text"), name: z.string().min(1), text: z.string().min(1).max(200),
+    plane: z.enum(VIEWS).default("front"), at: mm.default(0), point: point.optional().describe("the text's origin in the plane, mm (default [0, 0])"),
+    depth_mm: z.number().positive().max(1000).default(10), align: z.enum(["left", "center", "right"]).default("left"),
+    type_name: z.string().optional().describe("a model text type by name (default: the first one)"),
+    subcategory: z.string().min(1).optional(), ...modelVisibility }),
+  // FE-04 (fmc_fam_light): the light source of a lighting fixture family (Revit LightFamily), from the kit hand script
+  // docs/handoff/kisic_gap_scripts/revit/16_family_light_source.cs.
+  z.object({ op: z.literal("light_source"), name: z.string().min(1).describe("identity, e.g. Light source"),
+    shape: z.enum(["point", "line", "rectangle", "circle"]).default("point"),
+    distribution: z.enum(["spherical", "hemispherical", "spot"]).default("hemispherical"),
+    lumens: z.number().positive().optional().describe("initial flux for every type, lm"),
+    lumens_by_type: z.record(z.number().positive()).optional().describe("type name (or its start) → lm; wins over lumens"),
+    kelvin: z.number().min(1800).max(20000).default(3000).describe("initial colour temperature, K (Revit takes 1800 to 20000)"),
+    beam_deg: z.number().min(1).max(179).optional().describe("spot: beam angle"), field_deg: z.number().min(1).max(179).optional().describe("spot: field angle"),
+    source_z_mm: z.number().optional().describe("where the source sits, mm above the family origin") }),
   z.object({ op: z.literal("symbolic_lines"), name: z.string().min(1).describe("one name for the set, e.g. Swing plan"),
     view: z.enum(VIEWS).default("plan").describe("plan lines show in plan views; front in front/back elevations; right in side elevations"),
     at: mm.default(0),
@@ -210,6 +299,22 @@ export const OP = z.discriminatedUnion("op", [
   z.object({ op: z.literal("set_default_size"), name: z.string().min(1).describe("identity, e.g. Default size"),
     type: z.string().optional().describe("the type to make current (made when missing); default: the template's current type"),
     values: z.record(mm.positive()).describe("Length parameter → mm, e.g. { \"Width\": 900, \"Height\": 2100 }") }),
+  // N064 (fmc/recipelang.ts): the recipe-language ops the generator recipe (6 Nov repair) is written in.
+  z.object({ op: z.literal("set_line_weight"), name: z.string().min(1).describe("the subcategory (made earlier or in the file)"),
+    projection: z.number().int().min(1).max(16).optional().describe("projection pen; FAM-044: outlines and the Coarse envelope 3, detail edges 2, clearance and hidden 1"),
+    cut: z.number().int().min(1).max(16).optional().describe("cut pen; FAM-044: 4 (1 for clearance and hidden)"),
+    color: z.array(z.number().int().min(0).max(255)).length(3).optional().describe("[r, g, b] line colour: black or dark grey (FAM-044)"),
+    keep_graphics: z.boolean().optional().describe("a deliberate exception to FAM-044") }),
+  z.object({ op: z.literal("envelope"), name: z.string().min(1).describe("the box's name, e.g. Coarse Envelope"),
+    rect: z.array(z.string().min(1)).length(4).describe("left, right, front, back reference planes"),
+    start: mm.default(0), end: mm.default(1000), start_plane: z.string().optional(), end_plane: z.string().optional(),
+    subcategory: z.string().optional().describe("default Coarse Envelope"),
+    tolerance_mm: z.number().min(0).default(15).describe("how far a body part may reach past the box (rails, handles)") }),
+  z.object({ op: z.literal("visibility_tier"), name: z.string().min(1).describe("identity, e.g. Body tier"),
+    solids: z.array(z.string().min(1)).min(1),
+    tier: z.enum(["envelope", "clearance", "body", "medium", "fine", "all"]).optional()
+      .describe("envelope: Coarse only; clearance: Coarse and Medium; body: Medium and Fine; medium: Medium only (under twins); fine: Fine only; all"),
+    coarse: z.boolean().optional(), medium: z.boolean().optional(), fine: z.boolean().optional() }),
   // Owner, 17 Oct: the product picture as Revit's built-in Type Image (Type Properties, schedules, legends).
   z.object({ op: z.literal("set_type_image"), name: z.string().min(1).describe("identity, e.g. Type image"),
     path: z.string().min(1).describe("a .png or .jpg in the kit's families folder, e.g. 04_Families\\_Staging\\<Role>\\_Images\\<family>.png"),
@@ -226,7 +331,9 @@ type SkeletonOp = Extract<Op, { op: "skeleton" }>;
  * plane (and a Bottom one at an instance mounting height), each labelled. Every other op passes through.
  */
 export function expandSkeletons<T extends { op: string }>(ops: T[]): T[] {
-  return ops.flatMap((o) => (o.op === "skeleton" ? (skeletonOps(o as unknown as SkeletonOp) as unknown as T[]) : [o]));
+  // and every outline cleaned, a traced one smoothed (fmc/curves.ts), before it's checked or built
+  // and the recipe-language ops (envelope, visibility_tier) as the ops they stand for (N064, fmc/recipelang.ts)
+  return smoothOps(expandLanguage(ops.flatMap((o) => (o.op === "skeleton" ? (skeletonOps(o as unknown as SkeletonOp) as unknown as T[]) : [o]))));
 }
 
 function skeletonOps(s: SkeletonOp): Array<Record<string, unknown>> {
@@ -262,36 +369,6 @@ type P2 = [number, number];
 const TOL = 0.01; // mm: closer than this is the same point
 const dist = (a: P2, b: P2) => Math.hypot(a[0] - b[0], a[1] - b[1]);
 const cross = (o: P2, a: P2, b: P2) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
-
-/** The points along a 3-point arc from a through m to b (16 pieces), or null when the three points are in a line. */
-function arcPoints(a: P2, m: P2, b: P2): P2[] | null {
-  const d = 2 * (a[0] * (m[1] - b[1]) + m[0] * (b[1] - a[1]) + b[0] * (a[1] - m[1]));
-  const scale = Math.max(dist(a, m), dist(m, b), dist(a, b));
-  if (Math.abs(cross(a, m, b)) < 1e-9 * scale * scale || d === 0) return null;
-  const sq = (p: P2) => p[0] * p[0] + p[1] * p[1];
-  const cx = (sq(a) * (m[1] - b[1]) + sq(m) * (b[1] - a[1]) + sq(b) * (a[1] - m[1])) / d;
-  const cy = (sq(a) * (b[0] - m[0]) + sq(m) * (a[0] - b[0]) + sq(b) * (m[0] - a[0])) / d;
-  const r = Math.hypot(a[0] - cx, a[1] - cy);
-  const ang = (p: P2) => Math.atan2(p[1] - cy, p[0] - cx);
-  const ccw = (from: number, to: number) => { let s = to - from; while (s < 0) s += 2 * Math.PI; while (s >= 2 * Math.PI) s -= 2 * Math.PI; return s; };
-  const a0 = ang(a), toM = ccw(a0, ang(m)), toB = ccw(a0, ang(b));
-  // Counter-clockwise from a reaches m before b: the arc runs counter-clockwise; otherwise clockwise.
-  const sweep = toM < toB ? toB : toB - 2 * Math.PI;
-  const out: P2[] = [];
-  for (let k = 1; k <= 16; k++) { const t = a0 + (sweep * k) / 16; out.push([cx + r * Math.cos(t), cy + r * Math.sin(t)]); }
-  out[out.length - 1] = b;
-  return out;
-}
-
-/** Proper or touching intersection of segments p1-p2 and q1-q2 (shared end points count as touching). */
-function segmentsMeet(p1: P2, p2: P2, q1: P2, q2: P2): boolean {
-  const eps = 1e-9;
-  const d1 = cross(q1, q2, p1), d2 = cross(q1, q2, p2), d3 = cross(p1, p2, q1), d4 = cross(p1, p2, q2);
-  if (((d1 > eps && d2 < -eps) || (d1 < -eps && d2 > eps)) && ((d3 > eps && d4 < -eps) || (d3 < -eps && d4 > eps))) return true;
-  const on = (a: P2, b: P2, c: P2) => Math.abs(cross(a, b, c)) <= eps * Math.max(1, dist(a, b)) &&
-    Math.min(a[0], b[0]) - TOL <= c[0] && c[0] <= Math.max(a[0], b[0]) + TOL && Math.min(a[1], b[1]) - TOL <= c[1] && c[1] <= Math.max(a[1], b[1]) + TOL;
-  return on(q1, q2, p1) || on(q1, q2, p2) || on(p1, p2, q1) || on(p1, p2, q2);
-}
 
 /**
  * A profile loop Revit accepts: closed (the last point is the start, within 0.01 mm), no zero-length segment, no arc
@@ -364,6 +441,31 @@ export function pathPlaneProblems(o: SweepOp, params: Set<string>, paramTypes: M
         p.push(`segments ${k} and ${k + 1} both run along ${along[k]} with different offsets: they can't meet`);
   }
   return p;
+}
+
+/**
+ * G011: a closed loop of plane crossings (extrusion outline_planes, revolution profile_planes). The loop closes back to
+ * the first corner (a repeat of it at the end is allowed). Each corner names two different planes; neighbouring corners,
+ * the last and first included, share exactly one plane (the edge runs along it); two edges in a row along the same
+ * plane are one edge; and a loop needs three edges or more. Returns the problems and the plane each edge runs along.
+ */
+export function planeLoopProblems(corners: string[][]): { problems: string[]; along: Array<string | null> } {
+  const p: string[] = [];
+  let c = corners;
+  if (c.length > 1 && new Set(c[0]).size === 2 && c[0].every((x) => c[c.length - 1].includes(x)) && c[c.length - 1].every((x) => c[0].includes(x))) c = c.slice(0, -1);
+  const label = (k: number) => `[${c[k].join(", ")}]`;
+  c.forEach((pair, k) => { if (pair[0] === pair[1]) p.push(`corner ${k + 1} ${label(k)} names one plane twice`); });
+  const along = runningPlanes([...c, c[0]]);
+  if (c.length < 3) p.push(`a closed loop needs three corners or more (found ${c.length})`);
+  along.forEach((pl, k) => {
+    const next = (k + 1) % c.length;
+    if (pl === null) p.push(`edge ${k + 1} from ${label(k)} to ${label(next)} doesn't run along one plane: neighbouring corners share exactly one plane`);
+  });
+  for (let k = 0; k < along.length; k++) {
+    const next = (k + 1) % along.length;
+    if (along[k] !== null && along[k] === along[next] && along.length > 1) p.push(`edges ${k + 1} and ${next + 1} both run along ${along[k]}: drop corner ${next + 1} ${label(next)} (it sits in the middle of one edge)`);
+  }
+  return { problems: p, along };
 }
 
 /** The plane each segment of a path_planes path runs along (the one plane its two corners share), or null. */
@@ -442,8 +544,10 @@ const sharedType = (datatype: string) => (/^YESNO$/i.test(datatype) ? "YesNo" : 
  */
 export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, familiesRoot?: string, materials?: MaterialDb | null,
   opts: OpsCheckOptions = {}): string[] {
-  ops = expandSkeletons(ops);
-  const p: string[] = [];
+  const written = ops;
+  // N064: a later set_line_weight is what the subcategory ends with, so FAM-044 is judged on that (the repair path)
+  ops = withLineWeights(expandSkeletons(ops));
+  const p: string[] = [...languageProblems(written as Array<Record<string, any>>)];
   const seen = new Set<string>();
   const paramTypes = new Map<string, string>();
   const solids = new Set<string>(), connectors = new Set<string>(), subcats = new Set<string>(), lines = new Set<string>(), families = new Set<string>(), nested = new Set<string>();
@@ -455,7 +559,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   };
   const integerParam = typedParam("Integer"), lengthParam = typedParam("Length");
   const solidAt = new Map<string, number>();
-  const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend", "import_part"]);
+  const SOLID_OPS = new Set(["extrusion", "void_extrusion", "sweep", "void_sweep", "revolution", "blend", "import_part", "swept_blend", "void_swept_blend"]);
   let category: string | null = null;
   ops.forEach((o, i) => {
     const at = `op ${i + 1} (${o.op} ${o.name})`;
@@ -520,7 +624,14 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "extrusion":
       case "void_extrusion":
-        if (!o.rect && !o.points) p.push(`${at}: give rect (four reference planes) or points`);
+        if (!o.rect && !o.points && !o.outline_planes) p.push(`${at}: give rect (four reference planes), outline_planes or points`);
+        if ([o.rect, o.points, o.outline_planes].filter(Boolean).length > 1) p.push(`${at}: give one of rect, outline_planes or points`);
+        if (o.points) for (const x of outlineProblems(o.points as CurveNode[])) p.push(`${at}: the outline ${x}`);
+        if (o.outline_planes) {
+          for (const x of planeLoopProblems(o.outline_planes).problems) p.push(`${at}: outline_planes ${x}`);
+          for (const pl of [...new Set(o.outline_planes.flat())]) if (!planes.has(pl) && !(opts.templatePlanes ?? []).includes(pl))
+            p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
+        }
         if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
         if (o.start_plane && o.start_plane === o.end_plane)
           p.push(`${at}: start and end are both locked to "${o.start_plane}", so the solid would be flat: lock one end and let the other keep its thickness`);
@@ -560,7 +671,7 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
           else if (!TEMPLATE_SIZE_PARAMS.has(o.param)) p.push(`${at}: ${mayExist("parameter", o.param)}`);
         }
         break;
-      case "add_subcategory": subcats.add(o.name); break;
+      case "add_subcategory": subcats.add(o.name); p.push(...graphicsProblems(o as any, at)); break;
       case "sweep":
       case "void_sweep":
         if (!o.path && !o.path_planes) p.push(`${at}: give path_planes (corners on named planes) or path (fixed points)`);
@@ -578,14 +689,65 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         break;
       case "revolution":
         if (o.end_deg === o.start_deg) p.push(`${at}: start_deg and end_deg are the same`);
-        if (o.profile.some((pt) => pt[0] < 0)) p.push(`${at}: a revolution profile can't cross its axis (r must be 0 or more)`);
+        if (!o.profile && !o.profile_planes) p.push(`${at}: give profile ([r, z] points) or profile_planes`);
+        if (o.profile && o.profile_planes) p.push(`${at}: give profile or profile_planes, not both`);
+        if (o.profile) for (const x of outlineProblems(o.profile as CurveNode[], "revolution")) p.push(`${at}: the profile ${x}`);
+        if (o.profile_planes) {
+          for (const x of planeLoopProblems(o.profile_planes).problems) p.push(`${at}: profile_planes ${x}`);
+          if (!o.axis_planes) p.push(`${WARNING} ${at}: profile_planes without axis_planes: the profile follows its planes but the axis stays at axis_at`);
+        }
+        if (o.axis_planes) {
+          if (o.axis_planes[0] === o.axis_planes[1]) p.push(`${at}: axis_planes names one plane twice`);
+          if (o.profile_planes && !o.profile_planes.some((c) => c.includes(o.axis_planes![0])))
+            p.push(`${WARNING} ${at}: no profile corner is on the axis plane "${o.axis_planes[0]}": a profile off the axis makes a ring (fine for a collar, not for a knob)`);
+        }
+        for (const pl of [...new Set([...(o.profile_planes ?? []).flat(), ...(o.axis_planes ?? [])])])
+          if (!planes.has(pl) && !(opts.templatePlanes ?? []).includes(pl))
+            p.push(`${at}: reference plane "${pl}" isn't made earlier in this batch or a template default (it may exist in the file: then it's fine)`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         solids.add(o.name);
         break;
       case "blend":
         if (o.end <= o.start) p.push(`${at}: end (${o.end}) must be above start (${o.start})`);
+        for (const x of outlineProblems(o.base as CurveNode[])) p.push(`${at}: the base ${x}`);
+        for (const x of outlineProblems(o.top as CurveNode[])) p.push(`${at}: the top ${x}`);
         if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
         solids.add(o.name);
+        break;
+      case "swept_blend":
+      case "void_swept_blend": {
+        const [a, b] = o.path;
+        if (Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]) < 1) p.push(`${at}: the path is shorter than 1 mm`);
+        for (const x of outlineProblems(o.bottom as CurveNode[])) p.push(`${at}: the bottom profile ${x}`);
+        for (const x of outlineProblems(o.top as CurveNode[])) p.push(`${at}: the top profile ${x}`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        solids.add(o.name);
+        break;
+      }
+      case "filled_region":
+      case "masking_region":
+        for (const x of outlineProblems(o.points as CurveNode[])) p.push(`${at}: the outline ${x}`);
+        lines.add(o.name);
+        break;
+      case "detail_lines":
+        lines.add(o.name);
+        break;
+      case "text_note":
+        if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(o.text)) p.push(`${at}: the text holds control characters`);
+        break;
+      case "model_lines":
+      case "model_text":
+        // FE-03 (builder16)
+        if (o.op === "model_text" && /[\u0000-\u0008\u000b\u000c\u000e-\u001f]/.test(o.text)) p.push(`${at}: the text holds control characters`);
+        if (o.subcategory && !subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
+        if (o.coarse === false && o.medium === false && o.fine === false) p.push(`${at}: coarse, medium and fine can't all be off (Revit rule)`);
+        if (o.op === "model_lines") lines.add(o.name);
+        break;
+      case "light_source":
+        if (category && !/^(lighting fixtures|ost_lightingfixtures)$/i.test(category)) p.push(`${at}: a light source needs the Lighting Fixtures category (this batch sets ${category})`);
+        if (o.lumens === undefined && !o.lumens_by_type) p.push(`${at}: give lumens or lumens_by_type`);
+        if (o.distribution !== "spot" && (o.beam_deg !== undefined || o.field_deg !== undefined)) p.push(`${at}: beam_deg and field_deg are for a spot distribution`);
+        if (o.beam_deg !== undefined && o.field_deg !== undefined && o.field_deg < o.beam_deg) p.push(`${at}: field_deg must be at least beam_deg`);
         break;
       case "symbolic_lines": {
         if (!o.points && !o.arc && !o.lines) p.push(`${at}: give points, lines or arc`);
@@ -653,6 +815,9 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
         if (o.type && !types.has(o.type)) p.push(`${at}: ${mayExist("type", o.type)}`);
         break;
       }
+      case "set_line_weight":
+        if (!subcats.has(o.name)) p.push(`${at}: ${mayExist("subcategory", o.name)}`);
+        break;
       case "set_subcategory":
         if (!solids.has(o.name) && !lines.has(o.name)) p.push(`${at}: ${mayExist("solid or line set", o.name)}`);
         if (!subcats.has(o.subcategory)) p.push(`${at}: ${mayExist("subcategory", o.subcategory)}`);
@@ -704,6 +869,8 @@ export function opsProblems(ops: Op[], dictionary: Map<string, SpParam> | null, 
   }
   // F-064: geometry Revit refuses mid-build (short dimensions and edges, a locked face just off its plane)
   p.push(...geometryProblems(ops));
+  p.push(...b15Problems(ops as any, { planes, params, paramTypes, solids, lines, subcats,
+    materials: new Set(ops.filter((o) => o.op === "add_material").map((o) => o.name)) }));
   // A plane named only in a warning is fine when the file has it; the hard errors are the ones above other than "may exist".
   return p;
 }

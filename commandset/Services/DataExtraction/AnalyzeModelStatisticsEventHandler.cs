@@ -1,6 +1,8 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Models.DataExtraction;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services.DataExtraction
@@ -8,6 +10,7 @@ namespace RevitMCPCommandSet.Services.DataExtraction
     public class AnalyzeModelStatisticsEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private bool _includeDetailedTypes;
+        public JObject Parameters { get; set; } = new JObject();
 
         public AnalyzeModelStatisticsResult ResultInfo { get; private set; }
         public bool TaskCompleted { get; private set; }
@@ -23,14 +26,15 @@ namespace RevitMCPCommandSet.Services.DataExtraction
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public void Execute(UIApplication app)
         {
             try
             {
-                var doc = app.ActiveUIDocument.Document;
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                var doc = target.Doc;
 
                 // Get project name
                 string projectName = doc.Title;

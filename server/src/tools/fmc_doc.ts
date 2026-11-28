@@ -4,10 +4,11 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { SessionRecord, buildReport, idleLimit, markStale, openProblems, readLedger as readDocLedger, saveProblems, writeLedger as writeDocLedger } from "../fmc/doc.js";
+import { SessionRecord, buildReport, familyDocumentOf, idleLimit, markStale, openProblems, readLedger as readDocLedger, saveProblems, writeLedger as writeDocLedger } from "../fmc/doc.js";
 import { BRIDGE_LIMIT_BYTES, applyEnvelope, isNoAnswer, isStillQueued, progressPath, readProgress, requestBytes, stoppedAt } from "../fmc/recipebuild.js";
 import { serverBuild } from "./fmc_selftest.js";
 import { OP, expandSkeletons, familyRoots, opsProblems, resolveFamilyPaths, splitProblems } from "../fmc/ops.js";
+import { B15_OP_NAMES } from "../fmc/ops_b15.js";
 import { parseSharedParameters } from "../fmc/specs.js";
 import { resolveMaterial } from "../fmc/materials.js";
 import { readDb } from "./fmc_material.js";
@@ -30,6 +31,16 @@ function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
 }
 
+/** A session's family document (title or path from open), so later sendRaw calls satisfy documentRequired. */
+function namedOf(args: FmcDocArgs): string {
+  return String((args as FmcDocArgs & { document?: string }).document ?? "").trim();
+}
+
+function sendDoc(command: string, params: Record<string, unknown>, timeoutMs: number, document?: string) {
+  const body = document ? { ...params, document } : params;
+  return withRevitConnection((c) => c.sendRaw(command, body, timeoutMs));
+}
+
 /** The sessions the server knows (each CLI call is its own process): source, opened, last used, ops applied (B1b, F-046). */
 function readLedger(cfg: GuardConfig): Record<string, SessionRecord> { return readDocLedger(expandEnv(cfg.reports_dir)); }
 function writeLedger(cfg: GuardConfig, l: Record<string, SessionRecord>) { writeDocLedger(expandEnv(cfg.reports_dir), l); }
@@ -49,6 +60,7 @@ export const FMC_DOC_DESCRIPTION =
     "report: what an open session holds (category, parameters, types, reference planes, warnings, and each solid's name, kind, " +
     "subcategory, detail-level visibility and box in mm, each connector's domain, system, size, origin and facing, nested families " +
     "and the overall extents, F-056). " +
+    "apply also takes the family editor ops " + B15_OP_NAMES.join(", ") + " (fmc_fam_dim, fmc_fam_visibility, fmc_fam_material, fmc_fam_category). " +
     "screenshot: PNGs of its 3D, front and plan views to the reports folder, each cropped to the family's own geometry, " +
     "at a detail level (coarse, medium, fine or all three) and style (shaded, hidden, wireframe, realistic), with reference planes, " +
     "levels and dimensions hidden (F-055). save: to an .rfa in the write roots under a name " +
@@ -58,7 +70,7 @@ export const FMC_DOC_DESCRIPTION =
     "left-over sessions without saving (dry run first), never a document in a Revit window or one the person opened. " +
     "Never a project or workshared model. flex: every type regenerated in turn, constraint errors per type (nothing kept); with follow, each size parameter is also moved from its lowest to its highest value and every named solid reports whether it moved with it. apply: a batch of named ops (set_category, " +
     "set_family_params, add_ref_plane, add_family_param, add_shared_param, set_formula, add_type, set_type_value, " +
-    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value; recipe ops: set_default_size (the type's Width/Height before any plane, F-026), delete_template_element (template elements by kind/subcategory/name, never by id), array (copies shown by an Integer count, or linear), symbolic_lines with ends on planes, a labelled radius and per-leaf repeats, load_family shared: true for nested hardware); skeleton: Width/Depth/Height planes with labelled dimensions, equalities and an optional mounting height (sent as those ops); start_plane/end_plane put an extrusion end onto a plane or level and lock it; name_template_plane names an unnamed template plane by position; set_type_image: a product picture from 04_Families as the built-in Type Image of every type (shows in Type Properties, schedules and legends); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
+    "add_dimension, extrusion and void_extrusion locked to reference planes, set_material_param, set_visibility, add_connector, link_connector_param; LOD 400: add_subcategory with line weights, set_subcategory, sweep and void_sweep with point or FMC_Profile_* profiles, revolution, blend, symbolic_lines (swings, opening lines, per view and detail level), lock_face, add_eq_dimension, load_family from the kit's 04_Families, place_nested with associated parameters; profile_lines: a closed loop of lines and 3-point arcs in a profile family; set_visible_param: a solid's Visible from a Yes/No parameter; add_material: a material from the kit's library with its textures, optionally as a Material parameter's value; recipe ops: set_default_size (the type's Width/Height before any plane, F-026), delete_template_element (template elements by kind/subcategory/name, never by id), array (copies shown by an Integer count, or linear), symbolic_lines with ends on planes, a labelled radius and per-leaf repeats, load_family shared: true for nested hardware); skeleton: Width/Depth/Height planes with labelled dimensions, equalities and an optional mounting height (sent as those ops); start_plane/end_plane put an extrusion end onto a plane or level and lock it; name_template_plane names an unnamed template plane by position; family editor ops (FE-02 to FE-05, also through fmc_fam_form, fmc_fam_2d, fmc_fam_light, fmc_fam_annotation): swept_blend and void_swept_blend on a straight path, filled_region and masking_region (Revit 2024+), detail_lines and text_note in a view (annotation: the family's drawing view), model_lines and model_text with detail-level and view visibility, light_source in a Lighting Fixtures family; set_type_image: a product picture from 04_Families as the built-in Type Image of every type (shows in Type Properties, schedules and legends); each answers create, update or skip, so a second run changes nothing; a dry run unless dry_run is " +
     "false, and the dry run is the real run rolled back. Sizes in mm; shared parameters only from the kit's dictionary by GUID.";
 
 export const FMC_DOC_SHAPE = {
@@ -104,7 +116,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
       const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_open", { template: args.template.trim(), file: args.file.trim() }, 120000));
       const id = String(r?.session ?? "");
       const at = new Date().toISOString();
-      ledger[id] = { id, source: args.template.trim() || args.file.trim(), opened: at, used: at, ops: [] };
+      const document = familyDocumentOf(r, args.file.trim());
+      ledger[id] = { id, source: args.template.trim() || args.file.trim(), opened: at, used: at, ops: [], ...(document ? { document } : {}) };
       writeLedger(config, ledger);
       log(config, "doc_open", ledger[id].source, "done", id);
       return reply({ session: id, document: r });
@@ -112,14 +125,15 @@ export async function runFmcDoc(args: FmcDocArgs) {
 
     if (!args.session.trim()) return reply({ refused: true, reasons: [`${args.action} needs the session id from open`] }, true);
     const s = ledger[args.session.trim()] ?? { id: args.session.trim(), source: "", opened: "", ops: [] };
+    const document = (s.document ?? namedOf(args)).trim();
     // F-046: every call on a session counts as use (its idle time starts again)
     if (ledger[s.id] && args.action !== "close") { s.used = new Date().toISOString(); writeLedger(config, ledger); }
 
-    if (args.action === "report") return reply({ session: s.id, document: await withRevitConnection((c) => c.sendRaw("fmc_doc_report", { session: s.id }, 60000)) });
+    if (args.action === "report") return reply({ session: s.id, document: await sendDoc("fmc_doc_report", { session: s.id }, 60000, document) });
 
     if (args.action === "screenshot") {
       const folder = win.join(expandEnv(config.reports_dir), "Screenshots");
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_screenshot", { session: s.id, folder, detail_level: args.detail_level, style: args.style, views: args.views }, 180000));
+      const r = await sendDoc("fmc_doc_screenshot", { session: s.id, folder, detail_level: args.detail_level, style: args.style, views: args.views }, 180000, document);
       return reply({ session: s.id, files: r?.files ?? [], extents_mm: r?.extents_mm ?? null, notes: r?.notes ?? [] });
     }
 
@@ -145,8 +159,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
         return { ...o, material: r.material };
       });
       const dry = args.dry_run !== false;
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_apply",
-        { session: s.id, ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000));
+      const r = await sendDoc("fmc_doc_apply",
+        { session: s.id, ops, dry_run: dry, shared_parameter_file: expandEnv(config.shared_parameter_file) }, 300000, document);
       if (!dry) {
         s.ops.push(...((r?.ops ?? []) as Array<{ op: string; name: string; result: string }>).map((o) => ({ op: o.op, name: o.name, result: o.result })));
         ledger[s.id] = s;
@@ -157,12 +171,12 @@ export async function runFmcDoc(args: FmcDocArgs) {
     }
 
     if (args.action === "flex") {
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_flex", { session: s.id, ...(args.follow?.length ? { follow: args.follow } : {}) }, 300000));
+      const r = await sendDoc("fmc_doc_flex", { session: s.id, ...(args.follow?.length ? { follow: args.follow } : {}) }, 300000, document);
       return reply({ session: s.id, ...r, next: r?.ok ? "Every type regenerates" : "Fix the constraints the failing types name, then flex again" });
     }
 
     if (args.action === "close") {
-      const r = await withRevitConnection((c) => c.sendRaw("fmc_doc_close", { session: s.id }, 60000));
+      const r = await sendDoc("fmc_doc_close", { session: s.id }, 60000, document);
       delete ledger[s.id];
       writeLedger(config, ledger);
       return reply({ session: s.id, ...r });
@@ -172,8 +186,8 @@ export async function runFmcDoc(args: FmcDocArgs) {
     const problems = saveProblems(args.path, config);
     if (problems.length) return reply({ refused: true, reasons: problems }, true);
     if (fs.existsSync(args.path) && !args.overwrite) return reply({ refused: true, reasons: [`${args.path} exists: a person decides to overwrite (overwrite: true)`] }, true);
-    const saved = await withRevitConnection((c) => c.sendRaw("fmc_doc_save", { session: s.id, path: args.path.trim(), overwrite: args.overwrite, max_backups: config.max_backups }, 120000));
-    const report = await withRevitConnection((c) => c.sendRaw("fmc_doc_report", { session: s.id }, 60000));
+    const saved = await sendDoc("fmc_doc_save", { session: s.id, path: args.path.trim(), overwrite: args.overwrite, max_backups: config.max_backups }, 120000, document);
+    const report = await sendDoc("fmc_doc_report", { session: s.id }, 60000, document);
     const build = buildReport(s, args.path.trim(), report ?? {}, kitManifest(config), serverBuild().commit, new Date());
     const buildFile = args.path.trim().replace(/\.rfa$/i, ".build.json");
     fs.writeFileSync(buildFile, JSON.stringify(build, null, 2));

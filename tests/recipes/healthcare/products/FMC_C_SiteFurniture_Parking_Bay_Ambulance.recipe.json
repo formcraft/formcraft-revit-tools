@@ -1,2425 +1,2431 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_C_SiteFurniture_Parking_Bay_Ambulance",
- "template": "Metric Generic Model.rft",
- "about": "Ground at z = 0, the ambulance enters from -y and backs to the canopy (+y): yellow box, AMBULANCE legend in block strokes, keep-clear hatching, sign post. The rear-door zone is an operation clearance. Reference: query: site furniture parking bay ambulance site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+parking+bay+ambulance+site+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Site"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Compaction_Pct_MDD",
-   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_CBR_Pct",
-   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Layer_Thickness_mm",
-   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "4000x8000_Ambulance"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/FMC_Cost_Unit",
-   "type": "4000x8000_Ambulance",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/FMC_Geometry_Stage",
-   "type": "4000x8000_Ambulance",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/IfcExportAs",
-   "type": "4000x8000_Ambulance",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/Description",
-   "type": "4000x8000_Ambulance",
-   "param": "Description",
-   "value": "Ambulance bay 4000 x 8000: yellow box marking, AMBULANCE legend, keep-clear hatching at the loading end, sign; rear-door clearance"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/Keynote",
-   "type": "4000x8000_Ambulance",
-   "param": "Keynote",
-   "value": "T.MRK_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/FMC_Keynote_Code",
-   "type": "4000x8000_Ambulance",
-   "param": "FMC_Keynote_Code",
-   "value": "T.MRK_03"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/FMC_Code_Description",
-   "type": "4000x8000_Ambulance",
-   "param": "FMC_Code_Description",
-   "value": "Parking Bay Ambulance: Ambulance bay marking and clearance"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/FMC_Code_Group",
-   "type": "4000x8000_Ambulance",
-   "param": "FMC_Code_Group",
-   "value": "T.MRK"
-  },
-  {
-   "op": "set_type_value",
-   "name": "4000x8000_Ambulance/FMC_Role_Code",
-   "type": "4000x8000_Ambulance",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Yellow",
-   "color": [
-    242,
-    194,
-    48
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Yellow Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Yellow",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Abswhite",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Abswhite Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "Abswhite Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Red",
-   "color": [
-    200,
-    16,
-    46
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SprinklerPipe_RedPainted",
-   "param": "Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Operation",
-   "color": [
-    111,
-    168,
-    220
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -2000,
-     -4000
-    ],
-    [
-     2000,
-     -4000
-    ],
-    [
-     2000,
-     4338.0
-    ],
-    [
-     -2000,
-     4338.0
-    ]
-   ],
-   "start": 0,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Bay Line Left",
-   "points": [
-    [
-     -2000,
-     -4000
-    ],
-    [
-     -1850,
-     -4000
-    ],
-    [
-     -1850,
-     4000
-    ],
-    [
-     -2000,
-     4000
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bay Line Left",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bay Line Left",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bay Line Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bay Line Right",
-   "points": [
-    [
-     1850,
-     -4000
-    ],
-    [
-     2000,
-     -4000
-    ],
-    [
-     2000,
-     4000
-    ],
-    [
-     1850,
-     4000
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bay Line Right",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bay Line Right",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bay Line Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bay Line Head",
-   "points": [
-    [
-     -2000,
-     3850
-    ],
-    [
-     2000,
-     3850
-    ],
-    [
-     2000,
-     4000
-    ],
-    [
-     -2000,
-     4000
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bay Line Head",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bay Line Head",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bay Line Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Bay Line Entry",
-   "points": [
-    [
-     -2000,
-     -4000
-    ],
-    [
-     2000,
-     -4000
-    ],
-    [
-     2000,
-     -3850
-    ],
-    [
-     -2000,
-     -3850
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Bay Line Entry",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Bay Line Entry",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Bay Line Entry",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Keep Clear Hatch 1",
-   "points": [
-    [
-     -1850,
-     2500
-    ],
-    [
-     -1650,
-     2500
-    ],
-    [
-     -650,
-     3850
-    ],
-    [
-     -850,
-     3850
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Keep Clear Hatch 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Keep Clear Hatch 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Keep Clear Hatch 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Keep Clear Hatch 2",
-   "points": [
-    [
-     -1250,
-     2500
-    ],
-    [
-     -1050,
-     2500
-    ],
-    [
-     -50,
-     3850
-    ],
-    [
-     -250,
-     3850
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Keep Clear Hatch 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Keep Clear Hatch 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Keep Clear Hatch 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Keep Clear Hatch 3",
-   "points": [
-    [
-     -650,
-     2500
-    ],
-    [
-     -450,
-     2500
-    ],
-    [
-     550,
-     3850
-    ],
-    [
-     350,
-     3850
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Keep Clear Hatch 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Keep Clear Hatch 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Keep Clear Hatch 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Keep Clear Hatch 4",
-   "points": [
-    [
-     -50,
-     2500
-    ],
-    [
-     150,
-     2500
-    ],
-    [
-     1150,
-     3850
-    ],
-    [
-     950,
-     3850
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Keep Clear Hatch 4",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Keep Clear Hatch 4",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Keep Clear Hatch 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Keep Clear Hatch 5",
-   "points": [
-    [
-     550,
-     2500
-    ],
-    [
-     750,
-     2500
-    ],
-    [
-     1750,
-     3850
-    ],
-    [
-     1550,
-     3850
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Keep Clear Hatch 5",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Keep Clear Hatch 5",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Keep Clear Hatch 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Keep Clear Edge",
-   "points": [
-    [
-     -1850,
-     2400
-    ],
-    [
-     1850,
-     2400
-    ],
-    [
-     1850,
-     2500
-    ],
-    [
-     -1850,
-     2500
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Keep Clear Edge",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Keep Clear Edge",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Keep Clear Edge",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 1 A Stroke 1",
-   "points": [
-    [
-     -1825.49,
-     -3733.62
-    ],
-    [
-     -1746.38,
-     -3745.49
-    ],
-    [
-     -1584.51,
-     -2666.38
-    ],
-    [
-     -1663.62,
-     -2654.51
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 1 A Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 1 A Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 1 A Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 1 A Stroke 2",
-   "points": [
-    [
-     -1596.38,
-     -2654.51
-    ],
-    [
-     -1675.49,
-     -2666.38
-    ],
-    [
-     -1513.62,
-     -3745.49
-    ],
-    [
-     -1434.51,
-     -3733.62
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 1 A Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 1 A Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 1 A Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 1 A Stroke 3",
-   "points": [
-    [
-     -1745.0,
-     -3260.0
-    ],
-    [
-     -1745.0,
-     -3340.0
-    ],
-    [
-     -1515.0,
-     -3340.0
-    ],
-    [
-     -1515.0,
-     -3260.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 1 A Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 1 A Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 1 A Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 2 M Stroke 1",
-   "points": [
-    [
-     -1415.0,
-     -3740.0
-    ],
-    [
-     -1335.0,
-     -3740.0
-    ],
-    [
-     -1335.0,
-     -2660.0
-    ],
-    [
-     -1415.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 2 M Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 2 M Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 2 M Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 2 M Stroke 2",
-   "points": [
-    [
-     -1348.18,
-     -2650.19
-    ],
-    [
-     -1424.81,
-     -2673.18
-    ],
-    [
-     -1251.82,
-     -3249.81
-    ],
-    [
-     -1175.19,
-     -3226.82
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 2 M Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 2 M Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 2 M Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 2 M Stroke 3",
-   "points": [
-    [
-     -1274.81,
-     -3226.82
-    ],
-    [
-     -1198.18,
-     -3249.81
-    ],
-    [
-     -1025.19,
-     -2673.18
-    ],
-    [
-     -1101.82,
-     -2650.19
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 2 M Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 2 M Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 2 M Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 2 M Stroke 4",
-   "points": [
-    [
-     -1035.0,
-     -2660.0
-    ],
-    [
-     -1115.0,
-     -2660.0
-    ],
-    [
-     -1115.0,
-     -3740.0
-    ],
-    [
-     -1035.0,
-     -3740.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 2 M Stroke 4",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 2 M Stroke 4",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 2 M Stroke 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 3 B Stroke 1",
-   "points": [
-    [
-     -1010.0,
-     -3740.0
-    ],
-    [
-     -930.0,
-     -3740.0
-    ],
-    [
-     -930.0,
-     -2660.0
-    ],
-    [
-     -1010.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 3 B Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 3 B Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 3 B Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 3 B Stroke 2",
-   "points": [
-    [
-     -1010.0,
-     -2660.0
-    ],
-    [
-     -1010.0,
-     -2740.0
-    ],
-    [
-     -705.0,
-     -2740.0
-    ],
-    [
-     -705.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 3 B Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 3 B Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 3 B Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 3 B Stroke 3",
-   "points": [
-    [
-     -1010.0,
-     -3160.0
-    ],
-    [
-     -1010.0,
-     -3240.0
-    ],
-    [
-     -705.0,
-     -3240.0
-    ],
-    [
-     -705.0,
-     -3160.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 3 B Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 3 B Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 3 B Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 3 B Stroke 4",
-   "points": [
-    [
-     -1010.0,
-     -3660.0
-    ],
-    [
-     -1010.0,
-     -3740.0
-    ],
-    [
-     -705.0,
-     -3740.0
-    ],
-    [
-     -705.0,
-     -3660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 3 B Stroke 4",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 3 B Stroke 4",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 3 B Stroke 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 3 B Stroke 5",
-   "points": [
-    [
-     -747.5,
-     -3690.0
-    ],
-    [
-     -667.5,
-     -3690.0
-    ],
-    [
-     -667.5,
-     -3210.0
-    ],
-    [
-     -747.5,
-     -3210.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 3 B Stroke 5",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 3 B Stroke 5",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 3 B Stroke 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 3 B Stroke 6",
-   "points": [
-    [
-     -747.5,
-     -3190.0
-    ],
-    [
-     -667.5,
-     -3190.0
-    ],
-    [
-     -667.5,
-     -2710.0
-    ],
-    [
-     -747.5,
-     -2710.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 3 B Stroke 6",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 3 B Stroke 6",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 3 B Stroke 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 4 U Stroke 1",
-   "points": [
-    [
-     -525.0,
-     -2660.0
-    ],
-    [
-     -605.0,
-     -2660.0
-    ],
-    [
-     -605.0,
-     -3700.0
-    ],
-    [
-     -525.0,
-     -3700.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 4 U Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 4 U Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 4 U Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 4 U Stroke 2",
-   "points": [
-    [
-     -605.0,
-     -3660.0
-    ],
-    [
-     -605.0,
-     -3740.0
-    ],
-    [
-     -225.0,
-     -3740.0
-    ],
-    [
-     -225.0,
-     -3660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 4 U Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 4 U Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 4 U Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 4 U Stroke 3",
-   "points": [
-    [
-     -305.0,
-     -3700.0
-    ],
-    [
-     -225.0,
-     -3700.0
-    ],
-    [
-     -225.0,
-     -2660.0
-    ],
-    [
-     -305.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 4 U Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 4 U Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 4 U Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 5 L Stroke 1",
-   "points": [
-    [
-     -200.0,
-     -3740.0
-    ],
-    [
-     -120.0,
-     -3740.0
-    ],
-    [
-     -120.0,
-     -2660.0
-    ],
-    [
-     -200.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 5 L Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 5 L Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 5 L Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 5 L Stroke 2",
-   "points": [
-    [
-     -200.0,
-     -3660.0
-    ],
-    [
-     -200.0,
-     -3740.0
-    ],
-    [
-     180.0,
-     -3740.0
-    ],
-    [
-     180.0,
-     -3660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 5 L Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 5 L Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 5 L Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 6 A Stroke 1",
-   "points": [
-    [
-     199.51,
-     -3733.62
-    ],
-    [
-     278.62,
-     -3745.49
-    ],
-    [
-     440.49,
-     -2666.38
-    ],
-    [
-     361.38,
-     -2654.51
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 6 A Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 6 A Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 6 A Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 6 A Stroke 2",
-   "points": [
-    [
-     428.62,
-     -2654.51
-    ],
-    [
-     349.51,
-     -2666.38
-    ],
-    [
-     511.38,
-     -3745.49
-    ],
-    [
-     590.49,
-     -3733.62
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 6 A Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 6 A Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 6 A Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 6 A Stroke 3",
-   "points": [
-    [
-     280.0,
-     -3260.0
-    ],
-    [
-     280.0,
-     -3340.0
-    ],
-    [
-     510.0,
-     -3340.0
-    ],
-    [
-     510.0,
-     -3260.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 6 A Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 6 A Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 6 A Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 7 N Stroke 1",
-   "points": [
-    [
-     610.0,
-     -3740.0
-    ],
-    [
-     690.0,
-     -3740.0
-    ],
-    [
-     690.0,
-     -2660.0
-    ],
-    [
-     610.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 7 N Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 7 N Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 7 N Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 7 N Stroke 2",
-   "points": [
-    [
-     676.82,
-     -2650.19
-    ],
-    [
-     600.19,
-     -2673.18
-    ],
-    [
-     923.18,
-     -3749.81
-    ],
-    [
-     999.81,
-     -3726.82
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 7 N Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 7 N Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 7 N Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 7 N Stroke 3",
-   "points": [
-    [
-     910.0,
-     -3740.0
-    ],
-    [
-     990.0,
-     -3740.0
-    ],
-    [
-     990.0,
-     -2660.0
-    ],
-    [
-     910.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 7 N Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 7 N Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 7 N Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 8 C Stroke 1",
-   "points": [
-    [
-     1015.0,
-     -3740.0
-    ],
-    [
-     1095.0,
-     -3740.0
-    ],
-    [
-     1095.0,
-     -2660.0
-    ],
-    [
-     1015.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 8 C Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 8 C Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 8 C Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 8 C Stroke 2",
-   "points": [
-    [
-     1015.0,
-     -2660.0
-    ],
-    [
-     1015.0,
-     -2740.0
-    ],
-    [
-     1395.0,
-     -2740.0
-    ],
-    [
-     1395.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 8 C Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 8 C Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 8 C Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 8 C Stroke 3",
-   "points": [
-    [
-     1015.0,
-     -3660.0
-    ],
-    [
-     1015.0,
-     -3740.0
-    ],
-    [
-     1395.0,
-     -3740.0
-    ],
-    [
-     1395.0,
-     -3660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 8 C Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 8 C Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 8 C Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 9 E Stroke 1",
-   "points": [
-    [
-     1420.0,
-     -3740.0
-    ],
-    [
-     1500.0,
-     -3740.0
-    ],
-    [
-     1500.0,
-     -2660.0
-    ],
-    [
-     1420.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 9 E Stroke 1",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 9 E Stroke 1",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 9 E Stroke 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 9 E Stroke 2",
-   "points": [
-    [
-     1420.0,
-     -2660.0
-    ],
-    [
-     1420.0,
-     -2740.0
-    ],
-    [
-     1800.0,
-     -2740.0
-    ],
-    [
-     1800.0,
-     -2660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 9 E Stroke 2",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 9 E Stroke 2",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 9 E Stroke 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 9 E Stroke 3",
-   "points": [
-    [
-     1420.0,
-     -3160.0
-    ],
-    [
-     1420.0,
-     -3240.0
-    ],
-    [
-     1725.0,
-     -3240.0
-    ],
-    [
-     1725.0,
-     -3160.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 9 E Stroke 3",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 9 E Stroke 3",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 9 E Stroke 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Letter 9 E Stroke 4",
-   "points": [
-    [
-     1420.0,
-     -3660.0
-    ],
-    [
-     1420.0,
-     -3740.0
-    ],
-    [
-     1800.0,
-     -3740.0
-    ],
-    [
-     1800.0,
-     -3660.0
-    ]
-   ],
-   "start": 0,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Letter 9 E Stroke 4",
-   "subcategory": "Yellow"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Letter 9 E Stroke 4",
-   "param": "Yellow Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Letter 9 E Stroke 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Post",
-   "points": [
-    [
-     38.0,
-     4300.0
-    ],
-    [
-     35.11,
-     4314.54
-    ],
-    [
-     26.87,
-     4326.87
-    ],
-    [
-     14.54,
-     4335.11
-    ],
-    [
-     0.0,
-     4338.0
-    ],
-    [
-     -14.54,
-     4335.11
-    ],
-    [
-     -26.87,
-     4326.87
-    ],
-    [
-     -35.11,
-     4314.54
-    ],
-    [
-     -38.0,
-     4300.0
-    ],
-    [
-     -35.11,
-     4285.46
-    ],
-    [
-     -26.87,
-     4273.13
-    ],
-    [
-     -14.54,
-     4264.89
-    ],
-    [
-     -0.0,
-     4262.0
-    ],
-    [
-     14.54,
-     4264.89
-    ],
-    [
-     26.87,
-     4273.13
-    ],
-    [
-     35.11,
-     4285.46
-    ]
-   ],
-   "start": 0,
-   "end": 2400
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Post",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Post",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Post",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Plate",
-   "points": [
-    [
-     -300,
-     1800
-    ],
-    [
-     300,
-     1800
-    ],
-    [
-     300,
-     2400
-    ],
-    [
-     -300,
-     2400
-    ]
-   ],
-   "start": -4260,
-   "end": -4250,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Plate",
-   "subcategory": "Abswhite"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Plate",
-   "param": "Abswhite Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Plate",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Cross",
-   "points": [
-    [
-     -60,
-     1950
-    ],
-    [
-     60,
-     1950
-    ],
-    [
-     60,
-     2250
-    ],
-    [
-     -60,
-     2250
-    ]
-   ],
-   "start": -4250,
-   "end": -4248,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Cross",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Cross",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Cross",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Sign Cross Bar",
-   "points": [
-    [
-     -150,
-     2040
-    ],
-    [
-     150,
-     2040
-    ],
-    [
-     150,
-     2160
-    ],
-    [
-     -150,
-     2160
-    ]
-   ],
-   "start": -4250,
-   "end": -4248,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Sign Cross Bar",
-   "subcategory": "Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Sign Cross Bar",
-   "param": "Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Sign Cross Bar",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rear Door Zone",
-   "points": [
-    [
-     -2000,
-     4000
-    ],
-    [
-     2000,
-     4000
-    ],
-    [
-     2000,
-     7000
-    ],
-    [
-     -2000,
-     7000
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rear Door Zone",
-   "subcategory": "Clearance Operation"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rear Door Zone",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_SiteFurniture_Parking_Bay_Ambulance.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_C_SiteFurniture_Parking_Bay_Ambulance",
+  "template": "Metric Generic Model.rft",
+  "about": "Ground at z = 0, the ambulance enters from -y and backs to the canopy (+y): yellow box, AMBULANCE legend in block strokes, keep-clear hatching, sign post. The rear-door zone is an operation clearance. Reference: query: site furniture parking bay ambulance site hospital; images: https://www.google.com/search?tbm=isch&q=site+furniture+parking+bay+ambulance+site+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Site"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Compaction_Pct_MDD",
+      "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_CBR_Pct",
+      "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Layer_Thickness_mm",
+      "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "4000x8000_Ambulance"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/FMC_Cost_Unit",
+      "type": "4000x8000_Ambulance",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/FMC_Geometry_Stage",
+      "type": "4000x8000_Ambulance",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/IfcExportAs",
+      "type": "4000x8000_Ambulance",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/Description",
+      "type": "4000x8000_Ambulance",
+      "param": "Description",
+      "value": "Ambulance bay 4000 x 8000: yellow box marking, AMBULANCE legend, keep-clear hatching at the loading end, sign; rear-door clearance"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/Keynote",
+      "type": "4000x8000_Ambulance",
+      "param": "Keynote",
+      "value": "T.MRK_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/FMC_Keynote_Code",
+      "type": "4000x8000_Ambulance",
+      "param": "FMC_Keynote_Code",
+      "value": "T.MRK_03"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/FMC_Code_Description",
+      "type": "4000x8000_Ambulance",
+      "param": "FMC_Code_Description",
+      "value": "Parking Bay Ambulance: Ambulance bay marking and clearance"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/FMC_Code_Group",
+      "type": "4000x8000_Ambulance",
+      "param": "FMC_Code_Group",
+      "value": "T.MRK"
+    },
+    {
+      "op": "set_type_value",
+      "name": "4000x8000_Ambulance/FMC_Role_Code",
+      "type": "4000x8000_Ambulance",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Yellow",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Yellow Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Yellow",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Abswhite",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Abswhite Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "Abswhite Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SprinklerPipe_RedPainted",
+      "param": "Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Operation",
+      "color": [
+        80,
+        122,
+        160
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -2000,
+          -4000
+        ],
+        [
+          2000,
+          -4000
+        ],
+        [
+          2000,
+          4338
+        ],
+        [
+          -2000,
+          4338
+        ]
+      ],
+      "start": 0,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Bay Line Left",
+      "points": [
+        [
+          -2000,
+          -4000
+        ],
+        [
+          -1850,
+          -4000
+        ],
+        [
+          -1850,
+          4000
+        ],
+        [
+          -2000,
+          4000
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bay Line Left",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bay Line Left",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bay Line Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bay Line Right",
+      "points": [
+        [
+          1850,
+          -4000
+        ],
+        [
+          2000,
+          -4000
+        ],
+        [
+          2000,
+          4000
+        ],
+        [
+          1850,
+          4000
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bay Line Right",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bay Line Right",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bay Line Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bay Line Head",
+      "points": [
+        [
+          -2000,
+          3850
+        ],
+        [
+          2000,
+          3850
+        ],
+        [
+          2000,
+          4000
+        ],
+        [
+          -2000,
+          4000
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bay Line Head",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bay Line Head",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bay Line Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Bay Line Entry",
+      "points": [
+        [
+          -2000,
+          -4000
+        ],
+        [
+          2000,
+          -4000
+        ],
+        [
+          2000,
+          -3850
+        ],
+        [
+          -2000,
+          -3850
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Bay Line Entry",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Bay Line Entry",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Bay Line Entry",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Keep Clear Hatch 1",
+      "points": [
+        [
+          -1850,
+          2500
+        ],
+        [
+          -1650,
+          2500
+        ],
+        [
+          -650,
+          3850
+        ],
+        [
+          -850,
+          3850
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Keep Clear Hatch 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Keep Clear Hatch 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Keep Clear Hatch 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Keep Clear Hatch 2",
+      "points": [
+        [
+          -1250,
+          2500
+        ],
+        [
+          -1050,
+          2500
+        ],
+        [
+          -50,
+          3850
+        ],
+        [
+          -250,
+          3850
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Keep Clear Hatch 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Keep Clear Hatch 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Keep Clear Hatch 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Keep Clear Hatch 3",
+      "points": [
+        [
+          -650,
+          2500
+        ],
+        [
+          -450,
+          2500
+        ],
+        [
+          550,
+          3850
+        ],
+        [
+          350,
+          3850
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Keep Clear Hatch 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Keep Clear Hatch 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Keep Clear Hatch 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Keep Clear Hatch 4",
+      "points": [
+        [
+          -50,
+          2500
+        ],
+        [
+          150,
+          2500
+        ],
+        [
+          1150,
+          3850
+        ],
+        [
+          950,
+          3850
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Keep Clear Hatch 4",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Keep Clear Hatch 4",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Keep Clear Hatch 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Keep Clear Hatch 5",
+      "points": [
+        [
+          550,
+          2500
+        ],
+        [
+          750,
+          2500
+        ],
+        [
+          1750,
+          3850
+        ],
+        [
+          1550,
+          3850
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Keep Clear Hatch 5",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Keep Clear Hatch 5",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Keep Clear Hatch 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Keep Clear Edge",
+      "points": [
+        [
+          -1850,
+          2400
+        ],
+        [
+          1850,
+          2400
+        ],
+        [
+          1850,
+          2500
+        ],
+        [
+          -1850,
+          2500
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Keep Clear Edge",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Keep Clear Edge",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Keep Clear Edge",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 1 A Stroke 1",
+      "points": [
+        [
+          -1825.49,
+          -3733.62
+        ],
+        [
+          -1746.38,
+          -3745.49
+        ],
+        [
+          -1584.51,
+          -2666.38
+        ],
+        [
+          -1663.62,
+          -2654.51
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 1 A Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 1 A Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 1 A Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 1 A Stroke 2",
+      "points": [
+        [
+          -1596.38,
+          -2654.51
+        ],
+        [
+          -1675.49,
+          -2666.38
+        ],
+        [
+          -1513.62,
+          -3745.49
+        ],
+        [
+          -1434.51,
+          -3733.62
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 1 A Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 1 A Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 1 A Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 1 A Stroke 3",
+      "points": [
+        [
+          -1745,
+          -3260
+        ],
+        [
+          -1745,
+          -3340
+        ],
+        [
+          -1515,
+          -3340
+        ],
+        [
+          -1515,
+          -3260
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 1 A Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 1 A Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 1 A Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 2 M Stroke 1",
+      "points": [
+        [
+          -1415,
+          -3740
+        ],
+        [
+          -1335,
+          -3740
+        ],
+        [
+          -1335,
+          -2660
+        ],
+        [
+          -1415,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 2 M Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 2 M Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 2 M Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 2 M Stroke 2",
+      "points": [
+        [
+          -1348.18,
+          -2650.19
+        ],
+        [
+          -1424.81,
+          -2673.18
+        ],
+        [
+          -1251.82,
+          -3249.81
+        ],
+        [
+          -1175.19,
+          -3226.82
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 2 M Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 2 M Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 2 M Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 2 M Stroke 3",
+      "points": [
+        [
+          -1274.81,
+          -3226.82
+        ],
+        [
+          -1198.18,
+          -3249.81
+        ],
+        [
+          -1025.19,
+          -2673.18
+        ],
+        [
+          -1101.82,
+          -2650.19
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 2 M Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 2 M Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 2 M Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 2 M Stroke 4",
+      "points": [
+        [
+          -1035,
+          -2660
+        ],
+        [
+          -1115,
+          -2660
+        ],
+        [
+          -1115,
+          -3740
+        ],
+        [
+          -1035,
+          -3740
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 2 M Stroke 4",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 2 M Stroke 4",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 2 M Stroke 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 3 B Stroke 1",
+      "points": [
+        [
+          -1010,
+          -3740
+        ],
+        [
+          -930,
+          -3740
+        ],
+        [
+          -930,
+          -2660
+        ],
+        [
+          -1010,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 3 B Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 3 B Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 3 B Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 3 B Stroke 2",
+      "points": [
+        [
+          -1010,
+          -2660
+        ],
+        [
+          -1010,
+          -2740
+        ],
+        [
+          -705,
+          -2740
+        ],
+        [
+          -705,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 3 B Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 3 B Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 3 B Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 3 B Stroke 3",
+      "points": [
+        [
+          -1010,
+          -3160
+        ],
+        [
+          -1010,
+          -3240
+        ],
+        [
+          -705,
+          -3240
+        ],
+        [
+          -705,
+          -3160
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 3 B Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 3 B Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 3 B Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 3 B Stroke 4",
+      "points": [
+        [
+          -1010,
+          -3660
+        ],
+        [
+          -1010,
+          -3740
+        ],
+        [
+          -705,
+          -3740
+        ],
+        [
+          -705,
+          -3660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 3 B Stroke 4",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 3 B Stroke 4",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 3 B Stroke 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 3 B Stroke 5",
+      "points": [
+        [
+          -747.5,
+          -3690
+        ],
+        [
+          -667.5,
+          -3690
+        ],
+        [
+          -667.5,
+          -3210
+        ],
+        [
+          -747.5,
+          -3210
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 3 B Stroke 5",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 3 B Stroke 5",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 3 B Stroke 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 3 B Stroke 6",
+      "points": [
+        [
+          -747.5,
+          -3190
+        ],
+        [
+          -667.5,
+          -3190
+        ],
+        [
+          -667.5,
+          -2710
+        ],
+        [
+          -747.5,
+          -2710
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 3 B Stroke 6",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 3 B Stroke 6",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 3 B Stroke 6",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 4 U Stroke 1",
+      "points": [
+        [
+          -525,
+          -2660
+        ],
+        [
+          -605,
+          -2660
+        ],
+        [
+          -605,
+          -3700
+        ],
+        [
+          -525,
+          -3700
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 4 U Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 4 U Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 4 U Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 4 U Stroke 2",
+      "points": [
+        [
+          -605,
+          -3660
+        ],
+        [
+          -605,
+          -3740
+        ],
+        [
+          -225,
+          -3740
+        ],
+        [
+          -225,
+          -3660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 4 U Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 4 U Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 4 U Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 4 U Stroke 3",
+      "points": [
+        [
+          -305,
+          -3700
+        ],
+        [
+          -225,
+          -3700
+        ],
+        [
+          -225,
+          -2660
+        ],
+        [
+          -305,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 4 U Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 4 U Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 4 U Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 5 L Stroke 1",
+      "points": [
+        [
+          -200,
+          -3740
+        ],
+        [
+          -120,
+          -3740
+        ],
+        [
+          -120,
+          -2660
+        ],
+        [
+          -200,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 5 L Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 5 L Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 5 L Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 5 L Stroke 2",
+      "points": [
+        [
+          -200,
+          -3660
+        ],
+        [
+          -200,
+          -3740
+        ],
+        [
+          180,
+          -3740
+        ],
+        [
+          180,
+          -3660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 5 L Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 5 L Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 5 L Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 6 A Stroke 1",
+      "points": [
+        [
+          199.51,
+          -3733.62
+        ],
+        [
+          278.62,
+          -3745.49
+        ],
+        [
+          440.49,
+          -2666.38
+        ],
+        [
+          361.38,
+          -2654.51
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 6 A Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 6 A Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 6 A Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 6 A Stroke 2",
+      "points": [
+        [
+          428.62,
+          -2654.51
+        ],
+        [
+          349.51,
+          -2666.38
+        ],
+        [
+          511.38,
+          -3745.49
+        ],
+        [
+          590.49,
+          -3733.62
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 6 A Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 6 A Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 6 A Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 6 A Stroke 3",
+      "points": [
+        [
+          280,
+          -3260
+        ],
+        [
+          280,
+          -3340
+        ],
+        [
+          510,
+          -3340
+        ],
+        [
+          510,
+          -3260
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 6 A Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 6 A Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 6 A Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 7 N Stroke 1",
+      "points": [
+        [
+          610,
+          -3740
+        ],
+        [
+          690,
+          -3740
+        ],
+        [
+          690,
+          -2660
+        ],
+        [
+          610,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 7 N Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 7 N Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 7 N Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 7 N Stroke 2",
+      "points": [
+        [
+          676.82,
+          -2650.19
+        ],
+        [
+          600.19,
+          -2673.18
+        ],
+        [
+          923.18,
+          -3749.81
+        ],
+        [
+          999.81,
+          -3726.82
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 7 N Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 7 N Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 7 N Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 7 N Stroke 3",
+      "points": [
+        [
+          910,
+          -3740
+        ],
+        [
+          990,
+          -3740
+        ],
+        [
+          990,
+          -2660
+        ],
+        [
+          910,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 7 N Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 7 N Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 7 N Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 8 C Stroke 1",
+      "points": [
+        [
+          1015,
+          -3740
+        ],
+        [
+          1095,
+          -3740
+        ],
+        [
+          1095,
+          -2660
+        ],
+        [
+          1015,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 8 C Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 8 C Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 8 C Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 8 C Stroke 2",
+      "points": [
+        [
+          1015,
+          -2660
+        ],
+        [
+          1015,
+          -2740
+        ],
+        [
+          1395,
+          -2740
+        ],
+        [
+          1395,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 8 C Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 8 C Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 8 C Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 8 C Stroke 3",
+      "points": [
+        [
+          1015,
+          -3660
+        ],
+        [
+          1015,
+          -3740
+        ],
+        [
+          1395,
+          -3740
+        ],
+        [
+          1395,
+          -3660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 8 C Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 8 C Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 8 C Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 9 E Stroke 1",
+      "points": [
+        [
+          1420,
+          -3740
+        ],
+        [
+          1500,
+          -3740
+        ],
+        [
+          1500,
+          -2660
+        ],
+        [
+          1420,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 9 E Stroke 1",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 9 E Stroke 1",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 9 E Stroke 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 9 E Stroke 2",
+      "points": [
+        [
+          1420,
+          -2660
+        ],
+        [
+          1420,
+          -2740
+        ],
+        [
+          1800,
+          -2740
+        ],
+        [
+          1800,
+          -2660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 9 E Stroke 2",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 9 E Stroke 2",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 9 E Stroke 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 9 E Stroke 3",
+      "points": [
+        [
+          1420,
+          -3160
+        ],
+        [
+          1420,
+          -3240
+        ],
+        [
+          1725,
+          -3240
+        ],
+        [
+          1725,
+          -3160
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 9 E Stroke 3",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 9 E Stroke 3",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 9 E Stroke 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Letter 9 E Stroke 4",
+      "points": [
+        [
+          1420,
+          -3660
+        ],
+        [
+          1420,
+          -3740
+        ],
+        [
+          1800,
+          -3740
+        ],
+        [
+          1800,
+          -3660
+        ]
+      ],
+      "start": 0,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Letter 9 E Stroke 4",
+      "subcategory": "Yellow"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Letter 9 E Stroke 4",
+      "param": "Yellow Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Letter 9 E Stroke 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Post",
+      "points": [
+        [
+          38,
+          4300
+        ],
+        [
+          35.11,
+          4314.54
+        ],
+        [
+          26.87,
+          4326.87
+        ],
+        [
+          14.54,
+          4335.11
+        ],
+        [
+          0,
+          4338
+        ],
+        [
+          -14.54,
+          4335.11
+        ],
+        [
+          -26.87,
+          4326.87
+        ],
+        [
+          -35.11,
+          4314.54
+        ],
+        [
+          -38,
+          4300
+        ],
+        [
+          -35.11,
+          4285.46
+        ],
+        [
+          -26.87,
+          4273.13
+        ],
+        [
+          -14.54,
+          4264.89
+        ],
+        [
+          0,
+          4262
+        ],
+        [
+          14.54,
+          4264.89
+        ],
+        [
+          26.87,
+          4273.13
+        ],
+        [
+          35.11,
+          4285.46
+        ]
+      ],
+      "start": 0,
+      "end": 2400
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Post",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Post",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Post",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Plate",
+      "points": [
+        [
+          -300,
+          1800
+        ],
+        [
+          300,
+          1800
+        ],
+        [
+          300,
+          2400
+        ],
+        [
+          -300,
+          2400
+        ]
+      ],
+      "start": -4260,
+      "end": -4250,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Plate",
+      "subcategory": "Abswhite"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Plate",
+      "param": "Abswhite Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Plate",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Cross",
+      "points": [
+        [
+          -60,
+          1950
+        ],
+        [
+          60,
+          1950
+        ],
+        [
+          60,
+          2250
+        ],
+        [
+          -60,
+          2250
+        ]
+      ],
+      "start": -4250,
+      "end": -4248,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Cross",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Cross",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Cross",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Sign Cross Bar",
+      "points": [
+        [
+          -150,
+          2040
+        ],
+        [
+          150,
+          2040
+        ],
+        [
+          150,
+          2160
+        ],
+        [
+          -150,
+          2160
+        ]
+      ],
+      "start": -4250,
+      "end": -4248,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Sign Cross Bar",
+      "subcategory": "Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Sign Cross Bar",
+      "param": "Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Sign Cross Bar",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rear Door Zone",
+      "points": [
+        [
+          -2000,
+          4000
+        ],
+        [
+          2000,
+          4000
+        ],
+        [
+          2000,
+          7000
+        ],
+        [
+          -2000,
+          7000
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rear Door Zone",
+      "subcategory": "Clearance Operation"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rear Door Zone",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_SiteFurniture_Parking_Bay_Ambulance.png"
+    }
+  ],
+  "values": {
+    "Bay 4000 x 8000 mm": {
+      "value": "4000x8000",
+      "source_status": "assumed",
+      "source": "typical (HBN 15-01 / ambulance service guidance)"
+    },
+    "Lines 150 mm yellow": {
+      "value": 150,
+      "source_status": "assumed",
+      "source": "typical"
+    },
+    "Rear loading zone 1500 mm hatched; 3000 clear behind": {
+      "value": "1500 / 3000",
+      "source_status": "assumed",
+      "source": "ambulance stretcher-loading practice; designer to confirm"
+    }
   }
- ],
- "values": {
-  "Bay 4000 x 8000 mm": {
-   "value": "4000x8000",
-   "source_status": "assumed",
-   "source": "typical (HBN 15-01 / ambulance service guidance)"
-  },
-  "Lines 150 mm yellow": {
-   "value": 150,
-   "source_status": "assumed",
-   "source": "typical"
-  },
-  "Rear loading zone 1500 mm hatched; 3000 clear behind": {
-   "value": "1500 / 3000",
-   "source_status": "assumed",
-   "source": "ambulance stretcher-loading practice; designer to confirm"
-  }
- }
 }

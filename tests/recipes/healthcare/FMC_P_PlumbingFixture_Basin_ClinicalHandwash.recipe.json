@@ -1,421 +1,445 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_P_PlumbingFixture_Basin_ClinicalHandwash",
- "template": "Metric Generic Model.rft",
- "about": "Wave 1: clinical basin (HBN 00-10 basis); CW, HW and sanitary connectors; bowl cut by a void; rim at 850.",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Plumbing Fixtures"
-  },
-  {
-   "op": "add_type",
-   "name": "500x400_Clinical"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500x400_Clinical/Keynote",
-   "type": "500x400_Clinical",
-   "param": "Keynote",
-   "value": "P.BAS_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500x400_Clinical/FMC_Keynote_Code",
-   "type": "500x400_Clinical",
-   "param": "FMC_Keynote_Code",
-   "value": "P.BAS_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500x400_Clinical/FMC_Cost_Unit",
-   "type": "500x400_Clinical",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500x400_Clinical/FMC_Geometry_Stage",
-   "type": "500x400_Clinical",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500x400_Clinical/IfcExportAs",
-   "type": "500x400_Clinical",
-   "param": "IfcExportAs",
-   "value": "IfcSanitaryTerminal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "500x400_Clinical/Description",
-   "type": "500x400_Clinical",
-   "param": "Description",
-   "value": "Clinical hand-wash basin, no overflow, no plug, back outlet, wall hung, elbow mixer"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Basin",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Splashback",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Tap",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -250,
-     -400
-    ],
-    [
-     250,
-     -400
-    ],
-    [
-     250,
-     0
-    ],
-    [
-     -250,
-     0
-    ]
-   ],
-   "start": 650,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Basin",
-   "points": [
-    [
-     -250,
-     -400
-    ],
-    [
-     250,
-     -400
-    ],
-    [
-     250,
-     0
-    ],
-    [
-     -250,
-     0
-    ]
-   ],
-   "start": 650,
-   "end": 850
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Basin",
-   "subcategory": "Basin"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Basin",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "void_extrusion",
-   "name": "Bowl",
-   "points": [
-    [
-     -210,
-     -360
-    ],
-    [
-     210,
-     -360
-    ],
-    [
-     210,
-     -60
-    ],
-    [
-     -210,
-     -60
-    ]
-   ],
-   "start": 700,
-   "end": 860
-  },
-  {
-   "op": "extrusion",
-   "name": "Splashback",
-   "points": [
-    [
-     -300,
-     -10
-    ],
-    [
-     300,
-     -10
-    ],
-    [
-     300,
-     0
-    ],
-    [
-     -300,
-     0
-    ]
-   ],
-   "start": 850,
-   "end": 1250
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Splashback",
-   "subcategory": "Splashback"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Splashback",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tap Body",
-   "points": [
-    [
-     -25,
-     -60
-    ],
-    [
-     25,
-     -60
-    ],
-    [
-     25,
-     -10
-    ],
-    [
-     -25,
-     -10
-    ]
-   ],
-   "start": 900,
-   "end": 960
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tap Body",
-   "subcategory": "Tap"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tap Body",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Tap Spout",
-   "points": [
-    [
-     -12,
-     -200
-    ],
-    [
-     12,
-     -200
-    ],
-    [
-     12,
-     -60
-    ],
-    [
-     -12,
-     -60
-    ]
-   ],
-   "start": 930,
-   "end": 950
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Tap Spout",
-   "subcategory": "Tap"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Tap Spout",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Waste Tail",
-   "points": [
-    [
-     -25,
-     -25
-    ],
-    [
-     25,
-     -25
-    ],
-    [
-     25,
-     0
-    ],
-    [
-     -25,
-     0
-    ]
-   ],
-   "start": 600,
-   "end": 650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Waste Tail",
-   "subcategory": "Basin"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Waste Tail",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Supply Tails",
-   "points": [
-    [
-     -60,
-     -10
-    ],
-    [
-     60,
-     -10
-    ],
-    [
-     60,
-     0
-    ],
-    [
-     -60,
-     0
-    ]
-   ],
-   "start": 960,
-   "end": 990
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Supply Tails",
-   "subcategory": "Tap"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Supply Tails",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "CW",
-   "domain": "pipe",
-   "system": "DomesticColdWater",
-   "solid": "Supply Tails",
-   "side": "back",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "HW",
-   "domain": "pipe",
-   "system": "DomesticHotWater",
-   "solid": "Tap Body",
-   "side": "top",
-   "diameter": 15,
-   "flow": "In"
-  },
-  {
-   "op": "add_connector",
-   "name": "Waste",
-   "domain": "pipe",
-   "system": "Sanitary",
-   "solid": "Waste Tail",
-   "side": "back",
-   "diameter": 40,
-   "flow": "Out"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_P_PlumbingFixture_Basin_ClinicalHandwash",
+  "template": "Metric Generic Model.rft",
+  "about": "Wave 1: clinical basin (HBN 00-10 basis); CW, HW and sanitary connectors; bowl cut by a void; rim at 850.",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Plumbing Fixtures"
+    },
+    {
+      "op": "add_type",
+      "name": "500x400_Clinical"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500x400_Clinical/Keynote",
+      "type": "500x400_Clinical",
+      "param": "Keynote",
+      "value": "P.BAS_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500x400_Clinical/FMC_Keynote_Code",
+      "type": "500x400_Clinical",
+      "param": "FMC_Keynote_Code",
+      "value": "P.BAS_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500x400_Clinical/FMC_Cost_Unit",
+      "type": "500x400_Clinical",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500x400_Clinical/FMC_Geometry_Stage",
+      "type": "500x400_Clinical",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500x400_Clinical/IfcExportAs",
+      "type": "500x400_Clinical",
+      "param": "IfcExportAs",
+      "value": "IfcSanitaryTerminal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "500x400_Clinical/Description",
+      "type": "500x400_Clinical",
+      "param": "Description",
+      "value": "Clinical hand-wash basin, no overflow, no plug, back outlet, wall hung, elbow mixer"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Basin",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Splashback",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Tap",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "line_weight_projection": 3,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -250,
+          -400
+        ],
+        [
+          250,
+          -400
+        ],
+        [
+          250,
+          0
+        ],
+        [
+          -250,
+          0
+        ]
+      ],
+      "start": 650,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Basin",
+      "points": [
+        [
+          -250,
+          -400
+        ],
+        [
+          250,
+          -400
+        ],
+        [
+          250,
+          0
+        ],
+        [
+          -250,
+          0
+        ]
+      ],
+      "start": 650,
+      "end": 850
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Basin",
+      "subcategory": "Basin"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Basin",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "void_extrusion",
+      "name": "Bowl",
+      "points": [
+        [
+          -210,
+          -360
+        ],
+        [
+          210,
+          -360
+        ],
+        [
+          210,
+          -60
+        ],
+        [
+          -210,
+          -60
+        ]
+      ],
+      "start": 700,
+      "end": 860
+    },
+    {
+      "op": "extrusion",
+      "name": "Splashback",
+      "points": [
+        [
+          -300,
+          -10
+        ],
+        [
+          300,
+          -10
+        ],
+        [
+          300,
+          0
+        ],
+        [
+          -300,
+          0
+        ]
+      ],
+      "start": 850,
+      "end": 1250
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Splashback",
+      "subcategory": "Splashback"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Splashback",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tap Body",
+      "points": [
+        [
+          -25,
+          -60
+        ],
+        [
+          25,
+          -60
+        ],
+        [
+          25,
+          -10
+        ],
+        [
+          -25,
+          -10
+        ]
+      ],
+      "start": 900,
+      "end": 960
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tap Body",
+      "subcategory": "Tap"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tap Body",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Tap Spout",
+      "points": [
+        [
+          -12,
+          -200
+        ],
+        [
+          12,
+          -200
+        ],
+        [
+          12,
+          -60
+        ],
+        [
+          -12,
+          -60
+        ]
+      ],
+      "start": 930,
+      "end": 950
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Tap Spout",
+      "subcategory": "Tap"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Tap Spout",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Waste Tail",
+      "points": [
+        [
+          -25,
+          -25
+        ],
+        [
+          25,
+          -25
+        ],
+        [
+          25,
+          0
+        ],
+        [
+          -25,
+          0
+        ]
+      ],
+      "start": 600,
+      "end": 650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Waste Tail",
+      "subcategory": "Basin"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Waste Tail",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Supply Tails",
+      "points": [
+        [
+          -60,
+          -10
+        ],
+        [
+          60,
+          -10
+        ],
+        [
+          60,
+          0
+        ],
+        [
+          -60,
+          0
+        ]
+      ],
+      "start": 960,
+      "end": 990
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Supply Tails",
+      "subcategory": "Tap"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Supply Tails",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "CW",
+      "domain": "pipe",
+      "system": "DomesticColdWater",
+      "solid": "Supply Tails",
+      "side": "back",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "HW",
+      "domain": "pipe",
+      "system": "DomesticHotWater",
+      "solid": "Tap Body",
+      "side": "top",
+      "diameter": 15,
+      "flow": "In"
+    },
+    {
+      "op": "add_connector",
+      "name": "Waste",
+      "domain": "pipe",
+      "system": "Sanitary",
+      "solid": "Waste Tail",
+      "side": "back",
+      "diameter": 40,
+      "flow": "Out"
+    }
+  ],
+  "values": {
+    "Basin 500 x 400 mm": {
+      "value": "500 x 400",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Rim height 850 mm": {
+      "value": "850",
+      "source_status": "assumed",
+      "source": "accessible basin practice"
+    },
+    "Waste 40 mm": {
+      "value": "40",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    }
   }
- ],
- "values": {
-  "Basin 500 x 400 mm": {
-   "value": "500 x 400",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Rim height 850 mm": {
-   "value": "850",
-   "source_status": "assumed",
-   "source": "accessible basin practice"
-  },
-  "Waste 40 mm": {
-   "value": "40",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  }
- }
 }

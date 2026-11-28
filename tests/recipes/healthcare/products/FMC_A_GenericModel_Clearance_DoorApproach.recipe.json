@@ -1,193 +1,194 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_GenericModel_Clearance_DoorApproach",
- "template": "Metric Generic Model.rft",
- "about": "Approach zone from the door's leading edge (x = 0) toward the latch side, from the wall face (y = 0) 1500 deep, 10 mm high, on Clearance Accessibility. The 600 type is set by the nesting family; geometry is the 450 type. Reference: query: clearance door approach generic models hospital; images: https://www.google.com/search?tbm=isch&q=clearance+door+approach+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Generic Models"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_GenericModel_Clearance_DoorApproach",
+  "template": "Metric Generic Model.rft",
+  "about": "Approach zone from the door's leading edge (x = 0) toward the latch side, from the wall face (y = 0) 1500 deep, 10 mm high, on Clearance Accessibility. The 600 type is set by the nesting family; geometry is the 450 type. Reference: query: clearance door approach generic models hospital; images: https://www.google.com/search?tbm=isch&q=clearance+door+approach+generic+models+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Generic Models"
+    },
+    {
+      "op": "set_family_params",
+      "name": "family",
+      "shared": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "450_LatchSide"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_LatchSide/FMC_Cost_Unit",
+      "type": "450_LatchSide",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_LatchSide/FMC_Geometry_Stage",
+      "type": "450_LatchSide",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_LatchSide/IfcExportAs",
+      "type": "450_LatchSide",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_LatchSide/Description",
+      "type": "450_LatchSide",
+      "param": "Description",
+      "value": "Latch-side approach zone 450 x 1500 mm"
+    },
+    {
+      "op": "add_type",
+      "name": "600_LatchSide"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_LatchSide/FMC_Cost_Unit",
+      "type": "600_LatchSide",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_LatchSide/FMC_Geometry_Stage",
+      "type": "600_LatchSide",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_LatchSide/IfcExportAs",
+      "type": "600_LatchSide",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_LatchSide/Description",
+      "type": "600_LatchSide",
+      "param": "Description",
+      "value": "Latch-side approach zone 600 x 1500 mm (bed passage doors)"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Accessibility",
+      "color": [
+        104,
+        118,
+        125
+      ],
+      "line_weight_projection": 1,
+      "line_weight_cut": 1
+    },
+    {
+      "op": "add_family_param",
+      "name": "Clearance Accessibility Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Glass_Clear",
+      "param": "Clearance Accessibility Material"
+    },
+    {
+      "op": "extrusion",
+      "name": "Approach Zone",
+      "points": [
+        [
+          0,
+          -1500
+        ],
+        [
+          450,
+          -1500
+        ],
+        [
+          450,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Approach Zone",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Approach Zone",
+      "param": "Clearance Accessibility Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Approach Zone",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Clearance_DoorApproach.png"
+    }
+  ],
+  "values": {
+    "Latch side 450 mm (600 type)": {
+      "value": 450,
+      "source_status": "assumed",
+      "source": "ADA 404.2.4 front approach, pull side 455 mm; BS 8300-2 300 mm nib minimum"
+    },
+    "Depth 1500 mm": {
+      "value": 1500,
+      "source_status": "assumed",
+      "source": "ADA 404.2.4 (1525 mm) / BS 8300-2"
+    }
   },
-  {
-   "op": "set_family_params",
-   "name": "family",
-   "shared": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "450_LatchSide"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_LatchSide/FMC_Cost_Unit",
-   "type": "450_LatchSide",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_LatchSide/FMC_Geometry_Stage",
-   "type": "450_LatchSide",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_LatchSide/IfcExportAs",
-   "type": "450_LatchSide",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_LatchSide/Description",
-   "type": "450_LatchSide",
-   "param": "Description",
-   "value": "Latch-side approach zone 450 x 1500 mm"
-  },
-  {
-   "op": "add_type",
-   "name": "600_LatchSide"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_LatchSide/FMC_Cost_Unit",
-   "type": "600_LatchSide",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_LatchSide/FMC_Geometry_Stage",
-   "type": "600_LatchSide",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_LatchSide/IfcExportAs",
-   "type": "600_LatchSide",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_LatchSide/Description",
-   "type": "600_LatchSide",
-   "param": "Description",
-   "value": "Latch-side approach zone 600 x 1500 mm (bed passage doors)"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Accessibility",
-   "color": [
-    191,
-    217,
-    230
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Clearance Accessibility Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Glass_Clear",
-   "param": "Clearance Accessibility Material"
-  },
-  {
-   "op": "extrusion",
-   "name": "Approach Zone",
-   "points": [
-    [
-     0,
-     -1500
-    ],
-    [
-     450,
-     -1500
-    ],
-    [
-     450,
-     0
-    ],
-    [
-     0,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Approach Zone",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Approach Zone",
-   "param": "Clearance Accessibility Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Approach Zone",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_GenericModel_Clearance_DoorApproach.png"
+  "checks": {
+    "keynote_exempt": "nested-only clearance helper; not scheduled or costed"
   }
- ],
- "values": {
-  "Latch side 450 mm (600 type)": {
-   "value": 450,
-   "source_status": "assumed",
-   "source": "ADA 404.2.4 front approach, pull side 455 mm; BS 8300-2 300 mm nib minimum"
-  },
-  "Depth 1500 mm": {
-   "value": 1500,
-   "source_status": "assumed",
-   "source": "ADA 404.2.4 (1525 mm) / BS 8300-2"
-  }
- },
- "checks": {
-  "keynote_exempt": "nested-only clearance helper; not scheduled or costed"
- }
 }

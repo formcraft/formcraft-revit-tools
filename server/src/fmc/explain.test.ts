@@ -1,0 +1,80 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { elementNames, explain, namesWanted } from "./explain.js";
+import { batchSize } from "./aiuse.js";
+
+const names = {
+  types: { "101": "Window: 1200 x 1500", "202": "Basic Wall: Brick 230" },
+  elements: elementNames([{ id: 15, category: "Rooms", name: "F15 Bedroom", level: "Level 1" }, { id: 77, category: "Roofs", type: "Generic 225", level: "Level 2" }]),
+};
+
+test("Approval details (owner 26 Oct): a person sees what approving lets AI do, by name", () => {
+  const win = explain("create_point_based_element", { data: [{ typeId: 101 }, { typeId: 101 }, { typeId: 101, baseOffset: 900 }] }, names);
+  assert.deepEqual(win, ["New doors / windows / components:", "2 × Window: 1200 x 1500", "Window: 1200 x 1500, sill 900 mm"]);
+
+  const edit = explain("fmc_model_edit", { why: "Remove the replayed rooms", ops: [
+    { op: "delete", ids: [15, 15] },
+    { op: "create_roof", level: "Level 2", slopes_deg: [30, null, 30, null], outline_mm: [[0, 0], [1, 0], [1, 1], [0, 1]] },
+    { op: "attach", ids: [9], target: "$2", side: "top" },
+    { op: "set_param", ids: [77], param: "Thickness", value_mm: 200, on_type: true },
+  ] }, names);
+  assert.equal(edit[0], "Why: Remove the replayed rooms");
+  assert.match(edit[1], /^1\. DELETE 2 elements/);
+  assert.equal(edit[2], "   2 × Rooms: F15 Bedroom (Level 1)");
+  assert.match(edit[3], /Roof on Level 2.*4 edges, slopes 30°, end, 30°, end/);
+  assert.match(edit[4], /Attach the top of 1 walls to what op 2 makes/);
+  assert.match(edit.join("\n"), /ON THEIR TYPE/);
+  assert.equal(edit.at(-1), "All or nothing; one Undo takes it all back.");
+
+  const more = explain("fmc_model_edit", { ops: [{ op: "mirror", ids: [15], line_mm: [[0, 0], [0, 1000]] }, { op: "copy", ids: [15], vector_mm: [3000, 0, 0], count: 4 }] }, names);
+  assert.match(more[0], /^1\. Mirror 1 elements about \(0, 0\) → \(0, 1000\) \(as copies\)/);
+  assert.match(more[2], /^2\. Copy 1 elements 4 times, by 3000, 0, 0 mm/);
+  assert.deepEqual(explain("fmc_post_command", { command: "RoofByExtrusion" }), ["Starts Revit's RoofByExtrusion command, as if clicked on the ribbon"]);
+
+  const views = explain("fmc_model_edit", { ops: [{ op: "create_view", kind: "floor_plan", name: "FF Plan", level: "FF +3.40", scale: 50 },
+    { op: "create_sheet", number: "A-101", name: "First floor" }, { op: "place_view", sheet: "$2", view: "$1" }] });
+  assert.deepEqual(views.slice(0, 3), ['1. New floor plan "FF Plan" on FF +3.40, 1:50', "2. New sheet A-101 First floor", "3. Place $1 on sheet $2"]);
+
+  const notes = explain("fmc_model_edit", { ops: [{ op: "tag", view: "FF Plan", ids: [15], tag_type: "Keynote Tag" }, { op: "text", view: "FF Plan", point_mm: [0, 0], text: "Void over" }] }, names);
+  assert.deepEqual(notes.slice(0, 3), ["1. Tag 1 elements in FF Plan with Keynote Tag:", "   Rooms: F15 Bedroom (Level 1)", '2. Text in FF Plan: "Void over"']);
+
+  const fam = explain("fmc_model_edit", { ops: [{ op: "family_param", name: "Width", type: "Length", value: 900 }, { op: "extrusion", end_mm: 600, solid: false }] });
+  assert.deepEqual(fam.slice(0, 2), ["1. Family parameter Width (Length, type) = 900", "2. Void extrusion, depth 600 mm"]);
+
+  assert.deepEqual(explain("fmc_model_edit", { ops: [{ op: "isolated_foundation", level: "GF", points_mm: [[0, 0], [3000, 0]] }] })[0], "1. isolated foundation, 2 points (level GF)");
+  assert.match(explain("fmc_revit_file", { action: "sync" })[0], /central model for everyone/);
+
+  const code = explain("send_code_to_revit", { code: "var w = doc.GetElement(id);\n\nw.Pinned = false;" });
+  assert.deepEqual(code, ["Runs Revit API code (2 lines, in one transaction):", "   var w = doc.GetElement(id);", "   w.Pinned = false;"]);
+  assert.ok(explain("delete_element", { elementIds: Array.from({ length: 40 }, (_, i) => i) }).length <= 14, "long lists are capped");
+});
+
+test("Names asked of Revit, and modify_model's batch size counts every element an op names", () => {
+  const w = namesWanted({ ops: [{ op: "delete", ids: [1, 2, "$1"] }, { op: "attach", ids: [3], target: 4 }, { op: "change_type", ids: [5], type_id: 9 }] });
+  assert.deepEqual(w, { typeIds: [9], elementIds: ["1", "2", "3", "4", "5"] });
+  assert.equal(batchSize({ ops: [{ op: "delete", ids: Array.from({ length: 98 }, (_, i) => i) }, { op: "create_roof" }] }), 99);
+});
+
+test("Undo and section boxes (owner 27 Oct): the person reads what is undone and what gets boxed", () => {
+  assert.match(explain("fmc_undo", { batch_id: "3a0112" })[0], /AI batch 3a0112.*never a person's work/);
+  assert.match(explain("fmc_undo", { count: 2 })[0], /last 2 batches/);
+  const box = explain("fmc_model_edit", { ops: [{ op: "section_box", room: "101" }, { op: "box_views", per: "level" }, { op: "site_floor", level: "Site" }] });
+  assert.ok(box.some((l) => /Section box in a new 3D view, room 101/.test(l)));
+  assert.ok(box.some((l) => /boxed 3D view per level \(all\)/.test(l)));
+  assert.ok(box.some((l) => /cutting the toposolid/.test(l)));
+});
+
+test("Display mode (owner 27 Oct, a slow model): navigate and render read in words", () => {
+  const lines = explain("fmc_model_edit", { ops: [{ op: "display_mode", mode: "navigate" }, { op: "display_mode", mode: "render", views: ["active"] }] });
+  assert.ok(lines.some((l) => /Light look for navigating.*every 3D view/.test(l)), lines.join("\n"));
+  assert.ok(lines.some((l) => /Render look.*in 1 views/.test(l)));
+});
+
+test("Depth on every op (owner 27 Oct): a select and a for_each read in words", () => {
+  const lines = explain("fmc_model_edit", { ops: [
+    { op: "delete", select: { category: "Furniture", room: "101", not: { type_name: "Bed" } } },
+    { op: "for_each", per: "room", level: "GF", ops: [{ op: "create_ceiling" }, { op: "tag" }] },
+  ] });
+  assert.ok(lines.some((l) => /found by Furniture, in room 101, but not type "Bed"/.test(l)), lines.join("\n"));
+  assert.ok(lines.some((l) => /For each room \(all on GF\): create_ceiling, tag/.test(l)));
+});

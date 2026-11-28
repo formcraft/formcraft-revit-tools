@@ -1,309 +1,333 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_E_EQ_DB_Final_TPN",
- "template": "Metric Generic Model.rft",
- "about": "Wave 1: TPN board 415 V; electrical equipment connector; 1 m working space in front (maintenance clearance).",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Electrical Equipment"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Number of Poles",
-   "type": "NumberOfPoles",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_type",
-   "name": "12Way_TPN"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/Keynote",
-   "type": "12Way_TPN",
-   "param": "Keynote",
-   "value": "E.DBD_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/FMC_Keynote_Code",
-   "type": "12Way_TPN",
-   "param": "FMC_Keynote_Code",
-   "value": "E.DBD_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/FMC_Cost_Unit",
-   "type": "12Way_TPN",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/FMC_Geometry_Stage",
-   "type": "12Way_TPN",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/IfcExportAs",
-   "type": "12Way_TPN",
-   "param": "IfcExportAs",
-   "value": "IfcElectricDistributionBoard"
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/Description",
-   "type": "12Way_TPN",
-   "param": "Description",
-   "value": "TPN distribution board, 12 ways per phase, 415 V, surface mounted, lockable door"
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/Voltage",
-   "type": "12Way_TPN",
-   "param": "Voltage",
-   "value": 415
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/Number of Poles",
-   "type": "12Way_TPN",
-   "param": "Number of Poles",
-   "value": 3
-  },
-  {
-   "op": "set_type_value",
-   "name": "12Way_TPN/Default Elevation",
-   "type": "12Way_TPN",
-   "param": "Default Elevation",
-   "value": 1400
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Enclosure",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Door",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Maintenance",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -225,
-     -150
-    ],
-    [
-     225,
-     -150
-    ],
-    [
-     225,
-     0
-    ],
-    [
-     -225,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Enclosure",
-   "points": [
-    [
-     -225,
-     -140
-    ],
-    [
-     225,
-     -140
-    ],
-    [
-     225,
-     0
-    ],
-    [
-     -225,
-     0
-    ]
-   ],
-   "start": 0,
-   "end": 650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Enclosure",
-   "subcategory": "Enclosure"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Enclosure",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door",
-   "points": [
-    [
-     -220,
-     -150
-    ],
-    [
-     220,
-     -150
-    ],
-    [
-     220,
-     -140
-    ],
-    [
-     -220,
-     -140
-    ]
-   ],
-   "start": 5,
-   "end": 645
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door",
-   "subcategory": "Door"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Working Space",
-   "points": [
-    [
-     -225,
-     -1150
-    ],
-    [
-     225,
-     -1150
-    ],
-    [
-     225,
-     -150
-    ],
-    [
-     -225,
-     -150
-    ]
-   ],
-   "start": -1400,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Working Space",
-   "subcategory": "Clearance Maintenance"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Working Space",
-   "coarse": true,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Supply",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Enclosure",
-   "side": "top"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Supply/Voltage",
-   "connector": "Supply",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Supply/Number of Poles",
-   "connector": "Supply",
-   "connector_param": "Number of Poles",
-   "param": "Number of Poles"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_E_EQ_DB_Final_TPN",
+  "template": "Metric Generic Model.rft",
+  "about": "Wave 1: TPN board 415 V; electrical equipment connector; 1 m working space in front (maintenance clearance).",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Electrical Equipment"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Number of Poles",
+      "type": "NumberOfPoles",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_type",
+      "name": "12Way_TPN"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/Keynote",
+      "type": "12Way_TPN",
+      "param": "Keynote",
+      "value": "E.DBD_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/FMC_Keynote_Code",
+      "type": "12Way_TPN",
+      "param": "FMC_Keynote_Code",
+      "value": "E.DBD_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/FMC_Cost_Unit",
+      "type": "12Way_TPN",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/FMC_Geometry_Stage",
+      "type": "12Way_TPN",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/IfcExportAs",
+      "type": "12Way_TPN",
+      "param": "IfcExportAs",
+      "value": "IfcElectricDistributionBoard"
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/Description",
+      "type": "12Way_TPN",
+      "param": "Description",
+      "value": "TPN distribution board, 12 ways per phase, 415 V, surface mounted, lockable door"
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/Voltage",
+      "type": "12Way_TPN",
+      "param": "Voltage",
+      "value": 415
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/Number of Poles",
+      "type": "12Way_TPN",
+      "param": "Number of Poles",
+      "value": 3
+    },
+    {
+      "op": "set_type_value",
+      "name": "12Way_TPN/Default Elevation",
+      "type": "12Way_TPN",
+      "param": "Default Elevation",
+      "value": 1400
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Enclosure",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Door",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "line_weight_projection": 3,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Maintenance",
+      "line_weight_projection": 1,
+      "color": [
+        80,
+        80,
+        80
+      ],
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -225,
+          -150
+        ],
+        [
+          225,
+          -150
+        ],
+        [
+          225,
+          0
+        ],
+        [
+          -225,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Enclosure",
+      "points": [
+        [
+          -225,
+          -140
+        ],
+        [
+          225,
+          -140
+        ],
+        [
+          225,
+          0
+        ],
+        [
+          -225,
+          0
+        ]
+      ],
+      "start": 0,
+      "end": 650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Enclosure",
+      "subcategory": "Enclosure"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Enclosure",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Door",
+      "points": [
+        [
+          -220,
+          -150
+        ],
+        [
+          220,
+          -150
+        ],
+        [
+          220,
+          -140
+        ],
+        [
+          -220,
+          -140
+        ]
+      ],
+      "start": 5,
+      "end": 645
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Door",
+      "subcategory": "Door"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Door",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Working Space",
+      "points": [
+        [
+          -225,
+          -1150
+        ],
+        [
+          225,
+          -1150
+        ],
+        [
+          225,
+          -150
+        ],
+        [
+          -225,
+          -150
+        ]
+      ],
+      "start": -1400,
+      "end": 600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Working Space",
+      "subcategory": "Clearance Maintenance"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Working Space",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Supply",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Enclosure",
+      "side": "top"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Supply/Voltage",
+      "connector": "Supply",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Supply/Number of Poles",
+      "connector": "Supply",
+      "connector_param": "Number of Poles",
+      "param": "Number of Poles"
+    }
+  ],
+  "values": {
+    "Enclosure 450 x 650 x 150 mm": {
+      "value": "450 x 650 x 150",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Working space 1000 mm": {
+      "value": "1000",
+      "source_status": "assumed",
+      "source": "BS 7671 / practice"
+    }
   }
- ],
- "values": {
-  "Enclosure 450 x 650 x 150 mm": {
-   "value": "450 x 650 x 150",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Working space 1000 mm": {
-   "value": "1000",
-   "source_status": "assumed",
-   "source": "BS 7671 / practice"
-  }
- }
 }

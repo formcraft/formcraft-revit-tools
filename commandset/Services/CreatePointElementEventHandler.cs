@@ -1,6 +1,7 @@
 using Autodesk.Revit.UI;
 using RevitMCPSDK.API.Interfaces;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPCommandSet.Utils;
 
 namespace RevitMCPCommandSet.Services
@@ -8,8 +9,7 @@ namespace RevitMCPCommandSet.Services
     public class CreatePointElementEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
+        private Document doc => FmcCallContext.Document(uiApp);
         private Autodesk.Revit.ApplicationServices.Application app => uiApp.Application;
 
         /// <summary>
@@ -23,7 +23,10 @@ namespace RevitMCPCommandSet.Services
         /// <summary>
         /// 执行结果（传出数据）
         /// </summary>
-        public AIResult<List<long>> Result { get; private set; }
+        public AIItemsResult<List<long>> Result { get; private set; }
+
+        /// <summary>error (default): an instance of the same type within 10 mm of the point is not placed again.</summary>
+        public string OnDuplicate { get; set; } = "error";
         private List<string> _warnings = new List<string>();
 
         /// <summary>
@@ -39,6 +42,10 @@ namespace RevitMCPCommandSet.Services
             // F-032: an AI job (default failures handling, the save reminder kept from blocking). commandset/Bridge/FmcAiJob.cs
             RevitMCPCommandSet.Bridge.FmcAiJob.Enter(uiapp, "");
             uiApp = uiapp;
+            // One row per item (tool research create_point_based_element gaps 13, 14, 16): created with its id or
+            // failed with a code. A null instance rolls back instead of committing, and nothing is skipped silently.
+            var items = new List<Dictionary<string, object>>();
+            int index = -1;
 
             try
             {
@@ -46,6 +53,7 @@ namespace RevitMCPCommandSet.Services
                 _warnings.Clear();
                 foreach (var data in CreatedInfo)
                 {
+                    index++;
                     long requestedTypeId = data.TypeId;
 
                     // Step0 获取构件类型
@@ -58,11 +66,14 @@ namespace RevitMCPCommandSet.Services
                     double topOffset = -1;  // ft
                     double baseOffset = -1; // ft
                     baseLevel = doc.FindNearestLevel(data.BaseLevel / 304.8);
+                    if (baseLevel == null)
+                    {
+                        items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-PLACE-NO-LEVEL", "The model has no level near baseLevel."));
+                        continue;
+                    }
                     baseOffset = (data.BaseOffset + data.BaseLevel) / 304.8 - baseLevel.Elevation;
                     topLevel = doc.FindNearestLevel((data.BaseLevel + data.BaseOffset + data.Height) / 304.8);
-                    topOffset = (data.BaseLevel + data.BaseOffset + data.Height) / 304.8 - topLevel.Elevation;
-                    if (baseLevel == null)
-                        continue;
+                    topOffset = topLevel == null ? 0 : (data.BaseLevel + data.BaseOffset + data.Height) / 304.8 - topLevel.Elevation;
 
                     // Step2 获取族类型
                     FamilySymbol symbol = null;
@@ -81,7 +92,10 @@ namespace RevitMCPCommandSet.Services
                         }
                     }
                     if (builtInCategory == BuiltInCategory.INVALID)
+                    {
+                        items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-PLACE-NO-TYPE", $"typeId {requestedTypeId} is not a family type in this model, and no category was given."));
                         continue;
+                    }
                     if (symbol == null)
                     {
                         symbol = new FilteredElementCollector(doc)
@@ -100,6 +114,7 @@ namespace RevitMCPCommandSet.Services
                         if (symbol == null)
                         {
                             _warnings.Add($"No family types available for category {builtInCategory}.");
+                            items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-PLACE-NO-TYPE", $"No family types available for category {builtInCategory}."));
                             continue;
                         }
                         if (requestedTypeId != -1 && requestedTypeId != 0)
@@ -108,7 +123,24 @@ namespace RevitMCPCommandSet.Services
                         }
                     }
                     if (symbol == null)
+                    {
+                        items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-PLACE-NO-TYPE", "No family type was found."));
                         continue;
+                    }
+
+                    // No silent duplicates: an instance of this type already at this point is an error, not a second copy.
+                    if (!string.Equals(OnDuplicate, "allow", StringComparison.OrdinalIgnoreCase) && data.LocationPoint != null)
+                    {
+                        XYZ want = JZPoint.ToXYZ(data.LocationPoint);
+                        FamilyInstance twin = new FilteredElementCollector(doc).OfClass(typeof(FamilyInstance)).Cast<FamilyInstance>()
+                            .FirstOrDefault(fi => fi.Symbol != null && fi.Symbol.Id == symbol.Id && fi.Location is LocationPoint lp
+                                && FmcPlacementCore.SamePoint(lp.Point.X * 304.8, lp.Point.Y * 304.8, lp.Point.Z * 304.8, want.X * 304.8, want.Y * 304.8, want.Z * 304.8, 10.0));
+                        if (twin != null)
+                        {
+                            items.Add(FmcPlacementCore.Item(index, "failed", twin.Id.GetValue(), "FMC-PLACE-DUPLICATE", "An instance of this type already stands at this point (within 10 mm). Nothing was placed on top of it."));
+                            continue;
+                        }
+                    }
 
                     // Step3 调用通用方法创建族实例
                     using (Transaction transaction = new Transaction(doc, "创建点状构件"))
@@ -130,7 +162,10 @@ namespace RevitMCPCommandSet.Services
                             }
                             else
                             {
-                                _warnings.Add($"Requested hostWallId {data.HostWallId} is not a valid wall. Using auto-detection.");
+                                // Research gap 16: a named host that is not a wall is an error, not a guess.
+                                transaction.RollBack();
+                                items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-PLACE-HOST", $"hostWallId {data.HostWallId} is not a wall. Nothing was placed."));
+                                continue;
                             }
                         }
 
@@ -212,29 +247,43 @@ namespace RevitMCPCommandSet.Services
                             }
 
                             elementIds.Add(instance.Id.GetValue());
+                            transaction.Commit();
+                            items.Add(FmcPlacementCore.Item(index, "created", instance.Id.GetValue()));
                         }
-
-                        transaction.Commit();
+                        else
+                        {
+                            transaction.RollBack();
+                            items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-PLACE-NOT-CREATED", "Revit did not create the instance (no host found, or the point is not valid for this family)."));
+                        }
                     }
                 }
-                string message = $"Successfully created {elementIds.Count} element(s).";
+                int failedCount = items.Count(row => (string)row["status"] == "failed");
+                string message = failedCount == 0
+                    ? $"Successfully created {elementIds.Count} element(s)."
+                    : $"Created {elementIds.Count} of {CreatedInfo.Count} element(s); {failedCount} failed (see Items).";
                 if (_warnings.Count > 0)
                 {
                     message += "\n\n⚠ Warnings:\n  • " + string.Join("\n  • ", _warnings);
                 }
-                Result = new AIResult<List<long>>
+                Result = new AIItemsResult<List<long>>
                 {
-                    Success = true,
+                    Success = failedCount == 0,
                     Message = message,
                     Response = elementIds,
+                    Items = items,
                 };
             }
             catch (Exception ex)
             {
-                Result = new AIResult<List<long>>
+                // Rows for the item that threw and for those not reached; the ones already made keep their created row.
+                for (int i = Math.Max(index, 0); i < (CreatedInfo?.Count ?? 0); i++)
+                    if (!items.Any(row => (int)row["index"] == i))
+                        items.Add(FmcPlacementCore.Item(i, "failed", null, "FMC-TOOL-FAILED", i == index ? ex.Message : "Not attempted: an earlier item failed."));
+                Result = new AIItemsResult<List<long>>
                 {
                     Success = false,
                     Message = $"[FMC-TOOL-FAILED] Creating point-based elements failed: {ex.Message}",
+                    Items = items,
                 };
                 RevitMCPCommandSet.Bridge.FmcAiJob.Notice("Error", $"Creating point-based elements failed: {ex.Message}");
             }
@@ -252,7 +301,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>

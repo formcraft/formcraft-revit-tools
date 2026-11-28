@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Review item 3: the system-type editor's Revit-free rules (layers, stairs, routing rules, segment sizes, the
+       create_line/surface type pick), tested offline. The Revit side is checked by the source scans in
+       server/src/fmc/systypes.test.ts and by the live recipes. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>SystemTypes.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\commandset\Services\Fmc\SystemTypes\TypeEditCore.cs" Link="TypeEditCore.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <!-- xunit v3 runs as its own exe: dotnet run, project tests/systypes/SystemTypes.Tests.csproj -->
+    <PackageReference Include="xunit.v3" Version="3.1.0" />
+  </ItemGroup>
+</Project>

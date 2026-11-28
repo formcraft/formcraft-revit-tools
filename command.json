@@ -144,6 +144,26 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
+      "commandName": "fmc_open_copy",
+      "description": "Formcraft: open a detached verification copy in the background without saving",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_open_local",
+      "description": "Formcraft: open a person's existing workshared local, optionally as the active document. No detach, no new local, no sync; a central is refused",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_close_local",
+      "description": "Formcraft: close an open local without saving, syncing or relinquishing; activates another open project first when it is the active one",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_close_local_apply",
+      "description": "Formcraft: save the local file, then close it (a write: batch lease, live-model lock, AI gate). Never syncs or relinquishes",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
       "commandName": "fmc_build_families",
       "description": "Formcraft: build data-shell families from resolved plans (FMC_Family_Specs.json)",
       "assemblyPath": "RevitMCPCommandSet.dll"
@@ -299,6 +319,31 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
+      "commandName": "fmc_coord_apply",
+      "description": "Formcraft: coordination snapshot, align or place (align and place change the model only when dry_run is false; behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_reload_link",
+      "description": "Formcraft: reload one Revit link type with no transaction phase (behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_link_unload",
+      "description": "Formcraft: unload one Revit link type with no transaction phase (behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_link_publish",
+      "description": "Formcraft: detached Save As of a link copy. Does not save, sync or activate an open model (behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_link_transmission",
+      "description": "Formcraft: read or write Revit link paths on a closed file via TransmissionData. Does not open the file",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
       "commandName": "fmc_electrical_facts",
       "description": "Formcraft: boards, loads, circuits and feeders, devices on no circuit (read-only)",
       "assemblyPath": "RevitMCPCommandSet.dll"
@@ -404,6 +449,11 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
+      "commandName": "fmc_elem_currency",
+      "description": "Formcraft: checkout status and central currency of named elements (read-only; never checks an element out or grants an editing request)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
       "commandName": "fmc_element_facts",
       "description": "Formcraft: marked elements' category, type, parameters (mm) and the types they can change to, for a ticket's fix plan (read-only)",
       "assemblyPath": "RevitMCPCommandSet.dll"
@@ -411,6 +461,91 @@
     {
       "commandName": "fmc_element_apply",
       "description": "Formcraft: a ticket's planned fix applied in one transaction after a person's yes (behind the lock; all or nothing)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_model_edit",
+      "description": "Formcraft: a list of model edits (delete, move, parameters, types, attach, roofs, railings, stairs, room lines, openings) as one approved batch and one Undo (behind the lock; all or nothing)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_element_geometry",
+      "description": "Formcraft: elements' exact location, level, bounding box and outline loops in mm (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_post_command",
+      "description": "Formcraft: starts one of Revit's built-in commands by name, optionally with elements selected first (behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_list_commands",
+      "description": "Formcraft: Revit's built-in commands and whether each can start now (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_family_new",
+      "description": "Formcraft: a new family from a Revit family template, saved and opened in the Family Editor",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_revit_file",
+      "description": "Formcraft: save, open, close, export, link, import, load families, sync and reload (behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_view_image",
+      "description": "Formcraft: a PNG of a view, or of a 3D close-up around elements with them highlighted (read-only; rolled back)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_model_check",
+      "description": "Formcraft: model problems with ids, places and a sentence each: warnings, duplicates, rooms, unhosted, walls, clashes (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_watch",
+      "description": "Formcraft: a change ledger of an open model (start, stop, status): a read-only updater and DocumentChanged append JSON lines to 06_QA\\Watch, never the model",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_undo",
+      "description": "Formcraft: undo the AI's own last batches in Revit, never a person's work (behind the lock)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_undo_status",
+      "description": "Formcraft: Revit's undo list as the AI sees it, the AI's batches and a person's changes (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_struct_facts",
+      "description": "Formcraft: what the structure must carry, from the architecture model or its link: levels, walls with layers, floors, roofs, rooms, members (read-only). column_ends adds each structural column's solid ends after cuts and joins, and the elements touching those ends.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_replace",
+      "description": "Formcraft: preview a structural replacement on an open_copy document only. One transaction group, always rolled back, never saved. Creates, verifies, rebinds, deletes exact ids and checks orphans.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_dynamo",
+      "description": "Formcraft: run a kit Dynamo graph in-process through Dynamo for Revit (late-bound). Preview rolls the transaction group back. Apply keeps it. Neither saves. Status reports whether Dynamo for Revit is loaded.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_scene_export",
+      "description": "Formcraft: a 3D view as FBX plus materials, extent and camera, for Blender renders (files in WIP; the model is not changed)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_material_report",
+      "description": "Formcraft: what makes the model heavy to draw: textures, surface patterns, unused materials, heavy families (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_select_by",
+      "description": "Formcraft: elements by category, level, type, family, comment, mark, workset, phase, box or view (read-only)",
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
@@ -459,6 +594,16 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
+      "commandName": "fmc_trace",
+      "description": "Formcraft systems flow tracer: leak test, continuity, missing parts and standards verdicts (read-only, no transaction)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_trace_apply",
+      "description": "Formcraft systems flow tracer: apply a dry-run correction plan in one transaction, and roll it back if the failure count rises",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
       "commandName": "fmc_ceiling_place",
       "description": "Formcraft ceilings (CL2): a ceiling design placed in one transaction: I.CLG ceilings per zone, line features where families are loaded, fixtures as marks only (dry run is the real run rolled back)",
       "assemblyPath": "RevitMCPCommandSet.dll"
@@ -469,14 +614,368 @@
       "assemblyPath": "RevitMCPCommandSet.dll"
     },
     {
-      "commandName": "fmc_ceiling_sheet",
-      "description": "Formcraft ceilings (CL4): board set-out and section drafting views, the RCP with kit symbols and the RCP sheet (dry run first)",
-      "commandName": "fmc_selection_get",
-      "description": "Formcraft hub: the current selection with UniqueIds, element ids, categories and model, for one selection across apps (read-only)",
-      "commandName": "fmc_selection_show",
-      "description": "Formcraft hub: select elements by UniqueId or element id and zoom to them (view only; the model never changes)",
       "commandName": "fmc_find_elements",
       "description": "Formcraft hub: elements by mark, number or name, and what touches them (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_hw",
+      "description": "Formcraft hardware and memory: graphics settings, per-document memory, and closing spare views. It does not move the model onto the GPU.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_phase",
+      "description": "Formcraft phases: phases, phase filters, revisions and a compact element summary (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_phase_apply",
+      "description": "Formcraft phases: one transaction for a phase or revision plan (dry run stays on the server)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_joins",
+      "description": "Formcraft joins: wall joins, hosting, room closure and an envelope pressure test (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_joins_apply",
+      "description": "Formcraft joins: one transaction for a join plan (dry run stays on the server, at most 50 operations)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_circuits",
+      "description": "Formcraft circuits: unassigned power and lighting devices, panels and existing circuits (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_circuits_apply",
+      "description": "Formcraft circuits: one transaction to create circuits or set a panel. One subtransaction per circuit.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_conduit",
+      "description": "Formcraft conduit: free ends, the size table and loaded fitting types (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_conduit_apply",
+      "description": "Formcraft conduit: fittings, sizes and type fittings. One subtransaction per fitting.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_mep_audit",
+      "description": "Formcraft MEP audit: open pipe/duct connectors, IsWellConnected, base equipment, flow, pressure and fixture units per system (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_clash",
+      "description": "Formcraft clash scan: chunked bounding boxes, optional exact solids, JSONL output (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_docs",
+      "description": "Formcraft documents: list open documents and probe a file (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_docs_apply",
+      "description": "Formcraft documents: open a model (a workshared central as a new local) or close one. Does not save a protected path.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_memory",
+      "description": "Formcraft memory: free MB, Revit working set and open documents including families (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_memory_apply",
+      "description": "Formcraft memory: close unmodified spare documents, or purge unused elements from a PerformanceAdviser rule.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_north",
+      "description": "Formcraft true north: angle, survey point, view orientation and grid angles (read-only, never changes project north)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_north_apply",
+      "description": "Formcraft true north: one transaction to rotate a crop, a scope box or a sheet north arrow. Does not change project north.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_legend_views",
+      "description": "Formcraft legends: legend views and legend components (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_legend_apply",
+      "description": "Formcraft legends: one transaction to duplicate a seed legend view or copy and retype a seed component. No text notes.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_details",
+      "description": "Formcraft typical details: resolve the open project before a kit detail is copied (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_details_apply",
+      "description": "Formcraft typical details: one transaction to copy a kit detail into a drafting view. The kit file is not saved.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_family_params",
+      "description": "Formcraft family parameters: list parameters on a family loaded in the project (read-only, the family file is not saved)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_family_params_apply",
+      "description": "Formcraft family parameters: add a parameter or label on the loaded family, or bind a project parameter. The kit file is not saved.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_stairs_check",
+      "description": "Formcraft stairs check: stair, ramp and handrail facts for the compliance check against kit values (read-only, no transaction)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_headroom",
+      "description": "Formcraft headroom: clear height under beams, ducts, pipes and soffits (read-only, no transaction)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_keynote_place",
+      "description": "Formcraft keynotes: linked tags, plan views and hosts (read-only). Does not create a keynote link.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_keynote_place_apply",
+      "description": "Formcraft keynotes: one transaction to copy a linked seed into each plan and retarget the host. A blank copy is rolled back.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_sheets_layout",
+      "description": "Formcraft sheets: title block, view sizes and sheet parameters (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_sheets_layout_apply",
+      "description": "Formcraft sheets: one transaction to place or arrange views, or set the Parked sheet parameter.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_viewstyle",
+      "description": "Formcraft view graphics: templates, filters and room names (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_viewstyle_apply",
+      "description": "Formcraft view graphics: one transaction for a view template, a parameter filter, or a room colour scheme.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_dims",
+      "description": "Formcraft dimensions: grids, exterior walls and openings in one view (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_dims_apply",
+      "description": "Formcraft dimensions: one transaction, one subtransaction per dimension string.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_elec_diagrams",
+      "description": "Formcraft electrical diagrams: panels, circuits and levels for a single-line, a riser and an earthing template (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_elec_diagrams_apply",
+      "description": "Formcraft electrical diagrams: one transaction, one subtransaction per drafting view. The model is not saved.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_plumb_diagrams",
+      "description": "Formcraft plumbing diagrams: piping systems, stacks, fixtures and pipe sizes (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_plumb_diagrams_apply",
+      "description": "Formcraft plumbing diagrams: one transaction, one subtransaction per drafting view. The model is not saved.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_tags",
+      "description": "Formcraft tags: floor plans on issued sheets, linked doors and windows, and rooms (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_datum_read",
+      "description": "Formcraft datum read: project base point, grid and level names, views and instances for the grid, level, dimension and placement dry runs (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_tags_apply",
+      "description": "Formcraft tags: one transaction, one subtransaction per door, window or room tag. No leaders.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_keynote_legend",
+      "description": "Formcraft keynote legend: sheets, the title-block legend zone and an existing legend (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_keynote_legend_apply",
+      "description": "Formcraft keynote legend: one transaction to create a sheet-filtered legend and place it on each sheet.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_assets_read",
+      "description": "Formcraft asset register: facility, spaces, types, components and systems for a COBie-style register (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_register_read",
+      "description": "Formcraft drawing register: sheet list fields, filters and parked sheets (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_register_apply",
+      "description": "Formcraft drawing register: one transaction to filter PARKED sheets out of a sheet list.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_batch_undo_read",
+      "description": "Formcraft batch undo: whether created elements still exist and are editable (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_batch_undo_apply",
+      "description": "Formcraft batch undo: one transaction that deletes elements this batch created.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_print_sets_read",
+      "description": "Formcraft print sets: sheets and the view and sheet sets in the named document (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_print_sets_apply",
+      "description": "Formcraft print sets: one transaction to create or replace view and sheet sets from the drawing register. Never deletes a set.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_groups_audit",
+      "description": "Formcraft groups: types and instances in the named document (read-only audit).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_extstore_read",
+      "description": "Formcraft: FMC_ExtStore records (FmcId, BatchId, RecipeHash, Source) on elements, by id or every stamped element (read-only; never creates the schema)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_extstore_write",
+      "description": "Formcraft: FMC_ExtStore records stamped on elements in one transaction, under a batch lease; skips elements another user owns",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_schedule_data_read",
+      "description": "Formcraft: a schedule's fields (kind, built-in, type or instance, read-only) and its rows by element id (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_schedule_data_apply",
+      "description": "Formcraft: edited marks, comments and key-schedule values written back in one transaction, under a batch lease; calculated, formula and read-only fields and elements another user owns are refused",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_exports_run",
+      "description": "Formcraft exports (GAP-04): IFC4/DWG/NWC/gbXML from the kit setups into the server's hidden arrival folder in 02_Shared or 03_Published, or a check only (dry_run). The model is not changed.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_wipe_scan",
+      "description": "Formcraft wipe scan (GAP-02): unused view templates and filters, unplaced views and schedules, imported CAD, orphan tags and (Revit 2024+) purgeable elements, with ids and checkout. Read-only.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_wipe_apply",
+      "description": "Formcraft wipe (GAP-02): deletes the checked ids in one transaction under a batch lease; skips elements another user owns.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_match",
+      "description": "Formcraft match: source and target elements, their category, type, instance parameters and view overrides (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_match_apply",
+      "description": "Formcraft match: one transaction to copy type, parameters and view graphic overrides to same-category elements",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_params",
+      "description": "Formcraft parameters: project parameter bindings and parameter values (read-only)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_params_apply",
+      "description": "Formcraft parameters: one transaction to bind kit shared parameters and set parameter values. The kit file is not saved.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_pointcloud_read",
+      "description": "Formcraft point cloud against model: element meshes in metres (shared or internal) and the linked point clouds (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_sun",
+      "description": "Formcraft sun: site location, 3D views and existing sun studies (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_sun_apply",
+      "description": "Formcraft sun: one transaction to make shadow study 3D views with sun settings. Never changes the site location.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_avf",
+      "description": "Formcraft analysis display: graphical views, their analysis results and the analysis display styles (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_avf_apply",
+      "description": "Formcraft analysis display: one transaction for the display style and the view setting, then transient AVF point results, or clear them.",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_survey",
+      "description": "Formcraft survey: toposolid types, levels, existing toposolids and the internal-to-shared matrix (read-only).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_survey_apply",
+      "description": "Formcraft survey: one transaction to create a toposolid from survey points (internal millimetres from the server).",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_area_check",
+      "description": "Formcraft: the facts for a planning check (GFA by level, plot area, footprint, property lines, Parking elements); read only, the server judges them against a planning-values file",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_cloud_facts",
+      "description": "Formcraft cloud: Autodesk Docs model facts for one open document (read-only, nothing opened, CollaborationCache never read)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_cloud_path",
+      "description": "Formcraft cloud: region and GUIDs to a cloud model path (read-only, nothing opened)",
+      "assemblyPath": "RevitMCPCommandSet.dll"
+    },
+    {
+      "commandName": "fmc_cloud_save_as",
+      "description": "Formcraft cloud: Document.SaveAsCloudModel after the server's dry run and a named approver. Never syncs or publishes.",
       "assemblyPath": "RevitMCPCommandSet.dll"
     }
   ]

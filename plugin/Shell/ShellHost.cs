@@ -92,22 +92,70 @@ namespace revit_mcp_plugin.Shell
             // fmc_ui (U11): Claude reads and steers the pane through the command set.
             UiBridgeHost.Attach(new UiBridge(Pane, Licence, UiBridgeHost.AllowMockLicence, () => _view));
 
-            application.RegisterDockablePane(PaneId, Title, new PaneProvider(_view));
+            // The pane is registered here (OnStartup is the only place Revit allows it), but Revit only *creates* it with the
+            // first model view: on the Home screen, or with no model open, GetDockablePane throws "The requested dockable
+            // pane has not been created yet". TogglePane/ShowPane check first and show it at the first view instead.
+            try { application.RegisterDockablePane(PaneId, Title, new PaneProvider(_view)); }
+            catch (Exception ex) { System.Diagnostics.Trace.WriteLine("Formcraft: the pane did not register: " + ex.Message); }
+            application.ViewActivated += OnViewActivated;
             application.Idling += OnIdling;
             RibbonBuilder.Create(application, Pane, Settings, Licence);
+            // The AI activity strip: the ribbon's panel title bars take a colour while an AI app works (Settings › General).
+            AiRibbonStrip.Start(key => Settings.Get("settings." + key));
+        }
+
+        /// <summary>Set when the pane was asked for before Revit created it: it opens at the first model view.</summary>
+        private static bool _showWhenCreated;
+
+        /// <summary>
+        /// The pane, once Revit has created it. Revit registers it at start but creates it only with the first model view
+        /// (not on the Home screen), and GetDockablePane throws until then.
+        /// </summary>
+        public static bool TryGetPane(UIApplication app, out DockablePane pane)
+        {
+            pane = null;
+            try
+            {
+                if (!DockablePane.PaneIsRegistered(PaneId) || !DockablePane.PaneExists(PaneId)) return false;
+                pane = app.GetDockablePane(PaneId);
+                return pane != null;
+            }
+            catch (Autodesk.Revit.Exceptions.InvalidOperationException) { pane = null; return false; }
+            catch (Autodesk.Revit.Exceptions.ArgumentException) { pane = null; return false; }
+        }
+
+        /// <summary>True when the pane can be shown now; otherwise it is queued for the first model view and the person told.</summary>
+        private static bool PaneReadyOrQueue(UIApplication app, out DockablePane pane)
+        {
+            if (TryGetPane(app, out pane)) return true;
+            _showWhenCreated = true;
+            string why = DockablePane.PaneIsRegistered(PaneId)
+                ? "The Formcraft pane opens with your first model view. Open or start a model and it will appear."
+                : "The Formcraft pane did not register when Revit started. Restart Revit; if it still doesn't appear, send the Revit journal to Formcraft.";
+            TaskDialog.Show(Title, why);
+            return false;
         }
 
         public static void TogglePane(UIApplication app)
         {
-            DockablePane pane = app.GetDockablePane(PaneId);
+            if (!PaneReadyOrQueue(app, out DockablePane pane)) return;
             if (pane.IsShown()) pane.Hide();
             else pane.Show();
         }
 
         public static void ShowPane(UIApplication app)
         {
-            DockablePane pane = app.GetDockablePane(PaneId);
+            if (!PaneReadyOrQueue(app, out DockablePane pane)) return;
             if (!pane.IsShown()) pane.Show();
+        }
+
+        /// <summary>The pane exists from the first model view: show it now if the ribbon asked for it before then.</summary>
+        private static void OnViewActivated(object sender, ViewActivatedEventArgs e)
+        {
+            if (!_showWhenCreated || !(sender is UIApplication app)) return;
+            if (!TryGetPane(app, out DockablePane pane)) return;
+            _showWhenCreated = false;
+            try { if (!pane.IsShown()) pane.Show(); } catch (Exception) { /* the ribbon button works from here on */ }
         }
 
         /// <summary>Shows the pane on Connect (Core › Connect AI, and the page's own links to Files, Activity, Guard).</summary>
@@ -137,7 +185,10 @@ namespace revit_mcp_plugin.Shell
                     FormcraftBrowser.RequestToggleService();
             }
             Connection.Update(SocketService.Instance.IsRunning);
+            // The AI connection is off: no AI call can be running or waiting, so the strip clears.
+            if (!SocketService.Instance.IsRunning) AiActivityTracker.Shared.Reset();
             RibbonBuilder.ShowConnection(SocketService.Instance.IsRunning);
+            RibbonBuilder.ShowAiSwitch(Pane?.AiState ?? "Off");
             ConnectInfo.Poll();
             Document.Update(app.ActiveUIDocument?.Document);
             LiveData?.Update(app.ActiveUIDocument?.Document);

@@ -1,41 +1,69 @@
 #!/usr/bin/env node
-import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-import { annotateInvalidOpErrors, registerTools } from "./tools/register.js";
+import type { JSONRPCMessage } from "@modelcontextprotocol/sdk/types.js";
 import { RUNNING_BUILD } from "./fmc/buildinfo.js";
-import { enableSoftTimeout } from "./utils/SocketClient.js";
-import { installContextNudges, registerContextPrompts, registerContextResources, serverOptions } from "./fmc/mcp_context.js";
+import { createFormcraftServer } from "./fmc/boot.js";
+import { bindHost, formcraftDir, httpPort, loadOrCreateToken, startHttpService, tokenPath } from "./fmc/httpservice.js";
+import { logBatchRestart, notifyBatchGranted, addGrantListener } from "./fmc/batchline.js";
+import { appendCapped } from "./fmc/logrotate.js";
+import { runStdioShim } from "./fmc/stdio_shim.js";
+import { callerFor, noteMcpMessage, runAsCaller } from "./fmc/caller.js";
+import path from "node:path";
 
-// 创建服务器实例
-// The instructions every AI gets on connect: the kit first, then the hard rules (docs/AI_CONTEXT.md).
-const server = new McpServer({
-  name: "mcp-server-for-revit",
-  version: "1.0.0",
-}, serverOptions());
+type Mode = "stdio" | "http" | "shim";
 
-// 启动服务器
-async function main() {
-  // F-022: answer before the MCP client's 60 s cutoff; late results go to FMC_LateResults.jsonl.
-  enableSoftTimeout();
-  // The kit nudge on family- and material-making tools, before they register.
-  installContextNudges(server);
-  // 注册工具
-  await registerTools(server);
-  // F-042: the build this process runs is read once, now; an "invalid op" refusal names it (and a newer one on disk).
+function mode(): Mode {
+  const args = process.argv.slice(2);
+  if (args.includes("--http")) return "http";
+  if (args.includes("--shim")) return "shim";
+  const env = (process.env.FMC_MCP_MODE || "").toLowerCase();
+  if (env === "http" || env === "shim" || env === "stdio") return env;
+  return "stdio";
+}
+
+async function runStdio(): Promise<void> {
+  const server = await createFormcraftServer();
+  logBatchRestart();
+  addGrantListener((notice) => {
+    if (notice.client !== "stdio") return;
+    const low = (server as unknown as { server?: { notification?: (msg: unknown) => Promise<void> } }).server;
+    if (!low?.notification) return;
+    void notifyBatchGranted((method, params) => low.notification!({ method, params }), notice);
+  });
   console.error(`Formcraft server build ${RUNNING_BUILD.commit} (built ${RUNNING_BUILD.built || "?"})`);
-  if (!annotateInvalidOpErrors(server)) console.error("F-042: couldn't hook tools/call errors; invalid-op refusals won't name the build");
-  // The kit as MCP resources and prompts, where the SDK has them.
-  const resources = registerContextResources(server);
-  const prompts = registerContextPrompts(server);
-  console.error(`FMC context: ${resources.length} resources, ${prompts.length} prompts`);
-
-  // 连接到传输层
   const transport = new StdioServerTransport();
   await server.connect(transport);
+  const previous = transport.onmessage as ((message: JSONRPCMessage, extra?: unknown) => void) | undefined;
+  (transport as { onmessage?: (message: JSONRPCMessage, extra?: unknown) => void }).onmessage = (message, extra) => {
+    noteMcpMessage(message, "stdio", "stdio");
+    runAsCaller(callerFor("stdio"), () => { previous?.(message, extra); });
+  };
   console.error("Revit MCP Server start success");
 }
 
+async function runHttp(): Promise<void> {
+  const logFile = path.win32.join(formcraftDir(), "mcp-http.service.log");
+  const write = console.error.bind(console);
+  console.error = (...args: unknown[]) => {
+    const line = args.map((part) => (part instanceof Error ? part.message : String(part))).join(" ");
+    try { appendCapped(logFile, line); } catch { /* the log must not stop the service */ }
+    write(...args);
+  };
+  console.error(`Formcraft server build ${RUNNING_BUILD.commit} (built ${RUNNING_BUILD.built || "?"})`);
+  const port = httpPort();
+  const token = loadOrCreateToken(tokenPath());
+  bindHost(process.env.FMC_HTTP_HOST);
+  await startHttpService({ port, token, watchStamp: true });
+}
+
+async function main() {
+  const selected = mode();
+  if (selected === "http") await runHttp();
+  else if (selected === "shim") await runStdioShim();
+  else await runStdio();
+}
+
 main().catch((error) => {
-  console.error("Error starting Revit MCP Server:", error);
+  console.error("Error starting Revit MCP Server:", error instanceof Error ? error.message : error);
   process.exit(1);
 });

@@ -122,6 +122,7 @@ namespace revit_mcp_plugin.Core
                 // 加载程序集
                 // Load assembly.
                 Assembly assembly = Assembly.LoadFrom(assemblyPath);
+                TryHookDialogSession(assembly);
 
                 // 查找实现 IRevitCommand 接口的类型
                 // Find types that implement the IRevitCommand interface.
@@ -168,7 +169,7 @@ namespace revit_mcp_plugin.Core
                             if (command.CommandName == config.CommandName)
                             {
                                 _commandRegistry.RegisterCommand(command);
-                                _logger.Info("创建命令实例失败 [{0}]: {1}\nFailed to create command instance [{0}]: {1}",
+                                _logger.Info("已注册命令 [{0}]，来自 {1}\nRegistered command [{0}] from {1}",
                                     command.CommandName, Path.GetFileName(assemblyPath));
                                 break; // 找到匹配的命令后退出循环 - Exit the loop after finding a matching command.
                             }
@@ -183,6 +184,24 @@ namespace revit_mcp_plugin.Core
             catch (Exception ex)
             {
                 _logger.Error("加载命令程序集失败: {0}\nFailed to load command assembly: {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Hooks dialog rules for the whole session once the command set is loaded. An older command set has no
+        /// FmcDialogSession; that is ignored and dialogs stay on the job hook.
+        /// </summary>
+        private void TryHookDialogSession(Assembly assembly)
+        {
+            try
+            {
+                Type type = assembly?.GetType("RevitMCPCommandSet.Bridge.FmcDialogSession");
+                MethodInfo hook = type?.GetMethod("Hook", BindingFlags.Public | BindingFlags.Static);
+                hook?.Invoke(null, new object[] { _uiApplication });
+            }
+            catch (Exception ex)
+            {
+                _logger.Info("Dialog rules were not hooked: {0}", ex.InnerException?.Message ?? ex.Message);
             }
         }
     }

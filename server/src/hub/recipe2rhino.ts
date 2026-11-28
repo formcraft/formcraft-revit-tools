@@ -76,6 +76,8 @@ export function recipeTwins(ops: Op[]): Twins {
       spec = { op: "extrude_points", points: (o.points as Pt[]).map(base), vector };
     } else if (o.op === "revolution") {
       if ((o.start_deg ?? 0) !== 0 || (o.end_deg ?? 360) !== 360) { kept.push({ solid, why: "a part revolution stays native" }); continue; }
+      // G011: a profile on planes follows its parameters; a fixed Rhino twin wouldn't
+      if (o.profile_planes || !Array.isArray(o.profile)) { kept.push({ solid, why: "a revolution on planes stays native (it flexes with its planes)" }); continue; }
       const a = (o.axis_at as Pt | undefined) ?? [0, 0], ax = String(o.axis ?? "z");
       // FmcDocLod.MakeRevolution: axis z: origin [x, y, 0], profile [r, z] → origin + (r, 0, z); axis y: origin [x, 0, z],
       // axis -y, profile [r, d] → origin + (r, -d, 0); axis x: origin [0, y, z], axis +x, profile [r, d] → origin + (d, r, 0).

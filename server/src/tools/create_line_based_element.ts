@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerCreateLineBasedElementTool(server: McpServer) {
   server.tool(
     "create_line_based_element",
-    "Create one or more line-based elements in Revit such as walls, beams, or pipes. Supports batch creation with detailed parameters including family type ID, start and end points, thickness, height, and level information. All units are in millimeters (mm).",
+    "Create one or more line-based elements in Revit such as walls, beams, or pipes. Supports batch creation with detailed parameters including family type ID, start and end points, thickness, height, and level information. All units are in millimeters (mm). typeId is used as given, or refused when it is missing or doesn't fit (the first type is never used in its place). Walls with no typeId use the one basic wall type whose width equals thickness (none or several is refused); other categories need typeId, and thickness does not apply to them. A thickness that differs from the given wall type is refused. No type is created: make one with modify_model duplicate_type. The answer has one row per item in Items.",
     {
       data: z
         .array(
@@ -65,16 +66,9 @@ export function registerCreateLineBasedElementTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Create line-based element failed: ${
+        return toolFailure(`Create line-based element failed: ${
                 error instanceof Error ? error.message : String(error)
-              }`,
-            },
-          ],
-        };
+              }`);
       }
     }
   );

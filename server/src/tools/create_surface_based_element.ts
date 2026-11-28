@@ -1,11 +1,12 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerCreateSurfaceBasedElementTool(server: McpServer) {
   server.tool(
     "create_surface_based_element",
-    "Create one or more surface-based elements in Revit such as floors, ceilings, or roofs. Supports batch creation with detailed parameters including family type ID, boundary lines, thickness, and level information. All units are in millimeters (mm).",
+    "Create one or more surface-based elements in Revit such as floors, ceilings, or roofs. Supports batch creation with detailed parameters including family type ID, boundary lines, thickness, and level information. All units are in millimeters (mm). typeId is used as given, or refused when it is missing or not a floor, roof or ceiling type (the first type is never used in its place); with no typeId the one type whose total thickness equals thickness is used, and none or several is refused (FMC-TYPE-NO-THICKNESS-MATCH, FMC-TYPE-AMBIGUOUS). A thickness that differs from the given type is refused (FMC-TYPE-THICKNESS-MISMATCH). No type is created: make one with modify_model duplicate_type. The answer has one row per item in Items.",
     {
       data: z
         .array(
@@ -68,16 +69,9 @@ export function registerCreateSurfaceBasedElementTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Create surface-based element failed: ${
+        return toolFailure(`Create surface-based element failed: ${
                 error instanceof Error ? error.message : String(error)
-              }`,
-            },
-          ],
-        };
+              }`);
       }
     }
   );

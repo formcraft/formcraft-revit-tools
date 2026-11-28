@@ -1,5 +1,6 @@
 using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPCommandSet.Utils;
 using RevitMCPSDK.API.Interfaces;
 
@@ -8,8 +9,7 @@ namespace RevitMCPCommandSet.Services
     public class ColorSplashEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
+        private Document doc => FmcCallContext.Document(uiApp);
 
         /// <summary>
         /// Event wait object
@@ -236,7 +236,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>

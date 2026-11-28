@@ -1,2637 +1,2646 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_I_Furniture_Desk_Consulting",
- "template": "Metric Generic Model.rft",
- "about": "Desk modelled as a generic product: HPL top with ABS edge band, melamine panel ends and modesty panel, cable tray, grommets, pop-up power and data module with two outlets, 3-drawer pedestal (2 box, 1 file) with handles and lock, levellers. Stands with its back at y = 0. Reference: query: furniture desk consulting furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+desk+consulting+furniture+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Furniture"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Voltage",
-   "type": "Voltage",
-   "group": "Electrical"
-  },
-  {
-   "op": "add_family_param",
-   "name": "Apparent Load",
-   "type": "ApparentPower",
-   "group": "ElectricalLoads"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "1400x700_Pedestal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/FMC_Cost_Unit",
-   "type": "1400x700_Pedestal",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/FMC_Geometry_Stage",
-   "type": "1400x700_Pedestal",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/IfcExportAs",
-   "type": "1400x700_Pedestal",
-   "param": "IfcExportAs",
-   "value": "IfcFurniture"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/Description",
-   "type": "1400x700_Pedestal",
-   "param": "Description",
-   "value": "Consulting desk 1400 x 700, HPL top with edge band, panel ends, modesty panel, cable tray and grommets, desk-top power and data module, 3-drawer pedestal"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/Keynote",
-   "type": "1400x700_Pedestal",
-   "param": "Keynote",
-   "value": "F.FUR_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/FMC_Keynote_Code",
-   "type": "1400x700_Pedestal",
-   "param": "FMC_Keynote_Code",
-   "value": "F.FUR_01"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/FMC_Code_Description",
-   "type": "1400x700_Pedestal",
-   "param": "FMC_Code_Description",
-   "value": "Desk Consulting: Consulting desk"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/FMC_Code_Group",
-   "type": "1400x700_Pedestal",
-   "param": "FMC_Code_Group",
-   "value": "F.FUR"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/FMC_Role_Code",
-   "type": "1400x700_Pedestal",
-   "param": "FMC_Role_Code",
-   "value": "I"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/Voltage",
-   "type": "1400x700_Pedestal",
-   "param": "Voltage",
-   "value": 240
-  },
-  {
-   "op": "set_type_value",
-   "name": "1400x700_Pedestal/Apparent Load",
-   "type": "1400x700_Pedestal",
-   "param": "Apparent Load",
-   "value": 500
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Top",
-   "color": [
-    217,
-    211,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Top Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Laminate_HPL",
-   "param": "Top Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Edge",
-   "color": [
-    154,
-    160,
-    166
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Edge Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Grey",
-   "param": "Edge Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Carc",
-   "color": [
-    245,
-    245,
-    243
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Carc Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Board_Melamine_White",
-   "param": "Carc Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Steel",
-   "color": [
-    61,
-    70,
-    80
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Steel Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_SteelLTZ_Painted",
-   "param": "Steel Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Alu",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Alu Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Alu Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Front",
-   "color": [
-    217,
-    211,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Front Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Laminate_HPL",
-   "param": "Front Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -700.0,
-     -702
-    ],
-    [
-     700.0,
-     -702
-    ],
-    [
-     700.0,
-     0.0
-    ],
-    [
-     -700.0,
-     0.0
-    ]
-   ],
-   "start": -0.1,
-   "end": 805
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Desk Top",
-   "points": [
-    [
-     692.0,
-     -700.0
-    ],
-    [
-     695.06,
-     -699.39
-    ],
-    [
-     697.66,
-     -697.66
-    ],
-    [
-     699.39,
-     -695.06
-    ],
-    [
-     700.0,
-     -692.0
-    ],
-    [
-     700.0,
-     -8.0
-    ],
-    [
-     699.39,
-     -4.94
-    ],
-    [
-     697.66,
-     -2.34
-    ],
-    [
-     695.06,
-     -0.61
-    ],
-    [
-     692.0,
-     0.0
-    ],
-    [
-     -692.0,
-     0.0
-    ],
-    [
-     -695.06,
-     -0.61
-    ],
-    [
-     -697.66,
-     -2.34
-    ],
-    [
-     -699.39,
-     -4.94
-    ],
-    [
-     -700.0,
-     -8.0
-    ],
-    [
-     -700.0,
-     -692.0
-    ],
-    [
-     -699.39,
-     -695.06
-    ],
-    [
-     -697.66,
-     -697.66
-    ],
-    [
-     -695.06,
-     -699.39
-    ],
-    [
-     -692.0,
-     -700.0
-    ]
-   ],
-   "start": 720,
-   "end": 745
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Desk Top",
-   "subcategory": "Top"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Desk Top",
-   "param": "Top Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Desk Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Edge Band",
-   "points": [
-    [
-     -700,
-     720
-    ],
-    [
-     700,
-     720
-    ],
-    [
-     700,
-     745
-    ],
-    [
-     -700,
-     745
-    ]
-   ],
-   "start": 700,
-   "end": 702,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Edge Band",
-   "subcategory": "Edge"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Edge Band",
-   "param": "Edge Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Edge Band",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Panel Left",
-   "points": [
-    [
-     -700,
-     -660
-    ],
-    [
-     -675,
-     -660
-    ],
-    [
-     -675,
-     -20
-    ],
-    [
-     -700,
-     -20
-    ]
-   ],
-   "start": 0,
-   "end": 720
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Panel Left",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Panel Left",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Panel Left",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "End Panel Right",
-   "points": [
-    [
-     675,
-     -660
-    ],
-    [
-     700,
-     -660
-    ],
-    [
-     700,
-     -20
-    ],
-    [
-     675,
-     -20
-    ]
-   ],
-   "start": 0,
-   "end": 720
-  },
-  {
-   "op": "set_subcategory",
-   "name": "End Panel Right",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Panel Right",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Panel Right",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Modesty Panel",
-   "points": [
-    [
-     -675,
-     -60
-    ],
-    [
-     675,
-     -60
-    ],
-    [
-     675,
-     -40
-    ],
-    [
-     -675,
-     -40
-    ]
-   ],
-   "start": 300,
-   "end": 700
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Modesty Panel",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Modesty Panel",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Modesty Panel",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Tray",
-   "points": [
-    [
-     -500,
-     -120
-    ],
-    [
-     500,
-     -120
-    ],
-    [
-     500,
-     -60
-    ],
-    [
-     -500,
-     -60
-    ]
-   ],
-   "start": 640,
-   "end": 700
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Tray",
-   "subcategory": "Steel"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Tray",
-   "param": "Steel Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Tray",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Grommet 1",
-   "points": [
-    [
-     -415.0,
-     -80.0
-    ],
-    [
-     -416.19,
-     -70.94
-    ],
-    [
-     -419.69,
-     -62.5
-    ],
-    [
-     -425.25,
-     -55.25
-    ],
-    [
-     -432.5,
-     -49.69
-    ],
-    [
-     -440.94,
-     -46.19
-    ],
-    [
-     -450.0,
-     -45.0
-    ],
-    [
-     -459.06,
-     -46.19
-    ],
-    [
-     -467.5,
-     -49.69
-    ],
-    [
-     -474.75,
-     -55.25
-    ],
-    [
-     -480.31,
-     -62.5
-    ],
-    [
-     -483.81,
-     -70.94
-    ],
-    [
-     -485.0,
-     -80.0
-    ],
-    [
-     -483.81,
-     -89.06
-    ],
-    [
-     -480.31,
-     -97.5
-    ],
-    [
-     -474.75,
-     -104.75
-    ],
-    [
-     -467.5,
-     -110.31
-    ],
-    [
-     -459.06,
-     -113.81
-    ],
-    [
-     -450.0,
-     -115.0
-    ],
-    [
-     -440.94,
-     -113.81
-    ],
-    [
-     -432.5,
-     -110.31
-    ],
-    [
-     -425.25,
-     -104.75
-    ],
-    [
-     -419.69,
-     -97.5
-    ],
-    [
-     -416.19,
-     -89.06
-    ]
-   ],
-   "start": 744,
-   "end": 747
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Grommet 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Grommet 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Grommet 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cable Grommet 2",
-   "points": [
-    [
-     485.0,
-     -80.0
-    ],
-    [
-     483.81,
-     -70.94
-    ],
-    [
-     480.31,
-     -62.5
-    ],
-    [
-     474.75,
-     -55.25
-    ],
-    [
-     467.5,
-     -49.69
-    ],
-    [
-     459.06,
-     -46.19
-    ],
-    [
-     450.0,
-     -45.0
-    ],
-    [
-     440.94,
-     -46.19
-    ],
-    [
-     432.5,
-     -49.69
-    ],
-    [
-     425.25,
-     -55.25
-    ],
-    [
-     419.69,
-     -62.5
-    ],
-    [
-     416.19,
-     -70.94
-    ],
-    [
-     415.0,
-     -80.0
-    ],
-    [
-     416.19,
-     -89.06
-    ],
-    [
-     419.69,
-     -97.5
-    ],
-    [
-     425.25,
-     -104.75
-    ],
-    [
-     432.5,
-     -110.31
-    ],
-    [
-     440.94,
-     -113.81
-    ],
-    [
-     450.0,
-     -115.0
-    ],
-    [
-     459.06,
-     -113.81
-    ],
-    [
-     467.5,
-     -110.31
-    ],
-    [
-     474.75,
-     -104.75
-    ],
-    [
-     480.31,
-     -97.5
-    ],
-    [
-     483.81,
-     -89.06
-    ]
-   ],
-   "start": 744,
-   "end": 747
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cable Grommet 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cable Grommet 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cable Grommet 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Power Module",
-   "points": [
-    [
-     554.0,
-     -110.0
-    ],
-    [
-     556.3,
-     -109.54
-    ],
-    [
-     558.24,
-     -108.24
-    ],
-    [
-     559.54,
-     -106.3
-    ],
-    [
-     560.0,
-     -104.0
-    ],
-    [
-     560.0,
-     -56.0
-    ],
-    [
-     559.54,
-     -53.7
-    ],
-    [
-     558.24,
-     -51.76
-    ],
-    [
-     556.3,
-     -50.46
-    ],
-    [
-     554.0,
-     -50.0
-    ],
-    [
-     386.0,
-     -50.0
-    ],
-    [
-     383.7,
-     -50.46
-    ],
-    [
-     381.76,
-     -51.76
-    ],
-    [
-     380.46,
-     -53.7
-    ],
-    [
-     380.0,
-     -56.0
-    ],
-    [
-     380.0,
-     -104.0
-    ],
-    [
-     380.46,
-     -106.3
-    ],
-    [
-     381.76,
-     -108.24
-    ],
-    [
-     383.7,
-     -109.54
-    ],
-    [
-     386.0,
-     -110.0
-    ]
-   ],
-   "start": 745,
-   "end": 805
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Power Module",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Power Module",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Power Module",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Socket Face 1",
-   "points": [
-    [
-     466.0,
-     760.0
-    ],
-    [
-     467.53,
-     760.3
-    ],
-    [
-     468.83,
-     761.17
-    ],
-    [
-     469.7,
-     762.47
-    ],
-    [
-     470.0,
-     764.0
-    ],
-    [
-     470.0,
-     791.0
-    ],
-    [
-     469.7,
-     792.53
-    ],
-    [
-     468.83,
-     793.83
-    ],
-    [
-     467.53,
-     794.7
-    ],
-    [
-     466.0,
-     795.0
-    ],
-    [
-     394.0,
-     795.0
-    ],
-    [
-     392.47,
-     794.7
-    ],
-    [
-     391.17,
-     793.83
-    ],
-    [
-     390.3,
-     792.53
-    ],
-    [
-     390.0,
-     791.0
-    ],
-    [
-     390.0,
-     764.0
-    ],
-    [
-     390.3,
-     762.47
-    ],
-    [
-     391.17,
-     761.17
-    ],
-    [
-     392.47,
-     760.3
-    ],
-    [
-     394.0,
-     760.0
-    ]
-   ],
-   "start": 110,
-   "end": 112,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Socket Face 1",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Socket Face 1",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Socket Face 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Socket Face 2",
-   "points": [
-    [
-     551.0,
-     760.0
-    ],
-    [
-     552.53,
-     760.3
-    ],
-    [
-     553.83,
-     761.17
-    ],
-    [
-     554.7,
-     762.47
-    ],
-    [
-     555.0,
-     764.0
-    ],
-    [
-     555.0,
-     791.0
-    ],
-    [
-     554.7,
-     792.53
-    ],
-    [
-     553.83,
-     793.83
-    ],
-    [
-     552.53,
-     794.7
-    ],
-    [
-     551.0,
-     795.0
-    ],
-    [
-     479.0,
-     795.0
-    ],
-    [
-     477.47,
-     794.7
-    ],
-    [
-     476.17,
-     793.83
-    ],
-    [
-     475.3,
-     792.53
-    ],
-    [
-     475.0,
-     791.0
-    ],
-    [
-     475.0,
-     764.0
-    ],
-    [
-     475.3,
-     762.47
-    ],
-    [
-     476.17,
-     761.17
-    ],
-    [
-     477.47,
-     760.3
-    ],
-    [
-     479.0,
-     760.0
-    ]
-   ],
-   "start": 110,
-   "end": 112,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Socket Face 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Socket Face 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Socket Face 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal",
-   "points": [
-    [
-     656.0,
-     -660.0
-    ],
-    [
-     657.53,
-     -659.7
-    ],
-    [
-     658.83,
-     -658.83
-    ],
-    [
-     659.7,
-     -657.53
-    ],
-    [
-     660.0,
-     -656.0
-    ],
-    [
-     660.0,
-     -104.0
-    ],
-    [
-     659.7,
-     -102.47
-    ],
-    [
-     658.83,
-     -101.17
-    ],
-    [
-     657.53,
-     -100.3
-    ],
-    [
-     656.0,
-     -100.0
-    ],
-    [
-     204.0,
-     -100.0
-    ],
-    [
-     202.47,
-     -100.3
-    ],
-    [
-     201.17,
-     -101.17
-    ],
-    [
-     200.3,
-     -102.47
-    ],
-    [
-     200.0,
-     -104.0
-    ],
-    [
-     200.0,
-     -656.0
-    ],
-    [
-     200.3,
-     -657.53
-    ],
-    [
-     201.17,
-     -658.83
-    ],
-    [
-     202.47,
-     -659.7
-    ],
-    [
-     204.0,
-     -660.0
-    ]
-   ],
-   "start": 30,
-   "end": 690
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal",
-   "subcategory": "Carc"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal",
-   "param": "Carc Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer",
-   "points": [
-    [
-     652.0,
-     560.0
-    ],
-    [
-     653.15,
-     560.23
-    ],
-    [
-     654.12,
-     560.88
-    ],
-    [
-     654.77,
-     561.85
-    ],
-    [
-     655.0,
-     563.0
-    ],
-    [
-     655.0,
-     682.0
-    ],
-    [
-     654.77,
-     683.15
-    ],
-    [
-     654.12,
-     684.12
-    ],
-    [
-     653.15,
-     684.77
-    ],
-    [
-     652.0,
-     685.0
-    ],
-    [
-     208.0,
-     685.0
-    ],
-    [
-     206.85,
-     684.77
-    ],
-    [
-     205.88,
-     684.12
-    ],
-    [
-     205.23,
-     683.15
-    ],
-    [
-     205.0,
-     682.0
-    ],
-    [
-     205.0,
-     563.0
-    ],
-    [
-     205.23,
-     561.85
-    ],
-    [
-     205.88,
-     560.88
-    ],
-    [
-     206.85,
-     560.23
-    ],
-    [
-     208.0,
-     560.0
-    ]
-   ],
-   "start": 660,
-   "end": 680,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer",
-   "subcategory": "Front"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer",
-   "param": "Front Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Drawer Mid",
-   "points": [
-    [
-     652.0,
-     420.0
-    ],
-    [
-     653.15,
-     420.23
-    ],
-    [
-     654.12,
-     420.88
-    ],
-    [
-     654.77,
-     421.85
-    ],
-    [
-     655.0,
-     423.0
-    ],
-    [
-     655.0,
-     552.0
-    ],
-    [
-     654.77,
-     553.15
-    ],
-    [
-     654.12,
-     554.12
-    ],
-    [
-     653.15,
-     554.77
-    ],
-    [
-     652.0,
-     555.0
-    ],
-    [
-     208.0,
-     555.0
-    ],
-    [
-     206.85,
-     554.77
-    ],
-    [
-     205.88,
-     554.12
-    ],
-    [
-     205.23,
-     553.15
-    ],
-    [
-     205.0,
-     552.0
-    ],
-    [
-     205.0,
-     423.0
-    ],
-    [
-     205.23,
-     421.85
-    ],
-    [
-     205.88,
-     420.88
-    ],
-    [
-     206.85,
-     420.23
-    ],
-    [
-     208.0,
-     420.0
-    ]
-   ],
-   "start": 660,
-   "end": 680,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Drawer Mid",
-   "subcategory": "Front"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Drawer Mid",
-   "param": "Front Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Drawer Mid",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal File Drawer",
-   "points": [
-    [
-     652.0,
-     40.0
-    ],
-    [
-     653.15,
-     40.23
-    ],
-    [
-     654.12,
-     40.88
-    ],
-    [
-     654.77,
-     41.85
-    ],
-    [
-     655.0,
-     43.0
-    ],
-    [
-     655.0,
-     412.0
-    ],
-    [
-     654.77,
-     413.15
-    ],
-    [
-     654.12,
-     414.12
-    ],
-    [
-     653.15,
-     414.77
-    ],
-    [
-     652.0,
-     415.0
-    ],
-    [
-     208.0,
-     415.0
-    ],
-    [
-     206.85,
-     414.77
-    ],
-    [
-     205.88,
-     414.12
-    ],
-    [
-     205.23,
-     413.15
-    ],
-    [
-     205.0,
-     412.0
-    ],
-    [
-     205.0,
-     43.0
-    ],
-    [
-     205.23,
-     41.85
-    ],
-    [
-     205.88,
-     40.88
-    ],
-    [
-     206.85,
-     40.23
-    ],
-    [
-     208.0,
-     40.0
-    ]
-   ],
-   "start": 660,
-   "end": 680,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal File Drawer",
-   "subcategory": "Front"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal File Drawer",
-   "param": "Front Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal File Drawer",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drawer Handle",
-   "points": [
-    [
-     -689.0,
-     650.0
-    ],
-    [
-     -689.2,
-     651.55
-    ],
-    [
-     -689.8,
-     653.0
-    ],
-    [
-     -690.76,
-     654.24
-    ],
-    [
-     -692.0,
-     655.2
-    ],
-    [
-     -693.45,
-     655.8
-    ],
-    [
-     -695.0,
-     656.0
-    ],
-    [
-     -696.55,
-     655.8
-    ],
-    [
-     -698.0,
-     655.2
-    ],
-    [
-     -699.24,
-     654.24
-    ],
-    [
-     -700.2,
-     653.0
-    ],
-    [
-     -700.8,
-     651.55
-    ],
-    [
-     -701.0,
-     650.0
-    ],
-    [
-     -700.8,
-     648.45
-    ],
-    [
-     -700.2,
-     647.0
-    ],
-    [
-     -699.24,
-     645.76
-    ],
-    [
-     -698.0,
-     644.8
-    ],
-    [
-     -696.55,
-     644.2
-    ],
-    [
-     -695.0,
-     644.0
-    ],
-    [
-     -693.45,
-     644.2
-    ],
-    [
-     -692.0,
-     644.8
-    ],
-    [
-     -690.76,
-     645.76
-    ],
-    [
-     -689.8,
-     647.0
-    ],
-    [
-     -689.2,
-     648.45
-    ]
-   ],
-   "start": 370,
-   "end": 490,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drawer Handle",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drawer Handle",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drawer Handle",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drawer Handle Mid",
-   "points": [
-    [
-     -689.0,
-     520.0
-    ],
-    [
-     -689.2,
-     521.55
-    ],
-    [
-     -689.8,
-     523.0
-    ],
-    [
-     -690.76,
-     524.24
-    ],
-    [
-     -692.0,
-     525.2
-    ],
-    [
-     -693.45,
-     525.8
-    ],
-    [
-     -695.0,
-     526.0
-    ],
-    [
-     -696.55,
-     525.8
-    ],
-    [
-     -698.0,
-     525.2
-    ],
-    [
-     -699.24,
-     524.24
-    ],
-    [
-     -700.2,
-     523.0
-    ],
-    [
-     -700.8,
-     521.55
-    ],
-    [
-     -701.0,
-     520.0
-    ],
-    [
-     -700.8,
-     518.45
-    ],
-    [
-     -700.2,
-     517.0
-    ],
-    [
-     -699.24,
-     515.76
-    ],
-    [
-     -698.0,
-     514.8
-    ],
-    [
-     -696.55,
-     514.2
-    ],
-    [
-     -695.0,
-     514.0
-    ],
-    [
-     -693.45,
-     514.2
-    ],
-    [
-     -692.0,
-     514.8
-    ],
-    [
-     -690.76,
-     515.76
-    ],
-    [
-     -689.8,
-     517.0
-    ],
-    [
-     -689.2,
-     518.45
-    ]
-   ],
-   "start": 370,
-   "end": 490,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drawer Handle Mid",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drawer Handle Mid",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drawer Handle Mid",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Drawer Handle File",
-   "points": [
-    [
-     -689.0,
-     380.0
-    ],
-    [
-     -689.2,
-     381.55
-    ],
-    [
-     -689.8,
-     383.0
-    ],
-    [
-     -690.76,
-     384.24
-    ],
-    [
-     -692.0,
-     385.2
-    ],
-    [
-     -693.45,
-     385.8
-    ],
-    [
-     -695.0,
-     386.0
-    ],
-    [
-     -696.55,
-     385.8
-    ],
-    [
-     -698.0,
-     385.2
-    ],
-    [
-     -699.24,
-     384.24
-    ],
-    [
-     -700.2,
-     383.0
-    ],
-    [
-     -700.8,
-     381.55
-    ],
-    [
-     -701.0,
-     380.0
-    ],
-    [
-     -700.8,
-     378.45
-    ],
-    [
-     -700.2,
-     377.0
-    ],
-    [
-     -699.24,
-     375.76
-    ],
-    [
-     -698.0,
-     374.8
-    ],
-    [
-     -696.55,
-     374.2
-    ],
-    [
-     -695.0,
-     374.0
-    ],
-    [
-     -693.45,
-     374.2
-    ],
-    [
-     -692.0,
-     374.8
-    ],
-    [
-     -690.76,
-     375.76
-    ],
-    [
-     -689.8,
-     377.0
-    ],
-    [
-     -689.2,
-     378.45
-    ]
-   ],
-   "start": 370,
-   "end": 490,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Drawer Handle File",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Drawer Handle File",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Drawer Handle File",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Pedestal Lock",
-   "points": [
-    [
-     608.0,
-     660.0
-    ],
-    [
-     607.73,
-     662.07
-    ],
-    [
-     606.93,
-     664.0
-    ],
-    [
-     605.66,
-     665.66
-    ],
-    [
-     604.0,
-     666.93
-    ],
-    [
-     602.07,
-     667.73
-    ],
-    [
-     600.0,
-     668.0
-    ],
-    [
-     597.93,
-     667.73
-    ],
-    [
-     596.0,
-     666.93
-    ],
-    [
-     594.34,
-     665.66
-    ],
-    [
-     593.07,
-     664.0
-    ],
-    [
-     592.27,
-     662.07
-    ],
-    [
-     592.0,
-     660.0
-    ],
-    [
-     592.27,
-     657.93
-    ],
-    [
-     593.07,
-     656.0
-    ],
-    [
-     594.34,
-     654.34
-    ],
-    [
-     596.0,
-     653.07
-    ],
-    [
-     597.93,
-     652.27
-    ],
-    [
-     600.0,
-     652.0
-    ],
-    [
-     602.07,
-     652.27
-    ],
-    [
-     604.0,
-     653.07
-    ],
-    [
-     605.66,
-     654.34
-    ],
-    [
-     606.93,
-     656.0
-    ],
-    [
-     607.73,
-     657.93
-    ]
-   ],
-   "start": 680,
-   "end": 684,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Pedestal Lock",
-   "subcategory": "Alu"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Pedestal Lock",
-   "param": "Alu Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Pedestal Lock",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leveller 1",
-   "points": [
-    [
-     -678.0,
-     -600.0
-    ],
-    [
-     -678.34,
-     -597.41
-    ],
-    [
-     -679.34,
-     -595.0
-    ],
-    [
-     -680.93,
-     -592.93
-    ],
-    [
-     -683.0,
-     -591.34
-    ],
-    [
-     -685.41,
-     -590.34
-    ],
-    [
-     -688.0,
-     -590.0
-    ],
-    [
-     -690.59,
-     -590.34
-    ],
-    [
-     -693.0,
-     -591.34
-    ],
-    [
-     -695.07,
-     -592.93
-    ],
-    [
-     -696.66,
-     -595.0
-    ],
-    [
-     -697.66,
-     -597.41
-    ],
-    [
-     -698.0,
-     -600.0
-    ],
-    [
-     -697.66,
-     -602.59
-    ],
-    [
-     -696.66,
-     -605.0
-    ],
-    [
-     -695.07,
-     -607.07
-    ],
-    [
-     -693.0,
-     -608.66
-    ],
-    [
-     -690.59,
-     -609.66
-    ],
-    [
-     -688.0,
-     -610.0
-    ],
-    [
-     -685.41,
-     -609.66
-    ],
-    [
-     -683.0,
-     -608.66
-    ],
-    [
-     -680.93,
-     -607.07
-    ],
-    [
-     -679.34,
-     -605.0
-    ],
-    [
-     -678.34,
-     -602.59
-    ]
-   ],
-   "start": -0.1,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leveller 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leveller 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leveller 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leveller 2",
-   "points": [
-    [
-     698.0,
-     -600.0
-    ],
-    [
-     697.66,
-     -597.41
-    ],
-    [
-     696.66,
-     -595.0
-    ],
-    [
-     695.07,
-     -592.93
-    ],
-    [
-     693.0,
-     -591.34
-    ],
-    [
-     690.59,
-     -590.34
-    ],
-    [
-     688.0,
-     -590.0
-    ],
-    [
-     685.41,
-     -590.34
-    ],
-    [
-     683.0,
-     -591.34
-    ],
-    [
-     680.93,
-     -592.93
-    ],
-    [
-     679.34,
-     -595.0
-    ],
-    [
-     678.34,
-     -597.41
-    ],
-    [
-     678.0,
-     -600.0
-    ],
-    [
-     678.34,
-     -602.59
-    ],
-    [
-     679.34,
-     -605.0
-    ],
-    [
-     680.93,
-     -607.07
-    ],
-    [
-     683.0,
-     -608.66
-    ],
-    [
-     685.41,
-     -609.66
-    ],
-    [
-     688.0,
-     -610.0
-    ],
-    [
-     690.59,
-     -609.66
-    ],
-    [
-     693.0,
-     -608.66
-    ],
-    [
-     695.07,
-     -607.07
-    ],
-    [
-     696.66,
-     -605.0
-    ],
-    [
-     697.66,
-     -602.59
-    ]
-   ],
-   "start": -0.1,
-   "end": 3
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leveller 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leveller 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leveller 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "add_connector",
-   "name": "Power",
-   "domain": "electrical",
-   "system": "PowerBalanced",
-   "solid": "Power Module",
-   "side": "bottom"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Voltage",
-   "connector": "Power",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Power/Apparent Load",
-   "connector": "Power",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "add_connector",
-   "name": "Data",
-   "domain": "electrical",
-   "system": "Data",
-   "solid": "Power Module",
-   "side": "back"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Data/Voltage",
-   "connector": "Data",
-   "connector_param": "Voltage",
-   "param": "Voltage"
-  },
-  {
-   "op": "link_connector_param",
-   "name": "Data/Apparent Load",
-   "connector": "Data",
-   "connector_param": "Apparent Load",
-   "param": "Apparent Load"
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Furniture_Desk_Consulting.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_I_Furniture_Desk_Consulting",
+  "template": "Metric Generic Model.rft",
+  "about": "Desk modelled as a generic product: HPL top with ABS edge band, melamine panel ends and modesty panel, cable tray, grommets, pop-up power and data module with two outlets, 3-drawer pedestal (2 box, 1 file) with handles and lock, levellers. Stands with its back at y = 0. Reference: query: furniture desk consulting furniture hospital; images: https://www.google.com/search?tbm=isch&q=furniture+desk+consulting+furniture+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Furniture"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Voltage",
+      "type": "Voltage",
+      "group": "Electrical"
+    },
+    {
+      "op": "add_family_param",
+      "name": "Apparent Load",
+      "type": "ApparentPower",
+      "group": "ElectricalLoads"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "1400x700_Pedestal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/FMC_Cost_Unit",
+      "type": "1400x700_Pedestal",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/FMC_Geometry_Stage",
+      "type": "1400x700_Pedestal",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/IfcExportAs",
+      "type": "1400x700_Pedestal",
+      "param": "IfcExportAs",
+      "value": "IfcFurniture"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/Description",
+      "type": "1400x700_Pedestal",
+      "param": "Description",
+      "value": "Consulting desk 1400 x 700, HPL top with edge band, panel ends, modesty panel, cable tray and grommets, desk-top power and data module, 3-drawer pedestal"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/Keynote",
+      "type": "1400x700_Pedestal",
+      "param": "Keynote",
+      "value": "F.FUR_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/FMC_Keynote_Code",
+      "type": "1400x700_Pedestal",
+      "param": "FMC_Keynote_Code",
+      "value": "F.FUR_01"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/FMC_Code_Description",
+      "type": "1400x700_Pedestal",
+      "param": "FMC_Code_Description",
+      "value": "Desk Consulting: Consulting desk"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/FMC_Code_Group",
+      "type": "1400x700_Pedestal",
+      "param": "FMC_Code_Group",
+      "value": "F.FUR"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/FMC_Role_Code",
+      "type": "1400x700_Pedestal",
+      "param": "FMC_Role_Code",
+      "value": "I"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/Voltage",
+      "type": "1400x700_Pedestal",
+      "param": "Voltage",
+      "value": 240
+    },
+    {
+      "op": "set_type_value",
+      "name": "1400x700_Pedestal/Apparent Load",
+      "type": "1400x700_Pedestal",
+      "param": "Apparent Load",
+      "value": 500
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Top",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Top Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Laminate_HPL",
+      "param": "Top Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Edge",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Edge Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Grey",
+      "param": "Edge Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Carc",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Carc Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Board_Melamine_White",
+      "param": "Carc Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Steel",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Steel Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_SteelLTZ_Painted",
+      "param": "Steel Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Alu",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Alu Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Alu Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Front",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Front Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Laminate_HPL",
+      "param": "Front Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -700,
+          -702
+        ],
+        [
+          700,
+          -702
+        ],
+        [
+          700,
+          0
+        ],
+        [
+          -700,
+          0
+        ]
+      ],
+      "start": -0.1,
+      "end": 805
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Desk Top",
+      "points": [
+        [
+          692,
+          -700
+        ],
+        [
+          695.06,
+          -699.39
+        ],
+        [
+          697.66,
+          -697.66
+        ],
+        [
+          699.39,
+          -695.06
+        ],
+        [
+          700,
+          -692
+        ],
+        [
+          700,
+          -8
+        ],
+        [
+          699.39,
+          -4.94
+        ],
+        [
+          697.66,
+          -2.34
+        ],
+        [
+          695.06,
+          -0.61
+        ],
+        [
+          692,
+          0
+        ],
+        [
+          -692,
+          0
+        ],
+        [
+          -695.06,
+          -0.61
+        ],
+        [
+          -697.66,
+          -2.34
+        ],
+        [
+          -699.39,
+          -4.94
+        ],
+        [
+          -700,
+          -8
+        ],
+        [
+          -700,
+          -692
+        ],
+        [
+          -699.39,
+          -695.06
+        ],
+        [
+          -697.66,
+          -697.66
+        ],
+        [
+          -695.06,
+          -699.39
+        ],
+        [
+          -692,
+          -700
+        ]
+      ],
+      "start": 720,
+      "end": 745
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Desk Top",
+      "subcategory": "Top"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Desk Top",
+      "param": "Top Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Desk Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Edge Band",
+      "points": [
+        [
+          -700,
+          720
+        ],
+        [
+          700,
+          720
+        ],
+        [
+          700,
+          745
+        ],
+        [
+          -700,
+          745
+        ]
+      ],
+      "start": 700,
+      "end": 702,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Edge Band",
+      "subcategory": "Edge"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Edge Band",
+      "param": "Edge Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Edge Band",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Panel Left",
+      "points": [
+        [
+          -700,
+          -660
+        ],
+        [
+          -675,
+          -660
+        ],
+        [
+          -675,
+          -20
+        ],
+        [
+          -700,
+          -20
+        ]
+      ],
+      "start": 0,
+      "end": 720
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Panel Left",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Panel Left",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Panel Left",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "End Panel Right",
+      "points": [
+        [
+          675,
+          -660
+        ],
+        [
+          700,
+          -660
+        ],
+        [
+          700,
+          -20
+        ],
+        [
+          675,
+          -20
+        ]
+      ],
+      "start": 0,
+      "end": 720
+    },
+    {
+      "op": "set_subcategory",
+      "name": "End Panel Right",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Panel Right",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Panel Right",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Modesty Panel",
+      "points": [
+        [
+          -675,
+          -60
+        ],
+        [
+          675,
+          -60
+        ],
+        [
+          675,
+          -40
+        ],
+        [
+          -675,
+          -40
+        ]
+      ],
+      "start": 300,
+      "end": 700
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Modesty Panel",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Modesty Panel",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Modesty Panel",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cable Tray",
+      "points": [
+        [
+          -500,
+          -120
+        ],
+        [
+          500,
+          -120
+        ],
+        [
+          500,
+          -60
+        ],
+        [
+          -500,
+          -60
+        ]
+      ],
+      "start": 640,
+      "end": 700
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cable Tray",
+      "subcategory": "Steel"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cable Tray",
+      "param": "Steel Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cable Tray",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cable Grommet 1",
+      "points": [
+        [
+          -415,
+          -80
+        ],
+        [
+          -416.19,
+          -70.94
+        ],
+        [
+          -419.69,
+          -62.5
+        ],
+        [
+          -425.25,
+          -55.25
+        ],
+        [
+          -432.5,
+          -49.69
+        ],
+        [
+          -440.94,
+          -46.19
+        ],
+        [
+          -450,
+          -45
+        ],
+        [
+          -459.06,
+          -46.19
+        ],
+        [
+          -467.5,
+          -49.69
+        ],
+        [
+          -474.75,
+          -55.25
+        ],
+        [
+          -480.31,
+          -62.5
+        ],
+        [
+          -483.81,
+          -70.94
+        ],
+        [
+          -485,
+          -80
+        ],
+        [
+          -483.81,
+          -89.06
+        ],
+        [
+          -480.31,
+          -97.5
+        ],
+        [
+          -474.75,
+          -104.75
+        ],
+        [
+          -467.5,
+          -110.31
+        ],
+        [
+          -459.06,
+          -113.81
+        ],
+        [
+          -450,
+          -115
+        ],
+        [
+          -440.94,
+          -113.81
+        ],
+        [
+          -432.5,
+          -110.31
+        ],
+        [
+          -425.25,
+          -104.75
+        ],
+        [
+          -419.69,
+          -97.5
+        ],
+        [
+          -416.19,
+          -89.06
+        ]
+      ],
+      "start": 744,
+      "end": 747
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cable Grommet 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cable Grommet 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cable Grommet 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cable Grommet 2",
+      "points": [
+        [
+          485,
+          -80
+        ],
+        [
+          483.81,
+          -70.94
+        ],
+        [
+          480.31,
+          -62.5
+        ],
+        [
+          474.75,
+          -55.25
+        ],
+        [
+          467.5,
+          -49.69
+        ],
+        [
+          459.06,
+          -46.19
+        ],
+        [
+          450,
+          -45
+        ],
+        [
+          440.94,
+          -46.19
+        ],
+        [
+          432.5,
+          -49.69
+        ],
+        [
+          425.25,
+          -55.25
+        ],
+        [
+          419.69,
+          -62.5
+        ],
+        [
+          416.19,
+          -70.94
+        ],
+        [
+          415,
+          -80
+        ],
+        [
+          416.19,
+          -89.06
+        ],
+        [
+          419.69,
+          -97.5
+        ],
+        [
+          425.25,
+          -104.75
+        ],
+        [
+          432.5,
+          -110.31
+        ],
+        [
+          440.94,
+          -113.81
+        ],
+        [
+          450,
+          -115
+        ],
+        [
+          459.06,
+          -113.81
+        ],
+        [
+          467.5,
+          -110.31
+        ],
+        [
+          474.75,
+          -104.75
+        ],
+        [
+          480.31,
+          -97.5
+        ],
+        [
+          483.81,
+          -89.06
+        ]
+      ],
+      "start": 744,
+      "end": 747
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cable Grommet 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cable Grommet 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cable Grommet 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Power Module",
+      "points": [
+        [
+          554,
+          -110
+        ],
+        [
+          556.3,
+          -109.54
+        ],
+        [
+          558.24,
+          -108.24
+        ],
+        [
+          559.54,
+          -106.3
+        ],
+        [
+          560,
+          -104
+        ],
+        [
+          560,
+          -56
+        ],
+        [
+          559.54,
+          -53.7
+        ],
+        [
+          558.24,
+          -51.76
+        ],
+        [
+          556.3,
+          -50.46
+        ],
+        [
+          554,
+          -50
+        ],
+        [
+          386,
+          -50
+        ],
+        [
+          383.7,
+          -50.46
+        ],
+        [
+          381.76,
+          -51.76
+        ],
+        [
+          380.46,
+          -53.7
+        ],
+        [
+          380,
+          -56
+        ],
+        [
+          380,
+          -104
+        ],
+        [
+          380.46,
+          -106.3
+        ],
+        [
+          381.76,
+          -108.24
+        ],
+        [
+          383.7,
+          -109.54
+        ],
+        [
+          386,
+          -110
+        ]
+      ],
+      "start": 745,
+      "end": 805
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Power Module",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Power Module",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Power Module",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Socket Face 1",
+      "points": [
+        [
+          466,
+          760
+        ],
+        [
+          467.53,
+          760.3
+        ],
+        [
+          468.83,
+          761.17
+        ],
+        [
+          469.7,
+          762.47
+        ],
+        [
+          470,
+          764
+        ],
+        [
+          470,
+          791
+        ],
+        [
+          469.7,
+          792.53
+        ],
+        [
+          468.83,
+          793.83
+        ],
+        [
+          467.53,
+          794.7
+        ],
+        [
+          466,
+          795
+        ],
+        [
+          394,
+          795
+        ],
+        [
+          392.47,
+          794.7
+        ],
+        [
+          391.17,
+          793.83
+        ],
+        [
+          390.3,
+          792.53
+        ],
+        [
+          390,
+          791
+        ],
+        [
+          390,
+          764
+        ],
+        [
+          390.3,
+          762.47
+        ],
+        [
+          391.17,
+          761.17
+        ],
+        [
+          392.47,
+          760.3
+        ],
+        [
+          394,
+          760
+        ]
+      ],
+      "start": 110,
+      "end": 112,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Socket Face 1",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Socket Face 1",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Socket Face 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Socket Face 2",
+      "points": [
+        [
+          551,
+          760
+        ],
+        [
+          552.53,
+          760.3
+        ],
+        [
+          553.83,
+          761.17
+        ],
+        [
+          554.7,
+          762.47
+        ],
+        [
+          555,
+          764
+        ],
+        [
+          555,
+          791
+        ],
+        [
+          554.7,
+          792.53
+        ],
+        [
+          553.83,
+          793.83
+        ],
+        [
+          552.53,
+          794.7
+        ],
+        [
+          551,
+          795
+        ],
+        [
+          479,
+          795
+        ],
+        [
+          477.47,
+          794.7
+        ],
+        [
+          476.17,
+          793.83
+        ],
+        [
+          475.3,
+          792.53
+        ],
+        [
+          475,
+          791
+        ],
+        [
+          475,
+          764
+        ],
+        [
+          475.3,
+          762.47
+        ],
+        [
+          476.17,
+          761.17
+        ],
+        [
+          477.47,
+          760.3
+        ],
+        [
+          479,
+          760
+        ]
+      ],
+      "start": 110,
+      "end": 112,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Socket Face 2",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Socket Face 2",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Socket Face 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal",
+      "points": [
+        [
+          656,
+          -660
+        ],
+        [
+          657.53,
+          -659.7
+        ],
+        [
+          658.83,
+          -658.83
+        ],
+        [
+          659.7,
+          -657.53
+        ],
+        [
+          660,
+          -656
+        ],
+        [
+          660,
+          -104
+        ],
+        [
+          659.7,
+          -102.47
+        ],
+        [
+          658.83,
+          -101.17
+        ],
+        [
+          657.53,
+          -100.3
+        ],
+        [
+          656,
+          -100
+        ],
+        [
+          204,
+          -100
+        ],
+        [
+          202.47,
+          -100.3
+        ],
+        [
+          201.17,
+          -101.17
+        ],
+        [
+          200.3,
+          -102.47
+        ],
+        [
+          200,
+          -104
+        ],
+        [
+          200,
+          -656
+        ],
+        [
+          200.3,
+          -657.53
+        ],
+        [
+          201.17,
+          -658.83
+        ],
+        [
+          202.47,
+          -659.7
+        ],
+        [
+          204,
+          -660
+        ]
+      ],
+      "start": 30,
+      "end": 690
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal",
+      "subcategory": "Carc"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal",
+      "param": "Carc Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer",
+      "points": [
+        [
+          652,
+          560
+        ],
+        [
+          653.15,
+          560.23
+        ],
+        [
+          654.12,
+          560.88
+        ],
+        [
+          654.77,
+          561.85
+        ],
+        [
+          655,
+          563
+        ],
+        [
+          655,
+          682
+        ],
+        [
+          654.77,
+          683.15
+        ],
+        [
+          654.12,
+          684.12
+        ],
+        [
+          653.15,
+          684.77
+        ],
+        [
+          652,
+          685
+        ],
+        [
+          208,
+          685
+        ],
+        [
+          206.85,
+          684.77
+        ],
+        [
+          205.88,
+          684.12
+        ],
+        [
+          205.23,
+          683.15
+        ],
+        [
+          205,
+          682
+        ],
+        [
+          205,
+          563
+        ],
+        [
+          205.23,
+          561.85
+        ],
+        [
+          205.88,
+          560.88
+        ],
+        [
+          206.85,
+          560.23
+        ],
+        [
+          208,
+          560
+        ]
+      ],
+      "start": 660,
+      "end": 680,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer",
+      "subcategory": "Front"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer",
+      "param": "Front Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Drawer Mid",
+      "points": [
+        [
+          652,
+          420
+        ],
+        [
+          653.15,
+          420.23
+        ],
+        [
+          654.12,
+          420.88
+        ],
+        [
+          654.77,
+          421.85
+        ],
+        [
+          655,
+          423
+        ],
+        [
+          655,
+          552
+        ],
+        [
+          654.77,
+          553.15
+        ],
+        [
+          654.12,
+          554.12
+        ],
+        [
+          653.15,
+          554.77
+        ],
+        [
+          652,
+          555
+        ],
+        [
+          208,
+          555
+        ],
+        [
+          206.85,
+          554.77
+        ],
+        [
+          205.88,
+          554.12
+        ],
+        [
+          205.23,
+          553.15
+        ],
+        [
+          205,
+          552
+        ],
+        [
+          205,
+          423
+        ],
+        [
+          205.23,
+          421.85
+        ],
+        [
+          205.88,
+          420.88
+        ],
+        [
+          206.85,
+          420.23
+        ],
+        [
+          208,
+          420
+        ]
+      ],
+      "start": 660,
+      "end": 680,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Drawer Mid",
+      "subcategory": "Front"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Drawer Mid",
+      "param": "Front Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Drawer Mid",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal File Drawer",
+      "points": [
+        [
+          652,
+          40
+        ],
+        [
+          653.15,
+          40.23
+        ],
+        [
+          654.12,
+          40.88
+        ],
+        [
+          654.77,
+          41.85
+        ],
+        [
+          655,
+          43
+        ],
+        [
+          655,
+          412
+        ],
+        [
+          654.77,
+          413.15
+        ],
+        [
+          654.12,
+          414.12
+        ],
+        [
+          653.15,
+          414.77
+        ],
+        [
+          652,
+          415
+        ],
+        [
+          208,
+          415
+        ],
+        [
+          206.85,
+          414.77
+        ],
+        [
+          205.88,
+          414.12
+        ],
+        [
+          205.23,
+          413.15
+        ],
+        [
+          205,
+          412
+        ],
+        [
+          205,
+          43
+        ],
+        [
+          205.23,
+          41.85
+        ],
+        [
+          205.88,
+          40.88
+        ],
+        [
+          206.85,
+          40.23
+        ],
+        [
+          208,
+          40
+        ]
+      ],
+      "start": 660,
+      "end": 680,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal File Drawer",
+      "subcategory": "Front"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal File Drawer",
+      "param": "Front Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal File Drawer",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drawer Handle",
+      "points": [
+        [
+          -689,
+          650
+        ],
+        [
+          -689.2,
+          651.55
+        ],
+        [
+          -689.8,
+          653
+        ],
+        [
+          -690.76,
+          654.24
+        ],
+        [
+          -692,
+          655.2
+        ],
+        [
+          -693.45,
+          655.8
+        ],
+        [
+          -695,
+          656
+        ],
+        [
+          -696.55,
+          655.8
+        ],
+        [
+          -698,
+          655.2
+        ],
+        [
+          -699.24,
+          654.24
+        ],
+        [
+          -700.2,
+          653
+        ],
+        [
+          -700.8,
+          651.55
+        ],
+        [
+          -701,
+          650
+        ],
+        [
+          -700.8,
+          648.45
+        ],
+        [
+          -700.2,
+          647
+        ],
+        [
+          -699.24,
+          645.76
+        ],
+        [
+          -698,
+          644.8
+        ],
+        [
+          -696.55,
+          644.2
+        ],
+        [
+          -695,
+          644
+        ],
+        [
+          -693.45,
+          644.2
+        ],
+        [
+          -692,
+          644.8
+        ],
+        [
+          -690.76,
+          645.76
+        ],
+        [
+          -689.8,
+          647
+        ],
+        [
+          -689.2,
+          648.45
+        ]
+      ],
+      "start": 370,
+      "end": 490,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drawer Handle",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drawer Handle",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drawer Handle",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drawer Handle Mid",
+      "points": [
+        [
+          -689,
+          520
+        ],
+        [
+          -689.2,
+          521.55
+        ],
+        [
+          -689.8,
+          523
+        ],
+        [
+          -690.76,
+          524.24
+        ],
+        [
+          -692,
+          525.2
+        ],
+        [
+          -693.45,
+          525.8
+        ],
+        [
+          -695,
+          526
+        ],
+        [
+          -696.55,
+          525.8
+        ],
+        [
+          -698,
+          525.2
+        ],
+        [
+          -699.24,
+          524.24
+        ],
+        [
+          -700.2,
+          523
+        ],
+        [
+          -700.8,
+          521.55
+        ],
+        [
+          -701,
+          520
+        ],
+        [
+          -700.8,
+          518.45
+        ],
+        [
+          -700.2,
+          517
+        ],
+        [
+          -699.24,
+          515.76
+        ],
+        [
+          -698,
+          514.8
+        ],
+        [
+          -696.55,
+          514.2
+        ],
+        [
+          -695,
+          514
+        ],
+        [
+          -693.45,
+          514.2
+        ],
+        [
+          -692,
+          514.8
+        ],
+        [
+          -690.76,
+          515.76
+        ],
+        [
+          -689.8,
+          517
+        ],
+        [
+          -689.2,
+          518.45
+        ]
+      ],
+      "start": 370,
+      "end": 490,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drawer Handle Mid",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drawer Handle Mid",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drawer Handle Mid",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Drawer Handle File",
+      "points": [
+        [
+          -689,
+          380
+        ],
+        [
+          -689.2,
+          381.55
+        ],
+        [
+          -689.8,
+          383
+        ],
+        [
+          -690.76,
+          384.24
+        ],
+        [
+          -692,
+          385.2
+        ],
+        [
+          -693.45,
+          385.8
+        ],
+        [
+          -695,
+          386
+        ],
+        [
+          -696.55,
+          385.8
+        ],
+        [
+          -698,
+          385.2
+        ],
+        [
+          -699.24,
+          384.24
+        ],
+        [
+          -700.2,
+          383
+        ],
+        [
+          -700.8,
+          381.55
+        ],
+        [
+          -701,
+          380
+        ],
+        [
+          -700.8,
+          378.45
+        ],
+        [
+          -700.2,
+          377
+        ],
+        [
+          -699.24,
+          375.76
+        ],
+        [
+          -698,
+          374.8
+        ],
+        [
+          -696.55,
+          374.2
+        ],
+        [
+          -695,
+          374
+        ],
+        [
+          -693.45,
+          374.2
+        ],
+        [
+          -692,
+          374.8
+        ],
+        [
+          -690.76,
+          375.76
+        ],
+        [
+          -689.8,
+          377
+        ],
+        [
+          -689.2,
+          378.45
+        ]
+      ],
+      "start": 370,
+      "end": 490,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Drawer Handle File",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Drawer Handle File",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Drawer Handle File",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Pedestal Lock",
+      "points": [
+        [
+          608,
+          660
+        ],
+        [
+          607.73,
+          662.07
+        ],
+        [
+          606.93,
+          664
+        ],
+        [
+          605.66,
+          665.66
+        ],
+        [
+          604,
+          666.93
+        ],
+        [
+          602.07,
+          667.73
+        ],
+        [
+          600,
+          668
+        ],
+        [
+          597.93,
+          667.73
+        ],
+        [
+          596,
+          666.93
+        ],
+        [
+          594.34,
+          665.66
+        ],
+        [
+          593.07,
+          664
+        ],
+        [
+          592.27,
+          662.07
+        ],
+        [
+          592,
+          660
+        ],
+        [
+          592.27,
+          657.93
+        ],
+        [
+          593.07,
+          656
+        ],
+        [
+          594.34,
+          654.34
+        ],
+        [
+          596,
+          653.07
+        ],
+        [
+          597.93,
+          652.27
+        ],
+        [
+          600,
+          652
+        ],
+        [
+          602.07,
+          652.27
+        ],
+        [
+          604,
+          653.07
+        ],
+        [
+          605.66,
+          654.34
+        ],
+        [
+          606.93,
+          656
+        ],
+        [
+          607.73,
+          657.93
+        ]
+      ],
+      "start": 680,
+      "end": 684,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Pedestal Lock",
+      "subcategory": "Alu"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Pedestal Lock",
+      "param": "Alu Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Pedestal Lock",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leveller 1",
+      "points": [
+        [
+          -678,
+          -600
+        ],
+        [
+          -678.34,
+          -597.41
+        ],
+        [
+          -679.34,
+          -595
+        ],
+        [
+          -680.93,
+          -592.93
+        ],
+        [
+          -683,
+          -591.34
+        ],
+        [
+          -685.41,
+          -590.34
+        ],
+        [
+          -688,
+          -590
+        ],
+        [
+          -690.59,
+          -590.34
+        ],
+        [
+          -693,
+          -591.34
+        ],
+        [
+          -695.07,
+          -592.93
+        ],
+        [
+          -696.66,
+          -595
+        ],
+        [
+          -697.66,
+          -597.41
+        ],
+        [
+          -698,
+          -600
+        ],
+        [
+          -697.66,
+          -602.59
+        ],
+        [
+          -696.66,
+          -605
+        ],
+        [
+          -695.07,
+          -607.07
+        ],
+        [
+          -693,
+          -608.66
+        ],
+        [
+          -690.59,
+          -609.66
+        ],
+        [
+          -688,
+          -610
+        ],
+        [
+          -685.41,
+          -609.66
+        ],
+        [
+          -683,
+          -608.66
+        ],
+        [
+          -680.93,
+          -607.07
+        ],
+        [
+          -679.34,
+          -605
+        ],
+        [
+          -678.34,
+          -602.59
+        ]
+      ],
+      "start": -0.1,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leveller 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leveller 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leveller 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leveller 2",
+      "points": [
+        [
+          698,
+          -600
+        ],
+        [
+          697.66,
+          -597.41
+        ],
+        [
+          696.66,
+          -595
+        ],
+        [
+          695.07,
+          -592.93
+        ],
+        [
+          693,
+          -591.34
+        ],
+        [
+          690.59,
+          -590.34
+        ],
+        [
+          688,
+          -590
+        ],
+        [
+          685.41,
+          -590.34
+        ],
+        [
+          683,
+          -591.34
+        ],
+        [
+          680.93,
+          -592.93
+        ],
+        [
+          679.34,
+          -595
+        ],
+        [
+          678.34,
+          -597.41
+        ],
+        [
+          678,
+          -600
+        ],
+        [
+          678.34,
+          -602.59
+        ],
+        [
+          679.34,
+          -605
+        ],
+        [
+          680.93,
+          -607.07
+        ],
+        [
+          683,
+          -608.66
+        ],
+        [
+          685.41,
+          -609.66
+        ],
+        [
+          688,
+          -610
+        ],
+        [
+          690.59,
+          -609.66
+        ],
+        [
+          693,
+          -608.66
+        ],
+        [
+          695.07,
+          -607.07
+        ],
+        [
+          696.66,
+          -605
+        ],
+        [
+          697.66,
+          -602.59
+        ]
+      ],
+      "start": -0.1,
+      "end": 3
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leveller 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leveller 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leveller 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "add_connector",
+      "name": "Power",
+      "domain": "electrical",
+      "system": "PowerBalanced",
+      "solid": "Power Module",
+      "side": "bottom"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Voltage",
+      "connector": "Power",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Power/Apparent Load",
+      "connector": "Power",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "add_connector",
+      "name": "Data",
+      "domain": "electrical",
+      "system": "Data",
+      "solid": "Power Module",
+      "side": "back"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Data/Voltage",
+      "connector": "Data",
+      "connector_param": "Voltage",
+      "param": "Voltage"
+    },
+    {
+      "op": "link_connector_param",
+      "name": "Data/Apparent Load",
+      "connector": "Data",
+      "connector_param": "Apparent Load",
+      "param": "Apparent Load"
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\I\\_Images\\FMC_I_Furniture_Desk_Consulting.png"
+    }
+  ],
+  "values": {
+    "Top 1400 x 700 mm, height 720 mm": {
+      "value": "1400x700x720",
+      "source_status": "assumed",
+      "source": "record size; BS EN 527-1 desk height"
+    },
+    "Supply 240 V, 500 VA (PC and screens)": {
+      "value": 500,
+      "source_status": "assumed",
+      "source": "typical consulting PC point"
+    }
   }
- ],
- "values": {
-  "Top 1400 x 700 mm, height 720 mm": {
-   "value": "1400x700x720",
-   "source_status": "assumed",
-   "source": "record size; BS EN 527-1 desk height"
-  },
-  "Supply 240 V, 500 VA (PC and screens)": {
-   "value": 500,
-   "source_status": "assumed",
-   "source": "typical consulting PC point"
-  }
- }
 }

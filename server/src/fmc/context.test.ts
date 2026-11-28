@@ -45,7 +45,9 @@ test("the server's instructions put the kit first and carry the hard rules, unde
   const words = FMC_INSTRUCTIONS.split(/\s+/).filter(Boolean).length;
   assert.ok(words < 400, `${words} words`);
   for (const must of ["source of truth", "fmc_context", "for_task", "kit change request", "Dry run first", "Live-model lock",
-    "Never release", "Never save or synchronise a workshared model"]) assert.ok(FMC_INSTRUCTIONS.includes(must), must);
+    "Never release", "Never save or synchronise a workshared model",
+    // owner 26 Oct: the session rules that used to be pasted
+    "pass revit", "modify_model", "fmc_standards", "model_check", "fmc_ai failures", "fmc_ai wait"]) assert.ok(FMC_INSTRUCTIONS.includes(must), must);
 });
 
 test("the initialize result carries the instructions (real MCP SDK; skipped with the stub)", async (t) => {
@@ -60,7 +62,7 @@ test("the initialize result carries the instructions (real MCP SDK; skipped with
   const { registerFmcContextTool } = await import("../tools/fmc_context.js");
   registerFmcContextTool(server);
   assert.ok(registerContextResources(server).includes("fmc://kit/overview"));
-  assert.deepEqual(registerContextPrompts(server), ["build-family", "assign-material"]);
+  assert.deepEqual(registerContextPrompts(server), ["build-family", "assign-material", "work-on-project", "test-new-build"]);
   const [a, b] = InMemoryTransport.createLinkedPair();
   const client = new Client({ name: "test", version: "1.0.0" });
   await Promise.all([server.connect(a), client.connect(b)]);

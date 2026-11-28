@@ -2,6 +2,7 @@ using Autodesk.Revit.UI;
 using Newtonsoft.Json.Linq;
 using RevitMCPSDK.API.Base;
 using RevitMCPCommandSet.Services.Architecture;
+using RevitMCPCommandSet.Services.Fmc;
 using LevelCreationInfo = RevitMCPCommandSet.Models.Architecture.LevelInfo;
 
 namespace RevitMCPCommandSet.Commands.Architecture
@@ -36,11 +37,13 @@ namespace RevitMCPCommandSet.Commands.Architecture
                 if (data == null || data.Count == 0)
                     throw new ArgumentNullException(nameof(data), "No level data provided");
 
+                FmcCallContext.Begin(parameters);
+                _handler.OnDuplicate = parameters.Value<string>("onDuplicate") ?? "error";
                 // Set parameters for the event handler
                 _handler.SetParameters(data);
 
                 // Trigger external event and wait for completion
-                if (RaiseAndWaitForCompletion(15000)) // 15 second timeout
+                if (RaiseAndWaitForCompletion(300000)) // owner 26 Oct: big batches take Revit over 10 s; wait up to 5 min
                 {
                     return _handler.Result;
                 }

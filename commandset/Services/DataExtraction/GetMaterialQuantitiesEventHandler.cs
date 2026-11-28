@@ -1,6 +1,8 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
+using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Models.DataExtraction;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services.DataExtraction
@@ -11,6 +13,8 @@ namespace RevitMCPCommandSet.Services.DataExtraction
         private bool _selectedElementsOnly;
 
         public GetMaterialQuantitiesResult ResultInfo { get; private set; }
+        public JObject Parameters { get; set; } = new JObject();
+        public string Error { get; private set; }
         public bool TaskCompleted { get; private set; }
         private readonly ManualResetEvent _resetEvent = new ManualResetEvent(false);
 
@@ -25,15 +29,28 @@ namespace RevitMCPCommandSet.Services.DataExtraction
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public void Execute(UIApplication app)
         {
+            Error = null;
+            ResultInfo = null;
             try
             {
-                var uiDoc = app.ActiveUIDocument;
-                var doc = uiDoc.Document;
+                // MQ-3: refuse unknown category names before reading anything. A requested filter is never
+                // dropped, so a typo such as "Walls" can no longer quantify the whole project.
+                List<string> categoriesApplied = null;
+                List<BuiltInCategory> builtInCategories = null;
+                if (_categoryFilters != null && _categoryFilters.Count > 0)
+                {
+                    var split = FmcReadShape.RequireKnownNames<BuiltInCategory>("get_material_quantities", _categoryFilters);
+                    categoriesApplied = split.Applied;
+                    builtInCategories = split.Parsed;
+                }
+
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                var doc = target.Doc;
 
                 // Dictionary to accumulate material quantities
                 var materialData = new Dictionary<ElementId, MaterialQuantityModel>();
@@ -42,30 +59,29 @@ namespace RevitMCPCommandSet.Services.DataExtraction
                 ICollection<Element> elements;
                 if (_selectedElementsOnly)
                 {
+                    var uiDoc = target.RequireUi("Material quantities of the selection");
                     var selectedIds = uiDoc.Selection.GetElementIds();
                     elements = selectedIds.Select(id => doc.GetElement(id)).Where(e => e != null).ToList();
+                    // Category filters also narrow a selection takeoff (they were ignored here before).
+                    if (builtInCategories != null)
+                    {
+                        var wanted = new HashSet<BuiltInCategory>(builtInCategories);
+#if REVIT2024_OR_GREATER
+                        elements = elements.Where(e => e.Category != null && wanted.Contains((BuiltInCategory)e.Category.Id.Value)).ToList();
+#else
+                        elements = elements.Where(e => e.Category != null && wanted.Contains((BuiltInCategory)e.Category.Id.IntegerValue)).ToList();
+#endif
+                    }
                 }
                 else
                 {
                     var collector = new FilteredElementCollector(doc)
                         .WhereElementIsNotElementType();
 
-                    // Apply category filters if specified
-                    if (_categoryFilters != null && _categoryFilters.Count > 0)
+                    // Apply the (already validated) category filter
+                    if (builtInCategories != null)
                     {
-                        var builtInCategories = new List<BuiltInCategory>();
-                        foreach (var catName in _categoryFilters)
-                        {
-                            if (Enum.TryParse(catName, out BuiltInCategory cat))
-                            {
-                                builtInCategories.Add(cat);
-                            }
-                        }
-                        if (builtInCategories.Count > 0)
-                        {
-                            var filter = new ElementMulticategoryFilter(builtInCategories);
-                            collector = collector.WherePasses(filter);
-                        }
+                        collector = collector.WherePasses(new ElementMulticategoryFilter(builtInCategories));
                     }
 
                     elements = collector.ToElements();
@@ -129,11 +145,13 @@ namespace RevitMCPCommandSet.Services.DataExtraction
                     TotalVolume = totalVolume,
                     Materials = materials,
                     Success = true,
+                    CategoriesApplied = categoriesApplied,
                     Message = $"Successfully calculated quantities for {materials.Count} materials"
                 };
             }
             catch (Exception ex)
             {
+                Error = ex.Message;
                 ResultInfo = new GetMaterialQuantitiesResult
                 {
                     Success = false,

@@ -55,6 +55,8 @@ export function parseRecipe(raw: string): { recipe: Recipe | null; problems: str
 
 /** FMC_<Role>_<Token>_<Description>: the role folder the family is staged in and released to. */
 export function roleOf(family: string): string {
+  // Ogala night report: FMC_Profile_* (the kit's sweep profiles) were refused as nameless; they live in _Profiles
+  if (/^FMC_Profile_/.test(family)) return "_Profiles";
   return /^FMC_([A-Z]{1,2})_/.exec(family)?.[1] ?? "";
 }
 
@@ -143,13 +145,18 @@ export function followParams(recipe: Recipe): FollowParam[] {
   return out;
 }
 
-/** The planes a solid or sweep is tied to by the recipe: path_planes and its host, rect and end_plane, lock_face. */
+/**
+ * The planes a solid or sweep is tied to by the recipe: path_planes and its host, rect, outline_planes, start_plane and
+ * end_plane, a revolution's profile_planes and axis_planes (G011), lock_face.
+ */
 export function solidPlanes(recipe: Recipe): Map<string, Set<string>> {
   const out = new Map<string, Set<string>>();
   const add = (s: string, pls: string[]) => { if (!out.has(s)) out.set(s, new Set()); for (const p of pls) out.get(s)!.add(p); };
   for (const o of recipe.ops as Array<Record<string, any>>) {
     if ((o.op === "sweep" || o.op === "void_sweep") && Array.isArray(o.path_planes)) add(o.name, (o.path_planes as string[][]).flat());
-    else if ((o.op === "extrusion" || o.op === "void_extrusion") && (o.rect || o.end_plane)) add(o.name, [...(o.rect ?? []), ...(o.end_plane ? [o.end_plane] : [])]);
+    else if ((o.op === "extrusion" || o.op === "void_extrusion") && (o.rect || o.outline_planes || o.start_plane || o.end_plane))
+      add(o.name, [...(o.rect ?? []), ...((o.outline_planes ?? []) as string[][]).flat(), ...(o.start_plane ? [o.start_plane] : []), ...(o.end_plane ? [o.end_plane] : [])]);
+    else if (o.op === "revolution" && (o.profile_planes || o.axis_planes)) add(o.name, [...((o.profile_planes ?? []) as string[][]).flat(), ...(o.axis_planes ?? [])]);
     else if (o.op === "lock_face") add(o.solid, [o.plane]);
   }
   return out;

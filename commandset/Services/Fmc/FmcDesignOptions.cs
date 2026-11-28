@@ -56,7 +56,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft design options";
 
         public void Execute(UIApplication app)
@@ -64,7 +64,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             Result = new JObject(); Error = "";
             try
             {
-                Document doc = app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("No model is open");
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Document doc = target.Doc;
                 var options = new JArray();
                 foreach (DesignOption o in new FilteredElementCollector(doc).OfClass(typeof(DesignOption)).Cast<DesignOption>())
                 {

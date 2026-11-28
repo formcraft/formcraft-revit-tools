@@ -1,4 +1,5 @@
 using Autodesk.Revit.UI;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPSDK.API.Interfaces;
 
 namespace RevitMCPCommandSet.Services
@@ -6,8 +7,7 @@ namespace RevitMCPCommandSet.Services
     public class TagWallsEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
+        private Document doc => FmcCallContext.Document(uiApp);
         private Autodesk.Revit.ApplicationServices.Application app => uiApp.Application;
 
         /// <summary>
@@ -205,7 +205,7 @@ try
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>

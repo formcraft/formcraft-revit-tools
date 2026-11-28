@@ -52,8 +52,13 @@ fam("FMC_TAG_LP_Component", A+"Metric Generic Tag.rft", "LP", "OST_SpecialityEqu
 fam("FMC_TAG_C_ControlPoint", A+"Metric Generic Tag.rft", "C", "OST_GenericModelTags", ["Standard"], None, tri(6) + lab("FMC_Control_Point_ID", 0, -4.5, 2.5, 'c', '', 20))
 fam("FMC_TAG_L_Plant", A+"Metric Generic Tag.rft", "L", "OST_PlantingTags", ["Standard"], None, line((0, 0), (6, 4), 't') + lab("FMC_Botanical_Name", 7, 4, 2.5, 'l', '', 40))
 fam("FMC_TAG_W_Logistics", A+"Metric Generic Tag.rft", "W", "OST_GenericModelTags", ["Standard"], None, rect(22, 9) + line((-11, 0), (11, 0), 't') + lab("FMC_Zone", 0, 2.2, 2.5, 'c', '', 20) + lab("FMC_Laydown_Area", 0, -2.2, 2.5, 'c', '', 20))
-fam("FMC_TAG_Keynote", A+"Metric Generic Tag.rft", "Z", "OST_KeynoteTags", ["Key", "Text"], {"Show_Key": [1, 0], "Show_Text": [0, 1]},
-    rect(10, 5, 0, 0, 'm', 'Show_Key') + lab("Key Value", 0, 0, 2.5, 'c', 'Show_Key', 9) + lab("Keynote Text", 0, 0, 2.5, 'l', 'Show_Text', 60))
+# Keynote tags only show a key when the family is built from the Keynote Tag template. Metric Generic Tag.rft
+# has no Key Value / Keynote Text label parameters, so a tag from that template draws blank even after Key Source is set.
+# Key shows the key only. Key+Text shows the key and the keynote text. The category stays the template's (Keynote Tags).
+# Labels still cannot be created by the API: build_tags.cs writes placeholders, and finish_tag.cs binds them after a person
+# places one Key Value label and one Keynote Text label. Re-run that build to replace a family already staged from the generic template.
+fam("FMC_TAG_Keynote", A+"Metric Keynote Tag.rft", "Z", "", ["Key", "Key+Text"], {"Show_Key": [1, 1], "Show_Text": [0, 1]},
+    rect(10, 5, 0, 0, 'm', 'Show_Key') + lab("Key Value", 0, 0, 2.5, 'c', 'Show_Key', 9) + lab("Keynote Text", 12, 0, 2.5, 'l', 'Show_Text', 60))
 # ---- Heads and view annotations
 fam("FMC_GridHead", A+"Metric Grid Head.rft", "Z", "", ["8 mm circle"], None, circle(4) + lab("Name", 0, 0, 3.5))
 fam("FMC_LevelHead", A+"Metric Level Head.rft", "Z", "", ["FFL", "SSL", "MSL"], None,

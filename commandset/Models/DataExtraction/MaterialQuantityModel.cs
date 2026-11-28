@@ -49,6 +49,10 @@ namespace RevitMCPCommandSet.Models.DataExtraction
         [JsonProperty("success")]
         public bool Success { get; set; }
 
+        /// <summary>The BuiltInCategory names the takeoff was filtered by; null when no filter was asked for (MQ-3).</summary>
+        [JsonProperty("categories_applied")]
+        public List<string> CategoriesApplied { get; set; }
+
         [JsonProperty("message")]
         public string Message { get; set; }
     }

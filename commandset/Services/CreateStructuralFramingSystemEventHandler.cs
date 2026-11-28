@@ -3,6 +3,7 @@ using Autodesk.Revit.DB.Structure;
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
 using RevitMCPCommandSet.Models.Structure;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPCommandSet.Utils;
 using RevitMCPSDK.API.Interfaces;
 
@@ -11,8 +12,7 @@ namespace RevitMCPCommandSet.Services
     public class CreateStructuralFramingSystemEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
+        private Document doc => FmcCallContext.Document(uiApp);
 
         /// <summary>
         /// Event synchronization object
@@ -62,7 +62,7 @@ namespace RevitMCPCommandSet.Services
                 List<string> warnings = new List<string>();
 
                 // Check active view type
-                View activeView = uiDoc.ActiveView;
+                View activeView = doc.ActiveView;
                 if (activeView.ViewType != ViewType.FloorPlan && activeView.ViewType != ViewType.EngineeringPlan)
                 {
                     warnings.Add($"Active view is {activeView.ViewType}. BeamSystem creation works best in Floor Plan or Structural Plan views.");
@@ -303,7 +303,7 @@ namespace RevitMCPCommandSet.Services
             }
 
             // Fallback to active view's level
-            if (uiDoc.ActiveView is ViewPlan viewPlan)
+            if (doc.ActiveView is ViewPlan viewPlan)
             {
                 level = viewPlan.GenLevel;
                 if (level != null)
@@ -513,7 +513,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 15000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>

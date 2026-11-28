@@ -24,7 +24,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         public void Execute(UIApplication app)
@@ -90,7 +90,7 @@ namespace RevitMCPCommandSet.Services.Fmc
 
             Revision open = Revision.GetAllRevisionIds(doc).Select(id => doc.GetElement(id) as Revision).Where(r => r != null && !r.Issued)
                 .OrderBy(r => r.SequenceNumber).LastOrDefault();
-            string revision = open != null ? (open.RevisionNumber ?? "") + " " + open.Description : "a new Review revision";
+            string revision = open != null ? FmcIssueEventHandler.SafeRevisionNumber(open) + " " + open.Description : "a new Review revision";
             string viewLabel = view is ViewSheet s ? s.SheetNumber + " " + s.Name : view.Name;
             if (dry)
                 return new JObject { ["view"] = viewLabel, ["revision"] = revision.Trim(), ["elements"] = found,
@@ -113,7 +113,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 cloud.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)?.Set(Parameters.Value<string>("mark") ?? "");
                 cloud.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS)?.Set(Parameters.Value<string>("comment") ?? "");
                 t.Commit();
-                return new JObject { ["cloud_id"] = cloud.Id.Value, ["view"] = viewLabel, ["revision"] = ((open.RevisionNumber ?? "") + " " + open.Description).Trim() };
+                return new JObject { ["cloud_id"] = cloud.Id.Value, ["view"] = viewLabel, ["revision"] = (FmcIssueEventHandler.SafeRevisionNumber(open) + " " + open.Description).Trim() };
             }
         }
 

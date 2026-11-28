@@ -1,3515 +1,3525 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_Door_Psychiatric_AntiLigature",
- "template": "Metric Door.rft",
- "about": "Anti-ligature doorset modelled as a product: frame with stops and architraves, HPL leaf with lipping, observation panel with stainless bead and integral blind (slats in the cavity, knob on the corridor face), continuous hinge, door-top alarm sensor bar with LED, sloped pulls both faces, flush lock escutcheon, kick plates, seals; no closer arm (concealed). Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door psychiatric anti ligature doors hospital; images: https://www.google.com/search?tbm=isch&q=door+psychiatric+anti+ligature+doors+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Doors"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Resistance_Min",
-   "guid": "2f80614a-7f11-5b2a-91a6-a8431863183e",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Acoustic_Rating_Rw",
-   "guid": "171b8d36-974e-58af-bc1f-5285962d6598",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_U_Value",
-   "guid": "e7d498c6-d835-546b-98f8-73069c1f0699",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Asset_Tag",
-   "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Assembly_Mark",
-   "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Ironmongery_Set",
-   "guid": "1f71895f-a957-5735-b684-00aa31d91721",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Glazing_Spec",
-   "guid": "0dbd1462-d156-50f3-9038-a0ed6baa5880",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Frame_Spec",
-   "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fanlight_Height_mm",
-   "guid": "425ed7f1-679a-5ee8-98dc-4fad02fde0ed",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Vent_Type",
-   "guid": "cfd77ccf-d77d-53e0-b769-10b62e8aa1d5",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Mosquito_Mesh",
-   "guid": "5ec6628e-e5ce-55d7-a8c1-d1737876b897",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Glazed_Area_m2",
-   "guid": "c3c61f30-7abb-515e-9902-4cf9a3b72200",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Openable_Area_m2",
-   "guid": "6919d4a2-ffd3-5f03-bbd5-4715a375a99d",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Design_Movement",
-   "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "926x2100_AntiLigature"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/FMC_Cost_Unit",
-   "type": "926x2100_AntiLigature",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/FMC_Geometry_Stage",
-   "type": "926x2100_AntiLigature",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/IfcExportAs",
-   "type": "926x2100_AntiLigature",
-   "param": "IfcExportAs",
-   "value": "IfcDoor"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/Description",
-   "type": "926x2100_AntiLigature",
-   "param": "Description",
-   "value": "Anti-ligature mental-health bedroom doorset: 54 mm leaf, full-height continuous hinge, door-top alarm sensor, sloped ligature-resistant pulls, observation panel with integral blind, no closer arm"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/Keynote",
-   "type": "926x2100_AntiLigature",
-   "param": "Keynote",
-   "value": "D.HOS_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/FMC_Keynote_Code",
-   "type": "926x2100_AntiLigature",
-   "param": "FMC_Keynote_Code",
-   "value": "D.HOS_08"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/FMC_Code_Description",
-   "type": "926x2100_AntiLigature",
-   "param": "FMC_Code_Description",
-   "value": "Psychiatric AntiLigature: Anti-ligature door top alarm, continuous hinge"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/FMC_Code_Group",
-   "type": "926x2100_AntiLigature",
-   "param": "FMC_Code_Group",
-   "value": "D.HOS"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/FMC_Role_Code",
-   "type": "926x2100_AntiLigature",
-   "param": "FMC_Role_Code",
-   "value": "A"
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/Width",
-   "type": "926x2100_AntiLigature",
-   "param": "Width",
-   "value": 926.0
-  },
-  {
-   "op": "set_type_value",
-   "name": "926x2100_AntiLigature/Height",
-   "type": "926x2100_AntiLigature",
-   "param": "Height",
-   "value": 2100.0
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Frame",
-   "color": [
-    237,
-    237,
-    232
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Frame Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Steel_EpoxyCoated_White",
-   "param": "Frame Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Fire Glass",
-   "color": [
-    195,
-    220,
-    228
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Fire Glass Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Glass_Laminated",
-   "param": "Fire Glass Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Stainless",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Stainless Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Lipping",
-   "color": [
-    184,
-    138,
-    90
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Lipping Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Timber_Musizi",
-   "param": "Lipping Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Laminate",
-   "color": [
-    217,
-    211,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Laminate Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_Laminate_HPL",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "White",
-   "color": [
-    242,
-    242,
-    238
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "White Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_White",
-   "param": "White Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Aluminium",
-   "color": [
-    192,
-    192,
-    192
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Aluminium Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Aluminium_Anodised_Silver",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Led Red",
-   "color": [
-    229,
-    72,
-    77
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Led Red Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_LED_Red",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Seal",
-   "color": [
-    32,
-    32,
-    32
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Seal Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Rubber_Black",
-   "param": "Seal Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -501.0,
-     -84
-    ],
-    [
-     501.0,
-     -84
-    ],
-    [
-     501.0,
-     82.0
-    ],
-    [
-     -501.0,
-     82.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Jamb 1",
-   "points": [
-    [
-     -426.0,
-     -70.0
-    ],
-    [
-     -424.5,
-     -69.6
-    ],
-    [
-     -423.4,
-     -68.5
-    ],
-    [
-     -423.0,
-     -67.0
-    ],
-    [
-     -423.0,
-     67.0
-    ],
-    [
-     -423.4,
-     68.5
-    ],
-    [
-     -424.5,
-     69.6
-    ],
-    [
-     -426.0,
-     70.0
-    ],
-    [
-     -460.0,
-     70.0
-    ],
-    [
-     -461.5,
-     69.6
-    ],
-    [
-     -462.6,
-     68.5
-    ],
-    [
-     -463.0,
-     67.0
-    ],
-    [
-     -463.0,
-     -67.0
-    ],
-    [
-     -462.6,
-     -68.5
-    ],
-    [
-     -461.5,
-     -69.6
-    ],
-    [
-     -460.0,
-     -70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Jamb 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Jamb 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Jamb 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Jamb 2",
-   "points": [
-    [
-     460.0,
-     -70.0
-    ],
-    [
-     461.5,
-     -69.6
-    ],
-    [
-     462.6,
-     -68.5
-    ],
-    [
-     463.0,
-     -67.0
-    ],
-    [
-     463.0,
-     67.0
-    ],
-    [
-     462.6,
-     68.5
-    ],
-    [
-     461.5,
-     69.6
-    ],
-    [
-     460.0,
-     70.0
-    ],
-    [
-     426.0,
-     70.0
-    ],
-    [
-     424.5,
-     69.6
-    ],
-    [
-     423.4,
-     68.5
-    ],
-    [
-     423.0,
-     67.0
-    ],
-    [
-     423.0,
-     -67.0
-    ],
-    [
-     423.4,
-     -68.5
-    ],
-    [
-     424.5,
-     -69.6
-    ],
-    [
-     426.0,
-     -70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2100
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Jamb 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Jamb 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Jamb 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Frame Head",
-   "points": [
-    [
-     67.0,
-     2060.0
-    ],
-    [
-     68.5,
-     2060.4
-    ],
-    [
-     69.6,
-     2061.5
-    ],
-    [
-     70.0,
-     2063.0
-    ],
-    [
-     70.0,
-     2097.0
-    ],
-    [
-     69.6,
-     2098.5
-    ],
-    [
-     68.5,
-     2099.6
-    ],
-    [
-     67.0,
-     2100.0
-    ],
-    [
-     -67.0,
-     2100.0
-    ],
-    [
-     -68.5,
-     2099.6
-    ],
-    [
-     -69.6,
-     2098.5
-    ],
-    [
-     -70.0,
-     2097.0
-    ],
-    [
-     -70.0,
-     2063.0
-    ],
-    [
-     -69.6,
-     2061.5
-    ],
-    [
-     -68.5,
-     2060.4
-    ],
-    [
-     -67.0,
-     2060.0
-    ]
-   ],
-   "start": -463.0,
-   "end": 463.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Frame Head",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Frame Head",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Frame Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stop Jamb 1",
-   "points": [
-    [
-     -410.0,
-     27.0
-    ],
-    [
-     -409.23,
-     27.15
-    ],
-    [
-     -408.59,
-     27.59
-    ],
-    [
-     -408.15,
-     28.23
-    ],
-    [
-     -408.0,
-     29.0
-    ],
-    [
-     -408.0,
-     62.0
-    ],
-    [
-     -408.15,
-     62.77
-    ],
-    [
-     -408.59,
-     63.41
-    ],
-    [
-     -409.23,
-     63.85
-    ],
-    [
-     -410.0,
-     64.0
-    ],
-    [
-     -421.0,
-     64.0
-    ],
-    [
-     -421.77,
-     63.85
-    ],
-    [
-     -422.41,
-     63.41
-    ],
-    [
-     -422.85,
-     62.77
-    ],
-    [
-     -423.0,
-     62.0
-    ],
-    [
-     -423.0,
-     29.0
-    ],
-    [
-     -422.85,
-     28.23
-    ],
-    [
-     -422.41,
-     27.59
-    ],
-    [
-     -421.77,
-     27.15
-    ],
-    [
-     -421.0,
-     27.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stop Jamb 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stop Jamb 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stop Jamb 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stop Jamb 2",
-   "points": [
-    [
-     421.0,
-     27.0
-    ],
-    [
-     421.77,
-     27.15
-    ],
-    [
-     422.41,
-     27.59
-    ],
-    [
-     422.85,
-     28.23
-    ],
-    [
-     423.0,
-     29.0
-    ],
-    [
-     423.0,
-     62.0
-    ],
-    [
-     422.85,
-     62.77
-    ],
-    [
-     422.41,
-     63.41
-    ],
-    [
-     421.77,
-     63.85
-    ],
-    [
-     421.0,
-     64.0
-    ],
-    [
-     410.0,
-     64.0
-    ],
-    [
-     409.23,
-     63.85
-    ],
-    [
-     408.59,
-     63.41
-    ],
-    [
-     408.15,
-     62.77
-    ],
-    [
-     408.0,
-     62.0
-    ],
-    [
-     408.0,
-     29.0
-    ],
-    [
-     408.15,
-     28.23
-    ],
-    [
-     408.59,
-     27.59
-    ],
-    [
-     409.23,
-     27.15
-    ],
-    [
-     410.0,
-     27.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stop Jamb 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stop Jamb 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stop Jamb 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Stop Head",
-   "points": [
-    [
-     -408.0,
-     27.0
-    ],
-    [
-     408.0,
-     27.0
-    ],
-    [
-     408.0,
-     64
-    ],
-    [
-     -408.0,
-     64
-    ]
-   ],
-   "start": 2045,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Stop Head",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Stop Head",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Stop Head",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Front 1",
-   "points": [
-    [
-     -436.0,
-     -82.0
-    ],
-    [
-     -433.5,
-     -81.3
-    ],
-    [
-     -431.7,
-     -79.5
-    ],
-    [
-     -431.0,
-     -77.0
-    ],
-    [
-     -431.0,
-     -75.0
-    ],
-    [
-     -431.7,
-     -72.5
-    ],
-    [
-     -433.5,
-     -70.7
-    ],
-    [
-     -436.0,
-     -70.0
-    ],
-    [
-     -496.0,
-     -70.0
-    ],
-    [
-     -498.5,
-     -70.7
-    ],
-    [
-     -500.3,
-     -72.5
-    ],
-    [
-     -501.0,
-     -75.0
-    ],
-    [
-     -501.0,
-     -77.0
-    ],
-    [
-     -500.3,
-     -79.5
-    ],
-    [
-     -498.5,
-     -81.3
-    ],
-    [
-     -496.0,
-     -82.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Front 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Front 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Front 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Front 2",
-   "points": [
-    [
-     496.0,
-     -82.0
-    ],
-    [
-     498.5,
-     -81.3
-    ],
-    [
-     500.3,
-     -79.5
-    ],
-    [
-     501.0,
-     -77.0
-    ],
-    [
-     501.0,
-     -75.0
-    ],
-    [
-     500.3,
-     -72.5
-    ],
-    [
-     498.5,
-     -70.7
-    ],
-    [
-     496.0,
-     -70.0
-    ],
-    [
-     436.0,
-     -70.0
-    ],
-    [
-     433.5,
-     -70.7
-    ],
-    [
-     431.7,
-     -72.5
-    ],
-    [
-     431.0,
-     -75.0
-    ],
-    [
-     431.0,
-     -77.0
-    ],
-    [
-     431.7,
-     -79.5
-    ],
-    [
-     433.5,
-     -81.3
-    ],
-    [
-     436.0,
-     -82.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Front 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Front 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Front 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Back 1",
-   "points": [
-    [
-     -436.0,
-     70.0
-    ],
-    [
-     -433.5,
-     70.7
-    ],
-    [
-     -431.7,
-     72.5
-    ],
-    [
-     -431.0,
-     75.0
-    ],
-    [
-     -431.0,
-     77.0
-    ],
-    [
-     -431.7,
-     79.5
-    ],
-    [
-     -433.5,
-     81.3
-    ],
-    [
-     -436.0,
-     82.0
-    ],
-    [
-     -496.0,
-     82.0
-    ],
-    [
-     -498.5,
-     81.3
-    ],
-    [
-     -500.3,
-     79.5
-    ],
-    [
-     -501.0,
-     77.0
-    ],
-    [
-     -501.0,
-     75.0
-    ],
-    [
-     -500.3,
-     72.5
-    ],
-    [
-     -498.5,
-     70.7
-    ],
-    [
-     -496.0,
-     70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Back 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Back 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Back 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Jamb Back 2",
-   "points": [
-    [
-     496.0,
-     70.0
-    ],
-    [
-     498.5,
-     70.7
-    ],
-    [
-     500.3,
-     72.5
-    ],
-    [
-     501.0,
-     75.0
-    ],
-    [
-     501.0,
-     77.0
-    ],
-    [
-     500.3,
-     79.5
-    ],
-    [
-     498.5,
-     81.3
-    ],
-    [
-     496.0,
-     82.0
-    ],
-    [
-     436.0,
-     82.0
-    ],
-    [
-     433.5,
-     81.3
-    ],
-    [
-     431.7,
-     79.5
-    ],
-    [
-     431.0,
-     77.0
-    ],
-    [
-     431.0,
-     75.0
-    ],
-    [
-     431.7,
-     72.5
-    ],
-    [
-     433.5,
-     70.7
-    ],
-    [
-     436.0,
-     70.0
-    ]
-   ],
-   "start": 0,
-   "end": 2138
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Jamb Back 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Jamb Back 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Jamb Back 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Head 1",
-   "points": [
-    [
-     -75.0,
-     2068.0
-    ],
-    [
-     -72.5,
-     2068.7
-    ],
-    [
-     -70.7,
-     2070.5
-    ],
-    [
-     -70.0,
-     2073.0
-    ],
-    [
-     -70.0,
-     2133.0
-    ],
-    [
-     -70.7,
-     2135.5
-    ],
-    [
-     -72.5,
-     2137.3
-    ],
-    [
-     -75.0,
-     2138.0
-    ],
-    [
-     -77.0,
-     2138.0
-    ],
-    [
-     -79.5,
-     2137.3
-    ],
-    [
-     -81.3,
-     2135.5
-    ],
-    [
-     -82.0,
-     2133.0
-    ],
-    [
-     -82.0,
-     2073.0
-    ],
-    [
-     -81.3,
-     2070.5
-    ],
-    [
-     -79.5,
-     2068.7
-    ],
-    [
-     -77.0,
-     2068.0
-    ]
-   ],
-   "start": -501.0,
-   "end": 501.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Head 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Head 1",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Head 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Architrave Head 2",
-   "points": [
-    [
-     77.0,
-     2068.0
-    ],
-    [
-     79.5,
-     2068.7
-    ],
-    [
-     81.3,
-     2070.5
-    ],
-    [
-     82.0,
-     2073.0
-    ],
-    [
-     82.0,
-     2133.0
-    ],
-    [
-     81.3,
-     2135.5
-    ],
-    [
-     79.5,
-     2137.3
-    ],
-    [
-     77.0,
-     2138.0
-    ],
-    [
-     75.0,
-     2138.0
-    ],
-    [
-     72.5,
-     2137.3
-    ],
-    [
-     70.7,
-     2135.5
-    ],
-    [
-     70.0,
-     2133.0
-    ],
-    [
-     70.0,
-     2073.0
-    ],
-    [
-     70.7,
-     2070.5
-    ],
-    [
-     72.5,
-     2068.7
-    ],
-    [
-     75.0,
-     2068.0
-    ]
-   ],
-   "start": -501.0,
-   "end": 501.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Architrave Head 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Architrave Head 2",
-   "param": "Frame Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Architrave Head 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Observation Panel Glass",
-   "points": [
-    [
-     -110.0,
-     1150
-    ],
-    [
-     110.0,
-     1150
-    ],
-    [
-     110.0,
-     1650
-    ],
-    [
-     -110.0,
-     1650
-    ]
-   ],
-   "start": -10,
-   "end": 10,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Observation Panel Glass",
-   "subcategory": "Fire Glass"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Observation Panel Glass",
-   "param": "Fire Glass Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Observation Panel Glass",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Observation Panel Bead Side 1",
-   "points": [
-    [
-     -89.0,
-     -31.0
-    ],
-    [
-     -87.5,
-     -30.6
-    ],
-    [
-     -86.4,
-     -29.5
-    ],
-    [
-     -86.0,
-     -28.0
-    ],
-    [
-     -86.0,
-     28.0
-    ],
-    [
-     -86.4,
-     29.5
-    ],
-    [
-     -87.5,
-     30.6
-    ],
-    [
-     -89.0,
-     31.0
-    ],
-    [
-     -107.0,
-     31.0
-    ],
-    [
-     -108.5,
-     30.6
-    ],
-    [
-     -109.6,
-     29.5
-    ],
-    [
-     -110.0,
-     28.0
-    ],
-    [
-     -110.0,
-     -28.0
-    ],
-    [
-     -109.6,
-     -29.5
-    ],
-    [
-     -108.5,
-     -30.6
-    ],
-    [
-     -107.0,
-     -31.0
-    ]
-   ],
-   "start": 1150,
-   "end": 1650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Observation Panel Bead Side 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Observation Panel Bead Side 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Observation Panel Bead Side 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Observation Panel Bead Side 2",
-   "points": [
-    [
-     107.0,
-     -31.0
-    ],
-    [
-     108.5,
-     -30.6
-    ],
-    [
-     109.6,
-     -29.5
-    ],
-    [
-     110.0,
-     -28.0
-    ],
-    [
-     110.0,
-     28.0
-    ],
-    [
-     109.6,
-     29.5
-    ],
-    [
-     108.5,
-     30.6
-    ],
-    [
-     107.0,
-     31.0
-    ],
-    [
-     89.0,
-     31.0
-    ],
-    [
-     87.5,
-     30.6
-    ],
-    [
-     86.4,
-     29.5
-    ],
-    [
-     86.0,
-     28.0
-    ],
-    [
-     86.0,
-     -28.0
-    ],
-    [
-     86.4,
-     -29.5
-    ],
-    [
-     87.5,
-     -30.6
-    ],
-    [
-     89.0,
-     -31.0
-    ]
-   ],
-   "start": 1150,
-   "end": 1650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Observation Panel Bead Side 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Observation Panel Bead Side 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Observation Panel Bead Side 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Observation Panel Bead Rail 1",
-   "points": [
-    [
-     -86.0,
-     -31.0
-    ],
-    [
-     86.0,
-     -31.0
-    ],
-    [
-     86.0,
-     31.0
-    ],
-    [
-     -86.0,
-     31.0
-    ]
-   ],
-   "start": 1150,
-   "end": 1174
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Observation Panel Bead Rail 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Observation Panel Bead Rail 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Observation Panel Bead Rail 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Observation Panel Bead Rail 2",
-   "points": [
-    [
-     -86.0,
-     -31.0
-    ],
-    [
-     86.0,
-     -31.0
-    ],
-    [
-     86.0,
-     31.0
-    ],
-    [
-     -86.0,
-     31.0
-    ]
-   ],
-   "start": 1626,
-   "end": 1650
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Observation Panel Bead Rail 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Observation Panel Bead Rail 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Observation Panel Bead Rail 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lipping 1",
-   "points": [
-    [
-     -420.0,
-     -27.0
-    ],
-    [
-     -412.0,
-     -27.0
-    ],
-    [
-     -412.0,
-     27.0
-    ],
-    [
-     -420.0,
-     27.0
-    ]
-   ],
-   "start": 8,
-   "end": 2057
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lipping 1",
-   "subcategory": "Lipping"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lipping 1",
-   "param": "Lipping Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lipping 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Lipping 2",
-   "points": [
-    [
-     412.0,
-     -27.0
-    ],
-    [
-     420.0,
-     -27.0
-    ],
-    [
-     420.0,
-     27.0
-    ],
-    [
-     412.0,
-     27.0
-    ]
-   ],
-   "start": 8,
-   "end": 2057
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Lipping 2",
-   "subcategory": "Lipping"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Lipping 2",
-   "param": "Lipping Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Lipping 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Below",
-   "points": [
-    [
-     -412.0,
-     8
-    ],
-    [
-     412.0,
-     8
-    ],
-    [
-     412.0,
-     1150
-    ],
-    [
-     -412.0,
-     1150
-    ]
-   ],
-   "start": -27.0,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Below",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Below",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Below",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Left Of Opening",
-   "points": [
-    [
-     -412.0,
-     1150
-    ],
-    [
-     -110.0,
-     1150
-    ],
-    [
-     -110.0,
-     1650
-    ],
-    [
-     -412.0,
-     1650
-    ]
-   ],
-   "start": -27.0,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Left Of Opening",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Left Of Opening",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Left Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Right Of Opening",
-   "points": [
-    [
-     110.0,
-     1150
-    ],
-    [
-     412.0,
-     1150
-    ],
-    [
-     412.0,
-     1650
-    ],
-    [
-     110.0,
-     1650
-    ]
-   ],
-   "start": -27.0,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Right Of Opening",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Right Of Opening",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Right Of Opening",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leaf Above",
-   "points": [
-    [
-     -412.0,
-     1650
-    ],
-    [
-     412.0,
-     1650
-    ],
-    [
-     412.0,
-     2057
-    ],
-    [
-     -412.0,
-     2057
-    ]
-   ],
-   "start": -27.0,
-   "end": 27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leaf Above",
-   "subcategory": "Laminate"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Leaf Above",
-   "param": "Laminate Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leaf Above",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 1",
-   "points": [
-    [
-     -86.0,
-     1180
-    ],
-    [
-     86.0,
-     1180
-    ],
-    [
-     86.0,
-     1192
-    ],
-    [
-     -86.0,
-     1192
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 1",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 1",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 2",
-   "points": [
-    [
-     -86.0,
-     1235
-    ],
-    [
-     86.0,
-     1235
-    ],
-    [
-     86.0,
-     1247
-    ],
-    [
-     -86.0,
-     1247
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 2",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 2",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 3",
-   "points": [
-    [
-     -86.0,
-     1290
-    ],
-    [
-     86.0,
-     1290
-    ],
-    [
-     86.0,
-     1302
-    ],
-    [
-     -86.0,
-     1302
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 3",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 3",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 3",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 4",
-   "points": [
-    [
-     -86.0,
-     1345
-    ],
-    [
-     86.0,
-     1345
-    ],
-    [
-     86.0,
-     1357
-    ],
-    [
-     -86.0,
-     1357
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 4",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 4",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 4",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 5",
-   "points": [
-    [
-     -86.0,
-     1400
-    ],
-    [
-     86.0,
-     1400
-    ],
-    [
-     86.0,
-     1412
-    ],
-    [
-     -86.0,
-     1412
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 5",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 5",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 5",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 6",
-   "points": [
-    [
-     -86.0,
-     1455
-    ],
-    [
-     86.0,
-     1455
-    ],
-    [
-     86.0,
-     1467
-    ],
-    [
-     -86.0,
-     1467
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 6",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 6",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 6",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 7",
-   "points": [
-    [
-     -86.0,
-     1510
-    ],
-    [
-     86.0,
-     1510
-    ],
-    [
-     86.0,
-     1522
-    ],
-    [
-     -86.0,
-     1522
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 7",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 7",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 7",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Slat 8",
-   "points": [
-    [
-     -86.0,
-     1565
-    ],
-    [
-     86.0,
-     1565
-    ],
-    [
-     86.0,
-     1577
-    ],
-    [
-     -86.0,
-     1577
-    ]
-   ],
-   "start": -2,
-   "end": 2,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Slat 8",
-   "subcategory": "White"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Slat 8",
-   "param": "White Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Slat 8",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blind Control Knob",
-   "points": [
-    [
-     158.0,
-     1600.0
-    ],
-    [
-     157.39,
-     1604.66
-    ],
-    [
-     155.59,
-     1609.0
-    ],
-    [
-     152.73,
-     1612.73
-    ],
-    [
-     149.0,
-     1615.59
-    ],
-    [
-     144.66,
-     1617.39
-    ],
-    [
-     140.0,
-     1618.0
-    ],
-    [
-     135.34,
-     1617.39
-    ],
-    [
-     131.0,
-     1615.59
-    ],
-    [
-     127.27,
-     1612.73
-    ],
-    [
-     124.41,
-     1609.0
-    ],
-    [
-     122.61,
-     1604.66
-    ],
-    [
-     122.0,
-     1600.0
-    ],
-    [
-     122.61,
-     1595.34
-    ],
-    [
-     124.41,
-     1591.0
-    ],
-    [
-     127.27,
-     1587.27
-    ],
-    [
-     131.0,
-     1584.41
-    ],
-    [
-     135.34,
-     1582.61
-    ],
-    [
-     140.0,
-     1582.0
-    ],
-    [
-     144.66,
-     1582.61
-    ],
-    [
-     149.0,
-     1584.41
-    ],
-    [
-     152.73,
-     1587.27
-    ],
-    [
-     155.59,
-     1591.0
-    ],
-    [
-     157.39,
-     1595.34
-    ]
-   ],
-   "start": 27.0,
-   "end": 37.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blind Control Knob",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blind Control Knob",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blind Control Knob",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Continuous Hinge",
-   "points": [
-    [
-     -413.5,
-     -27.0
-    ],
-    [
-     -414.11,
-     -23.94
-    ],
-    [
-     -415.84,
-     -21.34
-    ],
-    [
-     -418.44,
-     -19.61
-    ],
-    [
-     -421.5,
-     -19.0
-    ],
-    [
-     -424.56,
-     -19.61
-    ],
-    [
-     -427.16,
-     -21.34
-    ],
-    [
-     -428.89,
-     -23.94
-    ],
-    [
-     -429.5,
-     -27.0
-    ],
-    [
-     -428.89,
-     -30.06
-    ],
-    [
-     -427.16,
-     -32.66
-    ],
-    [
-     -424.56,
-     -34.39
-    ],
-    [
-     -421.5,
-     -35.0
-    ],
-    [
-     -418.44,
-     -34.39
-    ],
-    [
-     -415.84,
-     -32.66
-    ],
-    [
-     -414.11,
-     -30.06
-    ]
-   ],
-   "start": 8,
-   "end": 2057
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Continuous Hinge",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Continuous Hinge",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Continuous Hinge",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Top Alarm Sensor",
-   "points": [
-    [
-     -400.0,
-     -23.0
-    ],
-    [
-     400.0,
-     -23.0
-    ],
-    [
-     400.0,
-     23.0
-    ],
-    [
-     -400.0,
-     23.0
-    ]
-   ],
-   "start": 2057,
-   "end": 2059.5
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Top Alarm Sensor",
-   "subcategory": "Aluminium"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Top Alarm Sensor",
-   "param": "Aluminium Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Top Alarm Sensor",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Door Top Alarm LED",
-   "points": [
-    [
-     386.0,
-     2080.0
-    ],
-    [
-     385.8,
-     2081.55
-    ],
-    [
-     385.2,
-     2083.0
-    ],
-    [
-     384.24,
-     2084.24
-    ],
-    [
-     383.0,
-     2085.2
-    ],
-    [
-     381.55,
-     2085.8
-    ],
-    [
-     380.0,
-     2086.0
-    ],
-    [
-     378.45,
-     2085.8
-    ],
-    [
-     377.0,
-     2085.2
-    ],
-    [
-     375.76,
-     2084.24
-    ],
-    [
-     374.8,
-     2083.0
-    ],
-    [
-     374.2,
-     2081.55
-    ],
-    [
-     374.0,
-     2080.0
-    ],
-    [
-     374.2,
-     2078.45
-    ],
-    [
-     374.8,
-     2077.0
-    ],
-    [
-     375.76,
-     2075.76
-    ],
-    [
-     377.0,
-     2074.8
-    ],
-    [
-     378.45,
-     2074.2
-    ],
-    [
-     380.0,
-     2074.0
-    ],
-    [
-     381.55,
-     2074.2
-    ],
-    [
-     383.0,
-     2074.8
-    ],
-    [
-     384.24,
-     2075.76
-    ],
-    [
-     385.2,
-     2077.0
-    ],
-    [
-     385.8,
-     2078.45
-    ]
-   ],
-   "start": 82,
-   "end": 84,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Door Top Alarm LED",
-   "subcategory": "Led Red"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Door Top Alarm LED",
-   "param": "Led Red Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Door Top Alarm LED",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Anti Ligature Pull",
-   "points": [
-    [
-     -27.0,
-     900
-    ],
-    [
-     -67.0,
-     960
-    ],
-    [
-     -67.0,
-     1060
-    ],
-    [
-     -27.0,
-     1120
-    ]
-   ],
-   "start": 310.0,
-   "end": 370.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Anti Ligature Pull",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Anti Ligature Pull",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Anti Ligature Pull",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Anti Ligature Pull Inside",
-   "points": [
-    [
-     27.0,
-     900
-    ],
-    [
-     27.0,
-     1120
-    ],
-    [
-     67.0,
-     1060
-    ],
-    [
-     67.0,
-     960
-    ]
-   ],
-   "start": 310.0,
-   "end": 370.0,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Anti Ligature Pull Inside",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Anti Ligature Pull Inside",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Anti Ligature Pull Inside",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Anti Ligature Lock Escutcheon",
-   "points": [
-    [
-     343.0,
-     820.0
-    ],
-    [
-     347.59,
-     820.91
-    ],
-    [
-     351.49,
-     823.51
-    ],
-    [
-     354.09,
-     827.41
-    ],
-    [
-     355.0,
-     832.0
-    ],
-    [
-     355.0,
-     858.0
-    ],
-    [
-     354.09,
-     862.59
-    ],
-    [
-     351.49,
-     866.49
-    ],
-    [
-     347.59,
-     869.09
-    ],
-    [
-     343.0,
-     870.0
-    ],
-    [
-     337.0,
-     870.0
-    ],
-    [
-     332.41,
-     869.09
-    ],
-    [
-     328.51,
-     866.49
-    ],
-    [
-     325.91,
-     862.59
-    ],
-    [
-     325.0,
-     858.0
-    ],
-    [
-     325.0,
-     832.0
-    ],
-    [
-     325.91,
-     827.41
-    ],
-    [
-     328.51,
-     823.51
-    ],
-    [
-     332.41,
-     820.91
-    ],
-    [
-     337.0,
-     820.0
-    ]
-   ],
-   "start": 27.0,
-   "end": 30.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Anti Ligature Lock Escutcheon",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Anti Ligature Lock Escutcheon",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Anti Ligature Lock Escutcheon",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Kick Plate 1",
-   "points": [
-    [
-     402.0,
-     10.0
-    ],
-    [
-     403.15,
-     10.23
-    ],
-    [
-     404.12,
-     10.88
-    ],
-    [
-     404.77,
-     11.85
-    ],
-    [
-     405.0,
-     13.0
-    ],
-    [
-     405.0,
-     297.0
-    ],
-    [
-     404.77,
-     298.15
-    ],
-    [
-     404.12,
-     299.12
-    ],
-    [
-     403.15,
-     299.77
-    ],
-    [
-     402.0,
-     300.0
-    ],
-    [
-     -402.0,
-     300.0
-    ],
-    [
-     -403.15,
-     299.77
-    ],
-    [
-     -404.12,
-     299.12
-    ],
-    [
-     -404.77,
-     298.15
-    ],
-    [
-     -405.0,
-     297.0
-    ],
-    [
-     -405.0,
-     13.0
-    ],
-    [
-     -404.77,
-     11.85
-    ],
-    [
-     -404.12,
-     10.88
-    ],
-    [
-     -403.15,
-     10.23
-    ],
-    [
-     -402.0,
-     10.0
-    ]
-   ],
-   "start": 27.0,
-   "end": 28.5,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Kick Plate 1",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Kick Plate 1",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Kick Plate 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Kick Plate 2",
-   "points": [
-    [
-     402.0,
-     10.0
-    ],
-    [
-     403.15,
-     10.23
-    ],
-    [
-     404.12,
-     10.88
-    ],
-    [
-     404.77,
-     11.85
-    ],
-    [
-     405.0,
-     13.0
-    ],
-    [
-     405.0,
-     297.0
-    ],
-    [
-     404.77,
-     298.15
-    ],
-    [
-     404.12,
-     299.12
-    ],
-    [
-     403.15,
-     299.77
-    ],
-    [
-     402.0,
-     300.0
-    ],
-    [
-     -402.0,
-     300.0
-    ],
-    [
-     -403.15,
-     299.77
-    ],
-    [
-     -404.12,
-     299.12
-    ],
-    [
-     -404.77,
-     298.15
-    ],
-    [
-     -405.0,
-     297.0
-    ],
-    [
-     -405.0,
-     13.0
-    ],
-    [
-     -404.77,
-     11.85
-    ],
-    [
-     -404.12,
-     10.88
-    ],
-    [
-     -403.15,
-     10.23
-    ],
-    [
-     -402.0,
-     10.0
-    ]
-   ],
-   "start": -28.5,
-   "end": -27.0,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Kick Plate 2",
-   "subcategory": "Stainless"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Kick Plate 2",
-   "param": "Stainless Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Kick Plate 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Seal Jamb 1",
-   "points": [
-    [
-     -423.0,
-     -21.0
-    ],
-    [
-     -421.0,
-     -21.0
-    ],
-    [
-     -421.0,
-     -11.0
-    ],
-    [
-     -423.0,
-     -11.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Seal Jamb 1",
-   "subcategory": "Seal"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Seal Jamb 1",
-   "param": "Seal Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Seal Jamb 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Seal Jamb 2",
-   "points": [
-    [
-     421.0,
-     -21.0
-    ],
-    [
-     423.0,
-     -21.0
-    ],
-    [
-     423.0,
-     -11.0
-    ],
-    [
-     421.0,
-     -11.0
-    ]
-   ],
-   "start": 0,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Seal Jamb 2",
-   "subcategory": "Seal"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Seal Jamb 2",
-   "param": "Seal Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Seal Jamb 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Perimeter Seal Head",
-   "points": [
-    [
-     -423.0,
-     -21.0
-    ],
-    [
-     423.0,
-     -21.0
-    ],
-    [
-     423.0,
-     -11.0
-    ],
-    [
-     -423.0,
-     -11.0
-    ]
-   ],
-   "start": 2058,
-   "end": 2060
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Perimeter Seal Head",
-   "subcategory": "Seal"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Perimeter Seal Head",
-   "param": "Seal Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Perimeter Seal Head",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_Door_Psychiatric_AntiLigature.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_Door_Psychiatric_AntiLigature",
+  "template": "Metric Door.rft",
+  "about": "Anti-ligature doorset modelled as a product: frame with stops and architraves, HPL leaf with lipping, observation panel with stainless bead and integral blind (slats in the cavity, knob on the corridor face), continuous hinge, door-top alarm sensor bar with LED, sloped pulls both faces, flush lock escutcheon, kick plates, seals; no closer arm (concealed). Geometry drawn at the first type's size; brand, model and supplier open for review. Reference: query: door psychiatric anti ligature doors hospital; images: https://www.google.com/search?tbm=isch&q=door+psychiatric+anti+ligature+doors+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Doors"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Resistance_Min",
+      "guid": "2f80614a-7f11-5b2a-91a6-a8431863183e",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Acoustic_Rating_Rw",
+      "guid": "171b8d36-974e-58af-bc1f-5285962d6598",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_U_Value",
+      "guid": "e7d498c6-d835-546b-98f8-73069c1f0699",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Asset_Tag",
+      "guid": "da8b0833-85d1-5621-903a-8d9fbef9089d",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Assembly_Mark",
+      "guid": "63266315-bb4d-5187-9224-35d20981c3d6",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Ironmongery_Set",
+      "guid": "1f71895f-a957-5735-b684-00aa31d91721",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Glazing_Spec",
+      "guid": "0dbd1462-d156-50f3-9038-a0ed6baa5880",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Frame_Spec",
+      "guid": "7a163363-b62c-57f9-8d75-66d6b9aad4c6",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fanlight_Height_mm",
+      "guid": "425ed7f1-679a-5ee8-98dc-4fad02fde0ed",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Vent_Type",
+      "guid": "cfd77ccf-d77d-53e0-b769-10b62e8aa1d5",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Mosquito_Mesh",
+      "guid": "5ec6628e-e5ce-55d7-a8c1-d1737876b897",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Glazed_Area_m2",
+      "guid": "c3c61f30-7abb-515e-9902-4cf9a3b72200",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Openable_Area_m2",
+      "guid": "6919d4a2-ffd3-5f03-bbd5-4715a375a99d",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Design_Movement",
+      "guid": "3709651a-6646-5cef-8f6d-544fb9d312c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "926x2100_AntiLigature"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/FMC_Cost_Unit",
+      "type": "926x2100_AntiLigature",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/FMC_Geometry_Stage",
+      "type": "926x2100_AntiLigature",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/IfcExportAs",
+      "type": "926x2100_AntiLigature",
+      "param": "IfcExportAs",
+      "value": "IfcDoor"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/Description",
+      "type": "926x2100_AntiLigature",
+      "param": "Description",
+      "value": "Anti-ligature mental-health bedroom doorset: 54 mm leaf, full-height continuous hinge, door-top alarm sensor, sloped ligature-resistant pulls, observation panel with integral blind, no closer arm"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/Keynote",
+      "type": "926x2100_AntiLigature",
+      "param": "Keynote",
+      "value": "D.HOS_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/FMC_Keynote_Code",
+      "type": "926x2100_AntiLigature",
+      "param": "FMC_Keynote_Code",
+      "value": "D.HOS_08"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/FMC_Code_Description",
+      "type": "926x2100_AntiLigature",
+      "param": "FMC_Code_Description",
+      "value": "Psychiatric AntiLigature: Anti-ligature door top alarm, continuous hinge"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/FMC_Code_Group",
+      "type": "926x2100_AntiLigature",
+      "param": "FMC_Code_Group",
+      "value": "D.HOS"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/FMC_Role_Code",
+      "type": "926x2100_AntiLigature",
+      "param": "FMC_Role_Code",
+      "value": "A"
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/Width",
+      "type": "926x2100_AntiLigature",
+      "param": "Width",
+      "value": 926
+    },
+    {
+      "op": "set_type_value",
+      "name": "926x2100_AntiLigature/Height",
+      "type": "926x2100_AntiLigature",
+      "param": "Height",
+      "value": 2100
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Frame Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Steel_EpoxyCoated_White",
+      "param": "Frame Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Fire Glass",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Fire Glass Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Glass_Laminated",
+      "param": "Fire Glass Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Stainless",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Stainless Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Lipping",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Lipping Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Timber_Musizi",
+      "param": "Lipping Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Laminate",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Laminate Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_Laminate_HPL",
+      "param": "Laminate Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "White",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "White Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_White",
+      "param": "White Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Aluminium",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Aluminium Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Aluminium_Anodised_Silver",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Led Red",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Led Red Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_LED_Red",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Seal",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Seal Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Rubber_Black",
+      "param": "Seal Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -501,
+          -84
+        ],
+        [
+          501,
+          -84
+        ],
+        [
+          501,
+          82
+        ],
+        [
+          -501,
+          82
+        ]
+      ],
+      "start": 0,
+      "end": 2138
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Jamb 1",
+      "points": [
+        [
+          -426,
+          -70
+        ],
+        [
+          -424.5,
+          -69.6
+        ],
+        [
+          -423.4,
+          -68.5
+        ],
+        [
+          -423,
+          -67
+        ],
+        [
+          -423,
+          67
+        ],
+        [
+          -423.4,
+          68.5
+        ],
+        [
+          -424.5,
+          69.6
+        ],
+        [
+          -426,
+          70
+        ],
+        [
+          -460,
+          70
+        ],
+        [
+          -461.5,
+          69.6
+        ],
+        [
+          -462.6,
+          68.5
+        ],
+        [
+          -463,
+          67
+        ],
+        [
+          -463,
+          -67
+        ],
+        [
+          -462.6,
+          -68.5
+        ],
+        [
+          -461.5,
+          -69.6
+        ],
+        [
+          -460,
+          -70
+        ]
+      ],
+      "start": 0,
+      "end": 2100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Jamb 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Jamb 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Jamb 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Jamb 2",
+      "points": [
+        [
+          460,
+          -70
+        ],
+        [
+          461.5,
+          -69.6
+        ],
+        [
+          462.6,
+          -68.5
+        ],
+        [
+          463,
+          -67
+        ],
+        [
+          463,
+          67
+        ],
+        [
+          462.6,
+          68.5
+        ],
+        [
+          461.5,
+          69.6
+        ],
+        [
+          460,
+          70
+        ],
+        [
+          426,
+          70
+        ],
+        [
+          424.5,
+          69.6
+        ],
+        [
+          423.4,
+          68.5
+        ],
+        [
+          423,
+          67
+        ],
+        [
+          423,
+          -67
+        ],
+        [
+          423.4,
+          -68.5
+        ],
+        [
+          424.5,
+          -69.6
+        ],
+        [
+          426,
+          -70
+        ]
+      ],
+      "start": 0,
+      "end": 2100
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Jamb 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Jamb 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Jamb 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Frame Head",
+      "points": [
+        [
+          67,
+          2060
+        ],
+        [
+          68.5,
+          2060.4
+        ],
+        [
+          69.6,
+          2061.5
+        ],
+        [
+          70,
+          2063
+        ],
+        [
+          70,
+          2097
+        ],
+        [
+          69.6,
+          2098.5
+        ],
+        [
+          68.5,
+          2099.6
+        ],
+        [
+          67,
+          2100
+        ],
+        [
+          -67,
+          2100
+        ],
+        [
+          -68.5,
+          2099.6
+        ],
+        [
+          -69.6,
+          2098.5
+        ],
+        [
+          -70,
+          2097
+        ],
+        [
+          -70,
+          2063
+        ],
+        [
+          -69.6,
+          2061.5
+        ],
+        [
+          -68.5,
+          2060.4
+        ],
+        [
+          -67,
+          2060
+        ]
+      ],
+      "start": -463,
+      "end": 463,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Frame Head",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Frame Head",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Frame Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stop Jamb 1",
+      "points": [
+        [
+          -410,
+          27
+        ],
+        [
+          -409.23,
+          27.15
+        ],
+        [
+          -408.59,
+          27.59
+        ],
+        [
+          -408.15,
+          28.23
+        ],
+        [
+          -408,
+          29
+        ],
+        [
+          -408,
+          62
+        ],
+        [
+          -408.15,
+          62.77
+        ],
+        [
+          -408.59,
+          63.41
+        ],
+        [
+          -409.23,
+          63.85
+        ],
+        [
+          -410,
+          64
+        ],
+        [
+          -421,
+          64
+        ],
+        [
+          -421.77,
+          63.85
+        ],
+        [
+          -422.41,
+          63.41
+        ],
+        [
+          -422.85,
+          62.77
+        ],
+        [
+          -423,
+          62
+        ],
+        [
+          -423,
+          29
+        ],
+        [
+          -422.85,
+          28.23
+        ],
+        [
+          -422.41,
+          27.59
+        ],
+        [
+          -421.77,
+          27.15
+        ],
+        [
+          -421,
+          27
+        ]
+      ],
+      "start": 0,
+      "end": 2060
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stop Jamb 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stop Jamb 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stop Jamb 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stop Jamb 2",
+      "points": [
+        [
+          421,
+          27
+        ],
+        [
+          421.77,
+          27.15
+        ],
+        [
+          422.41,
+          27.59
+        ],
+        [
+          422.85,
+          28.23
+        ],
+        [
+          423,
+          29
+        ],
+        [
+          423,
+          62
+        ],
+        [
+          422.85,
+          62.77
+        ],
+        [
+          422.41,
+          63.41
+        ],
+        [
+          421.77,
+          63.85
+        ],
+        [
+          421,
+          64
+        ],
+        [
+          410,
+          64
+        ],
+        [
+          409.23,
+          63.85
+        ],
+        [
+          408.59,
+          63.41
+        ],
+        [
+          408.15,
+          62.77
+        ],
+        [
+          408,
+          62
+        ],
+        [
+          408,
+          29
+        ],
+        [
+          408.15,
+          28.23
+        ],
+        [
+          408.59,
+          27.59
+        ],
+        [
+          409.23,
+          27.15
+        ],
+        [
+          410,
+          27
+        ]
+      ],
+      "start": 0,
+      "end": 2060
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stop Jamb 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stop Jamb 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stop Jamb 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Stop Head",
+      "points": [
+        [
+          -408,
+          27
+        ],
+        [
+          408,
+          27
+        ],
+        [
+          408,
+          64
+        ],
+        [
+          -408,
+          64
+        ]
+      ],
+      "start": 2045,
+      "end": 2060
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Stop Head",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Stop Head",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Stop Head",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Jamb Front 1",
+      "points": [
+        [
+          -436,
+          -82
+        ],
+        [
+          -433.5,
+          -81.3
+        ],
+        [
+          -431.7,
+          -79.5
+        ],
+        [
+          -431,
+          -77
+        ],
+        [
+          -431,
+          -75
+        ],
+        [
+          -431.7,
+          -72.5
+        ],
+        [
+          -433.5,
+          -70.7
+        ],
+        [
+          -436,
+          -70
+        ],
+        [
+          -496,
+          -70
+        ],
+        [
+          -498.5,
+          -70.7
+        ],
+        [
+          -500.3,
+          -72.5
+        ],
+        [
+          -501,
+          -75
+        ],
+        [
+          -501,
+          -77
+        ],
+        [
+          -500.3,
+          -79.5
+        ],
+        [
+          -498.5,
+          -81.3
+        ],
+        [
+          -496,
+          -82
+        ]
+      ],
+      "start": 0,
+      "end": 2138
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Jamb Front 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Jamb Front 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Jamb Front 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Jamb Front 2",
+      "points": [
+        [
+          496,
+          -82
+        ],
+        [
+          498.5,
+          -81.3
+        ],
+        [
+          500.3,
+          -79.5
+        ],
+        [
+          501,
+          -77
+        ],
+        [
+          501,
+          -75
+        ],
+        [
+          500.3,
+          -72.5
+        ],
+        [
+          498.5,
+          -70.7
+        ],
+        [
+          496,
+          -70
+        ],
+        [
+          436,
+          -70
+        ],
+        [
+          433.5,
+          -70.7
+        ],
+        [
+          431.7,
+          -72.5
+        ],
+        [
+          431,
+          -75
+        ],
+        [
+          431,
+          -77
+        ],
+        [
+          431.7,
+          -79.5
+        ],
+        [
+          433.5,
+          -81.3
+        ],
+        [
+          436,
+          -82
+        ]
+      ],
+      "start": 0,
+      "end": 2138
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Jamb Front 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Jamb Front 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Jamb Front 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Jamb Back 1",
+      "points": [
+        [
+          -436,
+          70
+        ],
+        [
+          -433.5,
+          70.7
+        ],
+        [
+          -431.7,
+          72.5
+        ],
+        [
+          -431,
+          75
+        ],
+        [
+          -431,
+          77
+        ],
+        [
+          -431.7,
+          79.5
+        ],
+        [
+          -433.5,
+          81.3
+        ],
+        [
+          -436,
+          82
+        ],
+        [
+          -496,
+          82
+        ],
+        [
+          -498.5,
+          81.3
+        ],
+        [
+          -500.3,
+          79.5
+        ],
+        [
+          -501,
+          77
+        ],
+        [
+          -501,
+          75
+        ],
+        [
+          -500.3,
+          72.5
+        ],
+        [
+          -498.5,
+          70.7
+        ],
+        [
+          -496,
+          70
+        ]
+      ],
+      "start": 0,
+      "end": 2138
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Jamb Back 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Jamb Back 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Jamb Back 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Jamb Back 2",
+      "points": [
+        [
+          496,
+          70
+        ],
+        [
+          498.5,
+          70.7
+        ],
+        [
+          500.3,
+          72.5
+        ],
+        [
+          501,
+          75
+        ],
+        [
+          501,
+          77
+        ],
+        [
+          500.3,
+          79.5
+        ],
+        [
+          498.5,
+          81.3
+        ],
+        [
+          496,
+          82
+        ],
+        [
+          436,
+          82
+        ],
+        [
+          433.5,
+          81.3
+        ],
+        [
+          431.7,
+          79.5
+        ],
+        [
+          431,
+          77
+        ],
+        [
+          431,
+          75
+        ],
+        [
+          431.7,
+          72.5
+        ],
+        [
+          433.5,
+          70.7
+        ],
+        [
+          436,
+          70
+        ]
+      ],
+      "start": 0,
+      "end": 2138
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Jamb Back 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Jamb Back 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Jamb Back 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Head 1",
+      "points": [
+        [
+          -75,
+          2068
+        ],
+        [
+          -72.5,
+          2068.7
+        ],
+        [
+          -70.7,
+          2070.5
+        ],
+        [
+          -70,
+          2073
+        ],
+        [
+          -70,
+          2133
+        ],
+        [
+          -70.7,
+          2135.5
+        ],
+        [
+          -72.5,
+          2137.3
+        ],
+        [
+          -75,
+          2138
+        ],
+        [
+          -77,
+          2138
+        ],
+        [
+          -79.5,
+          2137.3
+        ],
+        [
+          -81.3,
+          2135.5
+        ],
+        [
+          -82,
+          2133
+        ],
+        [
+          -82,
+          2073
+        ],
+        [
+          -81.3,
+          2070.5
+        ],
+        [
+          -79.5,
+          2068.7
+        ],
+        [
+          -77,
+          2068
+        ]
+      ],
+      "start": -501,
+      "end": 501,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Head 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Head 1",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Head 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Architrave Head 2",
+      "points": [
+        [
+          77,
+          2068
+        ],
+        [
+          79.5,
+          2068.7
+        ],
+        [
+          81.3,
+          2070.5
+        ],
+        [
+          82,
+          2073
+        ],
+        [
+          82,
+          2133
+        ],
+        [
+          81.3,
+          2135.5
+        ],
+        [
+          79.5,
+          2137.3
+        ],
+        [
+          77,
+          2138
+        ],
+        [
+          75,
+          2138
+        ],
+        [
+          72.5,
+          2137.3
+        ],
+        [
+          70.7,
+          2135.5
+        ],
+        [
+          70,
+          2133
+        ],
+        [
+          70,
+          2073
+        ],
+        [
+          70.7,
+          2070.5
+        ],
+        [
+          72.5,
+          2068.7
+        ],
+        [
+          75,
+          2068
+        ]
+      ],
+      "start": -501,
+      "end": 501,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Architrave Head 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Architrave Head 2",
+      "param": "Frame Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Architrave Head 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Observation Panel Glass",
+      "points": [
+        [
+          -110,
+          1150
+        ],
+        [
+          110,
+          1150
+        ],
+        [
+          110,
+          1650
+        ],
+        [
+          -110,
+          1650
+        ]
+      ],
+      "start": -10,
+      "end": 10,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Observation Panel Glass",
+      "subcategory": "Fire Glass"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Observation Panel Glass",
+      "param": "Fire Glass Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Observation Panel Glass",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Observation Panel Bead Side 1",
+      "points": [
+        [
+          -89,
+          -31
+        ],
+        [
+          -87.5,
+          -30.6
+        ],
+        [
+          -86.4,
+          -29.5
+        ],
+        [
+          -86,
+          -28
+        ],
+        [
+          -86,
+          28
+        ],
+        [
+          -86.4,
+          29.5
+        ],
+        [
+          -87.5,
+          30.6
+        ],
+        [
+          -89,
+          31
+        ],
+        [
+          -107,
+          31
+        ],
+        [
+          -108.5,
+          30.6
+        ],
+        [
+          -109.6,
+          29.5
+        ],
+        [
+          -110,
+          28
+        ],
+        [
+          -110,
+          -28
+        ],
+        [
+          -109.6,
+          -29.5
+        ],
+        [
+          -108.5,
+          -30.6
+        ],
+        [
+          -107,
+          -31
+        ]
+      ],
+      "start": 1150,
+      "end": 1650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Observation Panel Bead Side 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Observation Panel Bead Side 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Observation Panel Bead Side 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Observation Panel Bead Side 2",
+      "points": [
+        [
+          107,
+          -31
+        ],
+        [
+          108.5,
+          -30.6
+        ],
+        [
+          109.6,
+          -29.5
+        ],
+        [
+          110,
+          -28
+        ],
+        [
+          110,
+          28
+        ],
+        [
+          109.6,
+          29.5
+        ],
+        [
+          108.5,
+          30.6
+        ],
+        [
+          107,
+          31
+        ],
+        [
+          89,
+          31
+        ],
+        [
+          87.5,
+          30.6
+        ],
+        [
+          86.4,
+          29.5
+        ],
+        [
+          86,
+          28
+        ],
+        [
+          86,
+          -28
+        ],
+        [
+          86.4,
+          -29.5
+        ],
+        [
+          87.5,
+          -30.6
+        ],
+        [
+          89,
+          -31
+        ]
+      ],
+      "start": 1150,
+      "end": 1650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Observation Panel Bead Side 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Observation Panel Bead Side 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Observation Panel Bead Side 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Observation Panel Bead Rail 1",
+      "points": [
+        [
+          -86,
+          -31
+        ],
+        [
+          86,
+          -31
+        ],
+        [
+          86,
+          31
+        ],
+        [
+          -86,
+          31
+        ]
+      ],
+      "start": 1150,
+      "end": 1174
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Observation Panel Bead Rail 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Observation Panel Bead Rail 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Observation Panel Bead Rail 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Observation Panel Bead Rail 2",
+      "points": [
+        [
+          -86,
+          -31
+        ],
+        [
+          86,
+          -31
+        ],
+        [
+          86,
+          31
+        ],
+        [
+          -86,
+          31
+        ]
+      ],
+      "start": 1626,
+      "end": 1650
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Observation Panel Bead Rail 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Observation Panel Bead Rail 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Observation Panel Bead Rail 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf Lipping 1",
+      "points": [
+        [
+          -420,
+          -27
+        ],
+        [
+          -412,
+          -27
+        ],
+        [
+          -412,
+          27
+        ],
+        [
+          -420,
+          27
+        ]
+      ],
+      "start": 8,
+      "end": 2057
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf Lipping 1",
+      "subcategory": "Lipping"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf Lipping 1",
+      "param": "Lipping Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leaf Lipping 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf Lipping 2",
+      "points": [
+        [
+          412,
+          -27
+        ],
+        [
+          420,
+          -27
+        ],
+        [
+          420,
+          27
+        ],
+        [
+          412,
+          27
+        ]
+      ],
+      "start": 8,
+      "end": 2057
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf Lipping 2",
+      "subcategory": "Lipping"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf Lipping 2",
+      "param": "Lipping Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leaf Lipping 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf Below",
+      "points": [
+        [
+          -412,
+          8
+        ],
+        [
+          412,
+          8
+        ],
+        [
+          412,
+          1150
+        ],
+        [
+          -412,
+          1150
+        ]
+      ],
+      "start": -27,
+      "end": 27,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf Below",
+      "subcategory": "Laminate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf Below",
+      "param": "Laminate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leaf Below",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf Left Of Opening",
+      "points": [
+        [
+          -412,
+          1150
+        ],
+        [
+          -110,
+          1150
+        ],
+        [
+          -110,
+          1650
+        ],
+        [
+          -412,
+          1650
+        ]
+      ],
+      "start": -27,
+      "end": 27,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf Left Of Opening",
+      "subcategory": "Laminate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf Left Of Opening",
+      "param": "Laminate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leaf Left Of Opening",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf Right Of Opening",
+      "points": [
+        [
+          110,
+          1150
+        ],
+        [
+          412,
+          1150
+        ],
+        [
+          412,
+          1650
+        ],
+        [
+          110,
+          1650
+        ]
+      ],
+      "start": -27,
+      "end": 27,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf Right Of Opening",
+      "subcategory": "Laminate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf Right Of Opening",
+      "param": "Laminate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leaf Right Of Opening",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leaf Above",
+      "points": [
+        [
+          -412,
+          1650
+        ],
+        [
+          412,
+          1650
+        ],
+        [
+          412,
+          2057
+        ],
+        [
+          -412,
+          2057
+        ]
+      ],
+      "start": -27,
+      "end": 27,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leaf Above",
+      "subcategory": "Laminate"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Leaf Above",
+      "param": "Laminate Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leaf Above",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 1",
+      "points": [
+        [
+          -86,
+          1180
+        ],
+        [
+          86,
+          1180
+        ],
+        [
+          86,
+          1192
+        ],
+        [
+          -86,
+          1192
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 1",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 1",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 2",
+      "points": [
+        [
+          -86,
+          1235
+        ],
+        [
+          86,
+          1235
+        ],
+        [
+          86,
+          1247
+        ],
+        [
+          -86,
+          1247
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 2",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 2",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 3",
+      "points": [
+        [
+          -86,
+          1290
+        ],
+        [
+          86,
+          1290
+        ],
+        [
+          86,
+          1302
+        ],
+        [
+          -86,
+          1302
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 3",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 3",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 3",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 4",
+      "points": [
+        [
+          -86,
+          1345
+        ],
+        [
+          86,
+          1345
+        ],
+        [
+          86,
+          1357
+        ],
+        [
+          -86,
+          1357
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 4",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 4",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 4",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 5",
+      "points": [
+        [
+          -86,
+          1400
+        ],
+        [
+          86,
+          1400
+        ],
+        [
+          86,
+          1412
+        ],
+        [
+          -86,
+          1412
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 5",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 5",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 5",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 6",
+      "points": [
+        [
+          -86,
+          1455
+        ],
+        [
+          86,
+          1455
+        ],
+        [
+          86,
+          1467
+        ],
+        [
+          -86,
+          1467
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 6",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 6",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 6",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 7",
+      "points": [
+        [
+          -86,
+          1510
+        ],
+        [
+          86,
+          1510
+        ],
+        [
+          86,
+          1522
+        ],
+        [
+          -86,
+          1522
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 7",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 7",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 7",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Slat 8",
+      "points": [
+        [
+          -86,
+          1565
+        ],
+        [
+          86,
+          1565
+        ],
+        [
+          86,
+          1577
+        ],
+        [
+          -86,
+          1577
+        ]
+      ],
+      "start": -2,
+      "end": 2,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Slat 8",
+      "subcategory": "White"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Slat 8",
+      "param": "White Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Slat 8",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blind Control Knob",
+      "points": [
+        [
+          158,
+          1600
+        ],
+        [
+          157.39,
+          1604.66
+        ],
+        [
+          155.59,
+          1609
+        ],
+        [
+          152.73,
+          1612.73
+        ],
+        [
+          149,
+          1615.59
+        ],
+        [
+          144.66,
+          1617.39
+        ],
+        [
+          140,
+          1618
+        ],
+        [
+          135.34,
+          1617.39
+        ],
+        [
+          131,
+          1615.59
+        ],
+        [
+          127.27,
+          1612.73
+        ],
+        [
+          124.41,
+          1609
+        ],
+        [
+          122.61,
+          1604.66
+        ],
+        [
+          122,
+          1600
+        ],
+        [
+          122.61,
+          1595.34
+        ],
+        [
+          124.41,
+          1591
+        ],
+        [
+          127.27,
+          1587.27
+        ],
+        [
+          131,
+          1584.41
+        ],
+        [
+          135.34,
+          1582.61
+        ],
+        [
+          140,
+          1582
+        ],
+        [
+          144.66,
+          1582.61
+        ],
+        [
+          149,
+          1584.41
+        ],
+        [
+          152.73,
+          1587.27
+        ],
+        [
+          155.59,
+          1591
+        ],
+        [
+          157.39,
+          1595.34
+        ]
+      ],
+      "start": 27,
+      "end": 37,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blind Control Knob",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blind Control Knob",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blind Control Knob",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Continuous Hinge",
+      "points": [
+        [
+          -413.5,
+          -27
+        ],
+        [
+          -414.11,
+          -23.94
+        ],
+        [
+          -415.84,
+          -21.34
+        ],
+        [
+          -418.44,
+          -19.61
+        ],
+        [
+          -421.5,
+          -19
+        ],
+        [
+          -424.56,
+          -19.61
+        ],
+        [
+          -427.16,
+          -21.34
+        ],
+        [
+          -428.89,
+          -23.94
+        ],
+        [
+          -429.5,
+          -27
+        ],
+        [
+          -428.89,
+          -30.06
+        ],
+        [
+          -427.16,
+          -32.66
+        ],
+        [
+          -424.56,
+          -34.39
+        ],
+        [
+          -421.5,
+          -35
+        ],
+        [
+          -418.44,
+          -34.39
+        ],
+        [
+          -415.84,
+          -32.66
+        ],
+        [
+          -414.11,
+          -30.06
+        ]
+      ],
+      "start": 8,
+      "end": 2057
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Continuous Hinge",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Continuous Hinge",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Continuous Hinge",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Door Top Alarm Sensor",
+      "points": [
+        [
+          -400,
+          -23
+        ],
+        [
+          400,
+          -23
+        ],
+        [
+          400,
+          23
+        ],
+        [
+          -400,
+          23
+        ]
+      ],
+      "start": 2057,
+      "end": 2059.5
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Door Top Alarm Sensor",
+      "subcategory": "Aluminium"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Door Top Alarm Sensor",
+      "param": "Aluminium Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Door Top Alarm Sensor",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Door Top Alarm LED",
+      "points": [
+        [
+          386,
+          2080
+        ],
+        [
+          385.8,
+          2081.55
+        ],
+        [
+          385.2,
+          2083
+        ],
+        [
+          384.24,
+          2084.24
+        ],
+        [
+          383,
+          2085.2
+        ],
+        [
+          381.55,
+          2085.8
+        ],
+        [
+          380,
+          2086
+        ],
+        [
+          378.45,
+          2085.8
+        ],
+        [
+          377,
+          2085.2
+        ],
+        [
+          375.76,
+          2084.24
+        ],
+        [
+          374.8,
+          2083
+        ],
+        [
+          374.2,
+          2081.55
+        ],
+        [
+          374,
+          2080
+        ],
+        [
+          374.2,
+          2078.45
+        ],
+        [
+          374.8,
+          2077
+        ],
+        [
+          375.76,
+          2075.76
+        ],
+        [
+          377,
+          2074.8
+        ],
+        [
+          378.45,
+          2074.2
+        ],
+        [
+          380,
+          2074
+        ],
+        [
+          381.55,
+          2074.2
+        ],
+        [
+          383,
+          2074.8
+        ],
+        [
+          384.24,
+          2075.76
+        ],
+        [
+          385.2,
+          2077
+        ],
+        [
+          385.8,
+          2078.45
+        ]
+      ],
+      "start": 82,
+      "end": 84,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Door Top Alarm LED",
+      "subcategory": "Led Red"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Door Top Alarm LED",
+      "param": "Led Red Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Door Top Alarm LED",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Anti Ligature Pull",
+      "points": [
+        [
+          -27,
+          900
+        ],
+        [
+          -67,
+          960
+        ],
+        [
+          -67,
+          1060
+        ],
+        [
+          -27,
+          1120
+        ]
+      ],
+      "start": 310,
+      "end": 370,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Anti Ligature Pull",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Anti Ligature Pull",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Anti Ligature Pull",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Anti Ligature Pull Inside",
+      "points": [
+        [
+          27,
+          900
+        ],
+        [
+          27,
+          1120
+        ],
+        [
+          67,
+          1060
+        ],
+        [
+          67,
+          960
+        ]
+      ],
+      "start": 310,
+      "end": 370,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Anti Ligature Pull Inside",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Anti Ligature Pull Inside",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Anti Ligature Pull Inside",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Anti Ligature Lock Escutcheon",
+      "points": [
+        [
+          343,
+          820
+        ],
+        [
+          347.59,
+          820.91
+        ],
+        [
+          351.49,
+          823.51
+        ],
+        [
+          354.09,
+          827.41
+        ],
+        [
+          355,
+          832
+        ],
+        [
+          355,
+          858
+        ],
+        [
+          354.09,
+          862.59
+        ],
+        [
+          351.49,
+          866.49
+        ],
+        [
+          347.59,
+          869.09
+        ],
+        [
+          343,
+          870
+        ],
+        [
+          337,
+          870
+        ],
+        [
+          332.41,
+          869.09
+        ],
+        [
+          328.51,
+          866.49
+        ],
+        [
+          325.91,
+          862.59
+        ],
+        [
+          325,
+          858
+        ],
+        [
+          325,
+          832
+        ],
+        [
+          325.91,
+          827.41
+        ],
+        [
+          328.51,
+          823.51
+        ],
+        [
+          332.41,
+          820.91
+        ],
+        [
+          337,
+          820
+        ]
+      ],
+      "start": 27,
+      "end": 30,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Anti Ligature Lock Escutcheon",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Anti Ligature Lock Escutcheon",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Anti Ligature Lock Escutcheon",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Kick Plate 1",
+      "points": [
+        [
+          402,
+          10
+        ],
+        [
+          403.15,
+          10.23
+        ],
+        [
+          404.12,
+          10.88
+        ],
+        [
+          404.77,
+          11.85
+        ],
+        [
+          405,
+          13
+        ],
+        [
+          405,
+          297
+        ],
+        [
+          404.77,
+          298.15
+        ],
+        [
+          404.12,
+          299.12
+        ],
+        [
+          403.15,
+          299.77
+        ],
+        [
+          402,
+          300
+        ],
+        [
+          -402,
+          300
+        ],
+        [
+          -403.15,
+          299.77
+        ],
+        [
+          -404.12,
+          299.12
+        ],
+        [
+          -404.77,
+          298.15
+        ],
+        [
+          -405,
+          297
+        ],
+        [
+          -405,
+          13
+        ],
+        [
+          -404.77,
+          11.85
+        ],
+        [
+          -404.12,
+          10.88
+        ],
+        [
+          -403.15,
+          10.23
+        ],
+        [
+          -402,
+          10
+        ]
+      ],
+      "start": 27,
+      "end": 28.5,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Kick Plate 1",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Kick Plate 1",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Kick Plate 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Kick Plate 2",
+      "points": [
+        [
+          402,
+          10
+        ],
+        [
+          403.15,
+          10.23
+        ],
+        [
+          404.12,
+          10.88
+        ],
+        [
+          404.77,
+          11.85
+        ],
+        [
+          405,
+          13
+        ],
+        [
+          405,
+          297
+        ],
+        [
+          404.77,
+          298.15
+        ],
+        [
+          404.12,
+          299.12
+        ],
+        [
+          403.15,
+          299.77
+        ],
+        [
+          402,
+          300
+        ],
+        [
+          -402,
+          300
+        ],
+        [
+          -403.15,
+          299.77
+        ],
+        [
+          -404.12,
+          299.12
+        ],
+        [
+          -404.77,
+          298.15
+        ],
+        [
+          -405,
+          297
+        ],
+        [
+          -405,
+          13
+        ],
+        [
+          -404.77,
+          11.85
+        ],
+        [
+          -404.12,
+          10.88
+        ],
+        [
+          -403.15,
+          10.23
+        ],
+        [
+          -402,
+          10
+        ]
+      ],
+      "start": -28.5,
+      "end": -27,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Kick Plate 2",
+      "subcategory": "Stainless"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Kick Plate 2",
+      "param": "Stainless Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Kick Plate 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perimeter Seal Jamb 1",
+      "points": [
+        [
+          -423,
+          -21
+        ],
+        [
+          -421,
+          -21
+        ],
+        [
+          -421,
+          -11
+        ],
+        [
+          -423,
+          -11
+        ]
+      ],
+      "start": 0,
+      "end": 2060
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perimeter Seal Jamb 1",
+      "subcategory": "Seal"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perimeter Seal Jamb 1",
+      "param": "Seal Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perimeter Seal Jamb 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perimeter Seal Jamb 2",
+      "points": [
+        [
+          421,
+          -21
+        ],
+        [
+          423,
+          -21
+        ],
+        [
+          423,
+          -11
+        ],
+        [
+          421,
+          -11
+        ]
+      ],
+      "start": 0,
+      "end": 2060
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perimeter Seal Jamb 2",
+      "subcategory": "Seal"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perimeter Seal Jamb 2",
+      "param": "Seal Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perimeter Seal Jamb 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Perimeter Seal Head",
+      "points": [
+        [
+          -423,
+          -21
+        ],
+        [
+          423,
+          -21
+        ],
+        [
+          423,
+          -11
+        ],
+        [
+          -423,
+          -11
+        ]
+      ],
+      "start": 2058,
+      "end": 2060
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Perimeter Seal Head",
+      "subcategory": "Seal"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Perimeter Seal Head",
+      "param": "Seal Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Perimeter Seal Head",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_Door_Psychiatric_AntiLigature.png"
+    }
+  ],
+  "values": {
+    "Opening 926 x 2100 mm": {
+      "value": "926x2100",
+      "source_status": "assumed",
+      "source": "frame outside size, type 1; HBN 03-01 adult acute mental health"
+    },
+    "Door-top alarm load sensor": {
+      "value": "top alarm",
+      "source_status": "assumed",
+      "source": "anti-ligature practice, HBN 03-01"
+    },
+    "Continuous hinge full height": {
+      "value": "continuous",
+      "source_status": "assumed",
+      "source": "no ligature point at the hinge"
+    },
+    "Observation panel 220 x 500 mm with integral blind": {
+      "value": "220x500",
+      "source_status": "assumed",
+      "source": "typical"
+    }
   }
- ],
- "values": {
-  "Opening 926 x 2100 mm": {
-   "value": "926x2100",
-   "source_status": "assumed",
-   "source": "frame outside size, type 1; HBN 03-01 adult acute mental health"
-  },
-  "Door-top alarm load sensor": {
-   "value": "top alarm",
-   "source_status": "assumed",
-   "source": "anti-ligature practice, HBN 03-01"
-  },
-  "Continuous hinge full height": {
-   "value": "continuous",
-   "source_status": "assumed",
-   "source": "no ligature point at the hinge"
-  },
-  "Observation panel 220 x 500 mm with integral blind": {
-   "value": "220x500",
-   "source_status": "assumed",
-   "source": "typical"
-  }
- }
 }

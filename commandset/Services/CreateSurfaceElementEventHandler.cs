@@ -1,5 +1,8 @@
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
+using RevitMCPCommandSet.Services.Fmc.SystemTypes;
+using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Utils;
 using RevitMCPSDK.API.Interfaces;
 
@@ -8,8 +11,7 @@ namespace RevitMCPCommandSet.Services
     public class CreateSurfaceElementEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
+        private Document doc => FmcCallContext.Document(uiApp);
         private Autodesk.Revit.ApplicationServices.Application app => uiApp.Application;
         /// <summary>
         /// 事件等待对象
@@ -26,6 +28,18 @@ namespace RevitMCPCommandSet.Services
         public string _floorName = "常规 - ";
         public bool _structural = true;
         private List<string> _warnings = new List<string>();
+        private JArray _items = new JArray();
+
+        /// <summary>A per-item refusal: every item answers, none is skipped silently.</summary>
+        private void Refuse(int item, string code, string reason) =>
+            _items.Add(new JObject { ["item"] = item, ["ok"] = false, ["code"] = code, ["reason"] = reason });
+
+        /// <summary>A layered type's total thickness in mm (null when it has no layers).</summary>
+        private static double? LayerWidthMm(HostObjAttributes t)
+        {
+            try { CompoundStructure cs = t.GetCompoundStructure(); return cs == null ? (double?)null : cs.GetWidth() * 304.8; }
+            catch (Exception) { return null; }
+        }
 
         /// <summary>
         /// 设置创建的参数
@@ -45,9 +59,13 @@ namespace RevitMCPCommandSet.Services
             {
                 var elementIds = new List<long>();
                 _warnings.Clear();
+                _items = new JArray();
+                int itemNo = 0;
                 foreach (var data in CreatedInfo)
                 {
+                    itemNo++;
                     long requestedTypeId = data.TypeId;
+                    int madeBefore = elementIds.Count;
                     // Step0 获取构件类型
                     BuiltInCategory builtInCategory = BuiltInCategory.INVALID;
                     Enum.TryParse(data.Category.Replace(".", "").Replace("BuiltInCategory", ""), true, out builtInCategory);
@@ -58,131 +76,48 @@ namespace RevitMCPCommandSet.Services
                     double topOffset = -1;  // ft
                     double baseOffset = -1; // ft
                     baseLevel = doc.FindNearestLevel(data.BaseLevel / 304.8);
-                    baseOffset = (data.BaseOffset + data.BaseLevel) / 304.8 - baseLevel.Elevation;
                     topLevel = doc.FindNearestLevel((data.BaseLevel + data.BaseOffset + data.Thickness) / 304.8);
-                    topOffset = (data.BaseLevel + data.BaseOffset + data.Thickness) / 304.8 - topLevel.Elevation;
-                    if (baseLevel == null)
+                    if (baseLevel == null || topLevel == null)
+                    {
+                        Refuse(itemNo, "FMC-NO-LEVEL", "the model has no level near baseLevel");
                         continue;
+                    }
+                    baseOffset = (data.BaseOffset + data.BaseLevel) / 304.8 - baseLevel.Elevation;
+                    topOffset = (data.BaseLevel + data.BaseOffset + data.Thickness) / 304.8 - topLevel.Elevation;
 
                     // Step2 获取族类型
                     FamilySymbol symbol = null;
                     FloorType floorType = null;
                     RoofType roofType = null;
                     CeilingType ceilingType = null;
-                    if (data.TypeId != -1 && data.TypeId != 0)
-                    {
-                        ElementId typeELeId = new ElementId(data.TypeId);
-                        if (typeELeId != null)
-                        {
-                            Element typeEle = doc.GetElement(typeELeId);
-                            if (typeEle != null && typeEle is FamilySymbol)
-                            {
-                                symbol = typeEle as FamilySymbol;
-                                // 获取symbol的Category对象并转换为BuiltInCategory枚举
-                                builtInCategory = (BuiltInCategory)symbol.Category.Id.GetIntValue();
-                            }
-                            else if (typeEle != null && typeEle is FloorType)
-                            {
-                                floorType = typeEle as FloorType;
-                                builtInCategory = (BuiltInCategory)floorType.Category.Id.GetIntValue();
-                            }
-                            else if (typeEle != null && typeEle is RoofType)
-                            {
-                                roofType = typeEle as RoofType;
-                                builtInCategory = (BuiltInCategory)roofType.Category.Id.GetIntValue();
-                            }
-                            else if (typeEle != null && typeEle is CeilingType)
-                            {
-                                ceilingType = typeEle as CeilingType;
-                                builtInCategory = (BuiltInCategory)ceilingType.Category.Id.GetIntValue();
-                            }
-                        }
-                    }
+
+                    // Review gap 11 (28 Nov): no silent first type and no ignored thickness. The typeId is used, or refused
+                    // when it is missing or doesn't fit; with no typeId a floor, roof or ceiling is the one type of that thickness.
+                    Element typeEle = data.TypeId != -1 && data.TypeId != 0 ? doc.GetElement(new ElementId(data.TypeId)) : null;
+                    if (typeEle is FamilySymbol fsym) builtInCategory = (BuiltInCategory)fsym.Category.Id.GetIntValue();
+                    else if (typeEle is FloorType) builtInCategory = BuiltInCategory.OST_Floors;
+                    else if (typeEle is RoofType) builtInCategory = BuiltInCategory.OST_Roofs;
+                    else if (typeEle is CeilingType) builtInCategory = BuiltInCategory.OST_Ceilings;
                     if (builtInCategory == BuiltInCategory.INVALID)
-                        continue;
-                    switch (builtInCategory)
                     {
-                        case BuiltInCategory.OST_Floors:
-                            if (floorType == null)
-                            {
-                                // Requested typeId was invalid or not provided, fall back to first available
-                                floorType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(FloorType))
-                                    .OfCategory(BuiltInCategory.OST_Floors)
-                                    .Cast<FloorType>()
-                                    .FirstOrDefault();
-                                if (floorType == null)
-                                {
-                                    _warnings.Add($"No floor types available in project.");
-                                    continue;
-                                }
-                                if (requestedTypeId != -1 && requestedTypeId != 0)
-                                {
-                                    _warnings.Add($"Requested floor typeId {requestedTypeId} not found. Defaulted to '{floorType.Name}' (ID: {floorType.Id.GetValue()})");
-                                }
-                            }
-                            break;
-                        case BuiltInCategory.OST_Roofs:
-                            if (roofType == null)
-                            {
-                                // Get default roof type if not specified
-                                roofType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(RoofType))
-                                    .OfCategory(BuiltInCategory.OST_Roofs)
-                                    .Cast<RoofType>()
-                                    .FirstOrDefault();
-                                if (roofType == null)
-                                {
-                                    _warnings.Add($"No roof types available in project.");
-                                    continue;
-                                }
-                                if (requestedTypeId != -1 && requestedTypeId != 0)
-                                {
-                                    _warnings.Add($"Requested roof typeId {requestedTypeId} not found. Defaulted to '{roofType.Name}' (ID: {roofType.Id.GetValue()})");
-                                }
-                            }
-                            break;
-                        case BuiltInCategory.OST_Ceilings:
-                            if (ceilingType == null)
-                            {
-                                // Get default ceiling type if not specified
-                                ceilingType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(CeilingType))
-                                    .OfCategory(BuiltInCategory.OST_Ceilings)
-                                    .Cast<CeilingType>()
-                                    .FirstOrDefault();
-                                if (ceilingType == null)
-                                {
-                                    _warnings.Add($"No ceiling types available in project.");
-                                    continue;
-                                }
-                                if (requestedTypeId != -1 && requestedTypeId != 0)
-                                {
-                                    _warnings.Add($"Requested ceiling typeId {requestedTypeId} not found. Defaulted to '{ceilingType.Name}' (ID: {ceilingType.Id.GetValue()})");
-                                }
-                            }
-                            break;
-                        default:
-                            if (symbol == null)
-                            {
-                                symbol = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(FamilySymbol))
-                                    .OfCategory(builtInCategory)
-                                    .Cast<FamilySymbol>()
-                                    .FirstOrDefault(fs => fs.IsActive); // 获取激活的类型作为默认类型
-                                if (symbol == null)
-                                {
-                                    symbol = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(FamilySymbol))
-                                    .OfCategory(builtInCategory)
-                                    .Cast<FamilySymbol>()
-                                    .FirstOrDefault();
-                                }
-                            }
-                            if (symbol == null)
-                                continue;
-                            break;
+                        Refuse(itemNo, "FMC-BAD-CATEGORY", $"category {data.Category} isn't a Revit category and typeId {data.TypeId} names no type");
+                        continue;
                     }
+                    if (builtInCategory != BuiltInCategory.OST_Floors && builtInCategory != BuiltInCategory.OST_Roofs && builtInCategory != BuiltInCategory.OST_Ceilings)
+                    {
+                        // Only floors, roofs and ceilings are made below; anything else used to pass with nothing made
+                        Refuse(itemNo, "FMC-BAD-CATEGORY", $"create_surface_based_element makes floors, roofs and ceilings, not {builtInCategory}");
+                        continue;
+                    }
+                    Type cls = builtInCategory == BuiltInCategory.OST_Floors ? typeof(FloorType) : builtInCategory == BuiltInCategory.OST_Roofs ? typeof(RoofType) : typeof(CeilingType);
+                    var candidates = new FilteredElementCollector(doc).OfClass(cls).OfCategory(builtInCategory).Cast<HostObjAttributes>()
+                        .Select(t => new TypeEditCore.TypeCandidate { Id = t.Id.GetValue(), Name = t.Name, WidthMm = LayerWidthMm(t) }).ToList();
+                    bool fits = typeEle != null && candidates.Any(c => c.Id == data.TypeId);
+                    var pick = TypeEditCore.PickType(builtInCategory.ToString(), requestedTypeId, typeEle != null, fits, data.Thickness, true, candidates);
+                    if (!pick.Ok) { Refuse(itemNo, pick.Code, pick.Reason); continue; }
+                    Element picked = doc.GetElement(new ElementId(pick.Id.Value));
+                    floorType = picked as FloorType; roofType = picked as RoofType; ceilingType = picked as CeilingType;
+                    if (pick.Note != null) _warnings.Add($"item {itemNo}: {pick.Note}");
 
                     // Step3 批量创建楼板
                     Floor floor = null;
@@ -266,17 +201,22 @@ namespace RevitMCPCommandSet.Services
 
                         transaction.Commit();
                     }
+                    if (elementIds.Count > madeBefore) _items.Add(new JObject { ["item"] = itemNo, ["ok"] = true, ["id"] = elementIds[elementIds.Count - 1], ["type_id"] = pick.Id });
+                    else Refuse(itemNo, "FMC-NOT-MADE", "Revit made nothing for this item");
                 }
-                string message = $"Successfully created {elementIds.Count} element(s).";
+                int refused = _items.Count(x => !x.Value<bool>("ok"));
+                string message = $"Created {elementIds.Count} of {CreatedInfo.Count} element(s)" + (refused > 0 ? $"; {refused} refused, nothing made for them: " +
+                    string.Join(" | ", _items.Where(x => !x.Value<bool>("ok")).Select(x => $"item {x["item"]} [{x["code"]}] {x["reason"]}")) : ".");
                 if (_warnings.Count > 0)
                 {
                     message += "\n\n⚠ Warnings:\n  • " + string.Join("\n  • ", _warnings);
                 }
-                Result = new AIResult<List<long>>
+                Result = new ItemsResult<List<long>>
                 {
-                    Success = true,
+                    Success = refused == 0,
                     Message = message,
                     Response = elementIds,
+                    Items = _items,
                 };
             }
             catch (Exception ex)
@@ -302,7 +242,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>
@@ -313,67 +253,7 @@ namespace RevitMCPCommandSet.Services
             return "创建面状构件";
         }
 
-        /// <summary>
-        /// 获取或创建指定厚度的楼板类型
-        /// </summary>
-        /// <param name="thickness">目标厚度（ft）</param>
-        /// <returns>符合厚度要求的楼板类型</returns>
-        private FloorType CreateOrGetFloorType(Document doc, double thickness = 200 / 304.8)
-        {
-
-            // 查找匹配厚度的楼板类型
-            FloorType existingType = new FilteredElementCollector(doc)
-                                     .OfClass(typeof(FloorType))                    // 仅获取FloorType类
-                                     .OfCategory(BuiltInCategory.OST_Floors)        // 仅获取楼板类别
-                                     .Cast<FloorType>()                            // 转换为FloorType类型
-                                     .FirstOrDefault(w => w.Name == $"{_floorName}{thickness * 304.8}mm");
-            if (existingType != null)
-                return existingType;
-            // 如果没有找到匹配的楼板类型，创建新的
-            FloorType baseFloorType = existingType = new FilteredElementCollector(doc)
-                                     .OfClass(typeof(FloorType))                    // 仅获取FloorType类
-                                     .OfCategory(BuiltInCategory.OST_Floors)        // 仅获取楼板类别
-                                     .Cast<FloorType>()                            // 转换为FloorType类型
-                                     .FirstOrDefault(w => w.Name.Contains("常规"));
-            if (existingType != null)
-            {
-                baseFloorType = existingType = new FilteredElementCollector(doc)
-                                     .OfClass(typeof(FloorType))                    // 仅获取FloorType类
-                                     .OfCategory(BuiltInCategory.OST_Floors)        // 仅获取楼板类别
-                                     .Cast<FloorType>()                            // 转换为FloorType类型
-                                     .FirstOrDefault();
-            }
-
-            // 复制楼板类型
-            FloorType newFloorType = null;
-            newFloorType = baseFloorType.Duplicate($"{_floorName}{thickness * 304.8}mm") as FloorType;
-
-            // 设置新楼板类型的厚度
-            // 获取构造层设置
-            CompoundStructure cs = newFloorType.GetCompoundStructure();
-            if (cs != null)
-            {
-                // 获取所有层
-                IList<CompoundStructureLayer> layers = cs.GetLayers();
-                if (layers.Count > 0)
-                {
-                    // 计算当前总厚度
-                    double currentTotalThickness = cs.GetWidth();
-
-                    // 按比例调整每层厚度
-                    for (int i = 0; i < layers.Count; i++)
-                    {
-                        CompoundStructureLayer layer = layers[i];
-                        double newLayerThickness = thickness;
-                        cs.SetLayerWidth(i, newLayerThickness);
-                    }
-
-                    // 应用修改后的构造层设置
-                    newFloorType.SetCompoundStructure(cs);
-                }
-            }
-            return newFloorType;
-        }
-
+        // CreateOrGetFloorType (never called; it set every layer to the full thickness) was removed with review gap 11:
+        // a new thickness is made deliberately with modify_model duplicate_type, never as a side effect.
     }
 }

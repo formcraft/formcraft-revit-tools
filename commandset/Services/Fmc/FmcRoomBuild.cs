@@ -23,7 +23,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         public JObject Parameters { get; set; } = new JObject();
         public JObject Result { get; private set; } = new JObject();
         public string Error { get; private set; } = "";
-        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return _done.WaitOne(timeoutMilliseconds); }
+        public bool WaitForCompletion(int timeoutMilliseconds = 10000) { _done.Reset(); return FmcBusy.Wait(_done, timeoutMilliseconds); }
         public string GetName() => "Formcraft room build";
 
         private static double Ft(double mm) => mm / 304.8;
@@ -31,7 +31,11 @@ namespace RevitMCPCommandSet.Services.Fmc
         public void Execute(UIApplication app)
         {
             Result = new JObject(); Error = "";
-            try { Result = Build(app.ActiveUIDocument?.Document ?? throw new InvalidOperationException("Open the WIP model first")); }
+            try
+            {
+                using var target = FmcTarget.Resolve(app, Parameters, mayOpen: false);
+                Result = Build(target.Doc);
+            }
             catch (Exception e) { Error = e.Message; }
             finally { _done.Set(); }
         }

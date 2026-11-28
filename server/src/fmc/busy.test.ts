@@ -6,7 +6,7 @@ import net from "node:net";
 import path from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { BridgeBusyError, bridgeState, busyWords, parseBusy, retryWhileBusy, waitForBridgeFree } from "./busy.js";
+import { BridgeBusyError, RevitNotIdleError, bridgeState, busyWords, parseBusy, retryWhileBusy, waitForBridgeFree } from "./busy.js";
 import { gateA, parseRecipe } from "./recipes.js";
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
@@ -47,15 +47,17 @@ test("F-072: a busy answer is waited out and sent again while the busy job's hea
   assert.deepEqual(waits, [0, 5000, 10000]);
 });
 
-test("F-072: the busy wait gives up at the caller's ceiling, saying what Revit is busy with", async () => {
+test("F-072: a fresh heartbeat at the caller's ceiling is Revit not idle, not a dead listener", async () => {
   const c = fakeTime();
   let calls = 0;
   const err = await retryWhileBusy(async () => { calls++; throw new Error(ADDIN); }, {
     command: "fmc_family_host_test", ceilingMs: 20000, pollMs: 5000, heartbeatMs: () => c.now(), now: c.now, sleep: c.sleep,
   }).catch((e: unknown) => e);
-  assert.ok(err instanceof BridgeBusyError);
-  assert.equal((err as BridgeBusyError).why, "ceiling");
-  assert.match((err as Error).message, /^\[FMC-BRIDGE-BUSY\] Revit is still running fmc_doc_flex since .* so fmc_family_host_test wasn't sent: waited 20 s.*time limit/);
+  assert.ok(err instanceof RevitNotIdleError);
+  assert.match((err as Error).message, /\[FMC-REVIT-NOT-IDLE\]/);
+  assert.match((err as Error).message, new RegExp(JOB));
+  assert.match((err as Error).message, /do not toggle AI or kill anything/);
+  assert.doesNotMatch((err as Error).message, /turn AI off and on/);
   assert.equal(calls, 5, "sent at 0, 5, 10, 15 and 20 s; one more wait would pass the 20 s ceiling");
 });
 
@@ -159,8 +161,9 @@ test("F-072: the server's socket client waits out the add-in's busy answers (fak
       const client = new RevitClientConnection("127.0.0.1", port);
       await new Promise<void>((resolve) => { client.socket.once("connect", () => resolve()); client.connect(); });
       const err = await client.sendRaw("fmc_doc_close", { session: "s1" }, 300).catch((e: unknown) => e);
-      assert.ok(err instanceof BridgeBusyError, String(err));
-      assert.match((err as Error).message, /Revit is still running fmc_doc_flex .* so fmc_doc_close wasn't sent/);
+      assert.ok(err instanceof RevitNotIdleError, String(err));
+      assert.match((err as Error).message, /\[FMC-REVIT-NOT-IDLE\]/);
+      assert.match((err as Error).message, /do not toggle AI or kill anything/);
       client.socket.destroy();
     });
   } finally {

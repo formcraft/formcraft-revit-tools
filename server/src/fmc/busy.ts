@@ -1,3 +1,6 @@
+import { jobBusyReason, withBusy } from "./busyreason.js";
+import { NOT_IDLE, NOT_IDLE_HINT, ageWords } from "./notidle.js";
+
 /**
  * F-072 (issue #248): the add-in answers "[FMC-BRIDGE-BUSY] Revit is still running <command> since <time> (job <id>)"
  * while an earlier command that outlived its wait still holds Revit's API thread (plugin/Core/BridgeBusy.cs). Before,
@@ -24,13 +27,33 @@ export function busyWords(b: BridgeBusy): string {
   return `Revit was busy with ${b.command} since ${b.since} (job ${b.job})`;
 }
 
+/**
+ * The call's own wait ended, but Revit's job is still heartbeating. The listener is not dead.
+ * Finish or cancel the dialog or command in Revit. Do not toggle AI.
+ */
+export class RevitNotIdleError extends Error {
+  readonly code = NOT_IDLE;
+  constructor(readonly busy: BridgeBusy, readonly waitedMs: number, readonly forCommand: string) {
+    const age = ageWords(Math.max(0, Math.round(waitedMs / 1000)));
+    const seconds = Math.max(0, Math.round(waitedMs / 1000));
+    super(withBusy(
+      `[${NOT_IDLE}] Revit is not idle. Job ${busy.job} (${busy.command}) since ${busy.since} (this call waited ${age}). ${NOT_IDLE_HINT} ${forCommand} was not sent.`,
+      jobBusyReason(busy.command, seconds),
+    ));
+    this.name = "RevitNotIdleError";
+  }
+}
+
 /** The wait gave up: the busy answer's words (so it is still recognised), how long it waited and why it stopped. */
 export class BridgeBusyError extends Error {
   readonly code = "FMC-BRIDGE-BUSY";
   constructor(readonly busy: BridgeBusy, readonly waitedMs: number, readonly why: "ceiling" | "no heartbeat", readonly forCommand: string) {
-    super(`${BUSY_TAG} Revit is still running ${busy.command} since ${busy.since} (job ${busy.job}), so ${forCommand} wasn't sent: ` +
+    super(withBusy(
+      `${BUSY_TAG} Revit is still running ${busy.command} since ${busy.since} (job ${busy.job}), so ${forCommand} wasn't sent: ` +
       `waited ${Math.round(waitedMs / 1000)} s, then gave up (${why === "ceiling" ? "the call's time limit" : "Revit's heartbeats for that job stopped"}). ` +
-      `fmc_job status ${busy.job} follows it; send ${forCommand} again once it has finished.`);
+      `fmc_job status ${busy.job} follows it; send ${forCommand} again once it has finished.`,
+      jobBusyReason(busy.command, Math.max(0, Math.round(waitedMs / 1000))),
+    ));
     this.name = "BridgeBusyError";
   }
 }
@@ -49,6 +72,8 @@ export interface BusyWaitOptions {
   now?: () => number;
   sleep?: (ms: number) => Promise<void>;
   onWait?: (busy: BridgeBusy, waitedMs: number) => void;
+  /** When the busy job is held by a dialog a person must answer, the error to throw instead of retrying. */
+  blocking?: (job: string) => Error | null;
 }
 
 export function busyPollMs(env: NodeJS.ProcessEnv = process.env): number {
@@ -71,13 +96,21 @@ export async function retryWhileBusy<T>(send: () => Promise<T>, o: BusyWaitOptio
     try {
       return await send();
     } catch (e) {
+      if (e instanceof Error && (e as { code?: string }).code === "FMC-DIALOG-BLOCKING") throw e;
       const b = parseBusy(e);
       if (!b || e instanceof BridgeBusyError) throw e;
+      const blocking = o.blocking?.(b.job);
+      if (blocking) throw blocking;
       const t = now();
       if (!t0) t0 = t;
       const waited = t - t0;
-      if (waited + poll > o.ceilingMs) throw new BridgeBusyError(b, waited, "ceiling", o.command);
-      if (t - Math.max(o.heartbeatMs(b.job), t0) > stale) throw new BridgeBusyError(b, waited, "no heartbeat", o.command);
+      const beat = o.heartbeatMs(b.job);
+      const fresh = beat > 0 && t - beat <= stale;
+      if (waited + poll > o.ceilingMs) {
+        if (fresh) throw new RevitNotIdleError(b, waited, o.command);
+        throw new BridgeBusyError(b, waited, "ceiling", o.command);
+      }
+      if (t - Math.max(beat, t0) > stale) throw new BridgeBusyError(b, waited, "no heartbeat", o.command);
       o.onWait?.(b, waited);
       await sleep(poll);
     }

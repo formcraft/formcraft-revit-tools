@@ -1,0 +1,68 @@
+{
+  "_about": "Every part of every discipline the project report shows. cats: Revit categories (as exported by fmc_scene_export) drawn for the part, wherever they were modelled; '*' takes a discipline's remaining categories; '#lines' the analytical lines. items: regex on the cost item labels the part carries. A part is live (clickable) once it has geometry in the model; until then it is listed, greyed and its items stay in the totals. order: build-up order in the 3D. colour: the paper-model colour.",
+  "architecture": [
+    {"name": "Site & paving", "cats": ["Toposolid", "Site"], "items": "external paving|^Floors: landscape", "colour": "#b7c49a", "order": 0},
+    {"name": "Floors & ceilings", "cats": ["Floors", "Slab Edges", "Ceilings"], "items": "^Floors: (timber|tiled|screed)", "colour": "#e2e1dc", "order": 2},
+    {"name": "Columns & beams", "cats": ["Structural Columns", "Columns", "Structural Framing"], "colour": "#efeeea", "order": 3},
+    {"name": "Walls", "cats": ["Walls", "Wall Sweeps", "Curtain Wall Mullions", "Curtain Panels"], "items": "^Walls:", "colour": "#efeeea", "order": 5},
+    {"name": "Stairs & railings", "cats": ["Stairs", "Runs", "Landings", "Supports", "Railings", "Top Rails"], "colour": "#d8d6cf", "order": 6},
+    {"name": "Doors & windows", "cats": ["Doors", "Windows"], "items": "^Windows & doors", "colour": "#2a333b", "order": 7},
+    {"name": "Roof", "cats": ["Roofs", "Fascias", "Gutters", "Pipes"], "items": "^Roof covering", "colour": "#d15334", "order": 9},
+    {"name": "Finishes", "cats": [], "items": "^Ceilings, joinery", "colour": "#e2e1dc", "order": 10},
+    {"name": "Other fittings", "cats": ["*"], "colour": "#e2e1dc", "order": 10}
+  ],
+  "structure": [
+    {"name": "Footings", "cats": ["Structural Foundations"], "items": "^Excavation", "colour": "#8f969b", "order": 1},
+    {"name": "Slabs", "cats": ["Floors"], "colour": "#c9cdd0", "order": 2},
+    {"name": "Columns", "cats": ["Structural Columns"], "colour": "#aeb4b9", "order": 3},
+    {"name": "Beams", "cats": ["Structural Framing"], "colour": "#aeb4b9", "order": 4},
+    {"name": "Roof trusses", "cats": ["#lines"], "items": "^Roof trusses", "colour": "#b48c62", "order": 8},
+    {"name": "Attic timber floor", "cats": [], "items": "^Attic timber floor", "colour": "#b48c62", "order": 8},
+    {"name": "Boys' quarters frame", "cats": [], "items": "^Boys' quarters", "colour": "#aeb4b9", "order": 4},
+    {"name": "Other", "cats": ["*"], "colour": "#c9cdd0", "order": 10}
+  ],
+  "plumbing": [
+    {"name": "Cold water and storage", "cats": [], "items": "^Cold water", "colour": "#1baf7a", "order": 6},
+    {"name": "Sanitary fittings", "cats": ["Plumbing Fixtures"], "items": "^Sanitary fittings", "colour": "#ffffff", "order": 10},
+    {"name": "Soil, waste and septic", "cats": [], "items": "^Soil, waste", "colour": "#1baf7a", "order": 1},
+    {"name": "Hot water", "cats": [], "items": "^Hot water", "colour": "#1baf7a", "order": 6},
+    {"name": "Rainwater harvesting", "cats": [], "items": "^Rainwater", "colour": "#1baf7a", "order": 9}
+  ],
+  "electrical": [
+    {"name": "Power and lighting circuits", "cats": ["Electrical Fixtures"], "items": "^Power and lighting", "colour": "#eda100", "order": 6},
+    {"name": "Boards, earthing, lightning", "cats": ["Electrical Equipment"], "items": "^Distribution boards", "colour": "#eda100", "order": 6},
+    {"name": "Light fittings", "cats": ["Lighting Fixtures"], "items": "^Light fittings", "colour": "#ffae61", "order": 10},
+    {"name": "Solar PV and batteries", "cats": [], "items": "^Solar PV", "colour": "#eda100", "order": 9},
+    {"name": "Data and CCTV cabling", "cats": [], "items": "^Data and CCTV", "colour": "#eda100", "order": 6}
+  ],
+  "mechanical": [
+    {"name": "Extract fans", "cats": [], "items": "^Extract fans", "colour": "#6250d6", "order": 7},
+    {"name": "Air conditioning", "cats": ["Mechanical Equipment"], "items": "^Air conditioning", "colour": "#6250d6", "order": 7},
+    {"name": "Solar hot water", "cats": [], "items": "^Solar hot water", "colour": "#6250d6", "order": 9}
+  ],
+  "interiors": [
+    {"name": "Kitchen", "cats": ["Casework"], "items": "^Kitchen units", "colour": "#ffae61", "order": 10},
+    {"name": "Wardrobes", "cats": [], "items": "^Built-in wardrobes", "colour": "#ffae61", "order": 10},
+    {"name": "Bathroom joinery", "cats": [], "items": "^Vanity units", "colour": "#ffae61", "order": 10},
+    {"name": "Feature joinery", "cats": [], "items": "^Shelving", "colour": "#ffae61", "order": 10},
+    {"name": "Loose furniture", "cats": ["Furniture", "Furniture Systems"], "items": "^Loose furniture", "colour": "#ffae61", "order": 10}
+  ],
+  "fire": [
+    {"name": "Smoke and heat detectors", "cats": [], "items": "^Smoke and heat", "colour": "#e34948", "order": 10},
+    {"name": "Extinguishers and blankets", "cats": [], "items": "^Fire extinguishers", "colour": "#e34948", "order": 10},
+    {"name": "Intruder alarm", "cats": [], "items": "^Intruder alarm", "colour": "#e34948", "order": 10},
+    {"name": "CCTV", "cats": [], "items": "^CCTV", "colour": "#e34948", "order": 10},
+    {"name": "Access control", "cats": [], "items": "^Access control", "colour": "#e34948", "order": 10}
+  ],
+  "external": [
+    {"name": "Fence and boundary wall", "cats": ["Boundary walls"], "items": "^Boundary wall", "colour": "#e2e1dc", "order": 1},
+    {"name": "Gate and gate house", "cats": [], "items": "^Gate", "colour": "#2a333b", "order": 1},
+    {"name": "Driveway and parking", "cats": [], "colour": "#c8c2b0", "order": 1},
+    {"name": "Site drainage", "cats": [], "colour": "#8f969b", "order": 1}
+  ],
+  "landscape": [
+    {"name": "Soft landscape and planting", "cats": ["Planting"], "items": "^Soft landscape", "colour": "#74a24f", "order": 0},
+    {"name": "Irrigation", "cats": [], "items": "^Irrigation", "colour": "#74a24f", "order": 0},
+    {"name": "Outdoor lighting", "cats": [], "items": "^Outdoor and garden lighting", "colour": "#ffae61", "order": 10}
+  ]
+}

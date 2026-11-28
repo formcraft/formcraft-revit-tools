@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ namespace Formcraft.Shell.ViewModels
     public enum ShellScreen { SignIn, Welcome, Main }
 
     /// <summary>What the pane body shows: a section, or a page opened from the header.</summary>
-    public enum ShellPage { Section, Connect, Settings, Admin }
+    public enum ShellPage { Section, Connect, Settings, Admin, Approvals }
 
     /// <summary>One section button in the pane (e.g. Setup › Project).</summary>
     public sealed class SectionItem : ObservableObject
@@ -206,7 +207,16 @@ namespace Formcraft.Shell.ViewModels
             _hostSections["Project"] = Project;
             _hostSections["Families"] = Families;
             _hostSections["Templates"] = Templates;
-            Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog, ai);
+            _ai = ai ?? new MockAiTools();
+            ToggleAiCommand = new AsyncCommand(ToggleAiAsync, s => Status = s);
+            // AI approvals: their own page for everyone (owner 26 Oct), refreshed whenever the queue changes.
+            _ui = System.Threading.SynchronizationContext.Current;
+            Approvals = new ApprovalsViewModel(_ai, s => Status = s);
+            Approvals.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(ApprovalsViewModel.Waiting)) { OnPropertyChanged(nameof(AiWaitingText)); OnPropertyChanged(nameof(HasAiWaiting)); } };
+            OpenApprovalsCommand = new RelayCommand(() => { Open(ShellPage.Approvals); _ = Approvals.RefreshAsync(); });
+            _ai.QueueChanged += (_, __) => OnUi(() => _ = Approvals.RefreshAsync());
+            _ = Approvals.RefreshAsync();
+            Admin = new AdminViewModel(admin ?? new MockAdminService(), licence, s => Status = s, ShowDialog, _ai);
             OpenTeamFileCommand = new RelayCommand(() => Status = @"Open team file: <project>\FMC_Team.json beside the central model (with the team file, U12).");
             SaveAdminCommand = new RelayCommand(() => Status = "Saved. Admin changes are logged in the audit log as you make them.");
             SaveSettingsCommand = new RelayCommand(() => Status = "Saved. Settings are saved for you as you change them.");
@@ -235,7 +245,9 @@ namespace Formcraft.Shell.ViewModels
             });
             _licence.Changed += (_, __) => OnLicenceChanged();
             _connection.Changed += (_, __) => { OnPropertyChanged(nameof(IsConnected)); OnPropertyChanged(nameof(ConnectionText)); OnPropertyChanged(nameof(ConnectionTip)); UpdateState(); };
-            _document.Changed += (_, __) => OnPropertyChanged(nameof(Document));
+            _document.Changed += (_, __) => { OnPropertyChanged(nameof(Document)); OnPropertyChanged(nameof(DocumentLine)); _ = RefreshAiAsync(); };
+            _connection.Changed += (_, __) => _ = RefreshAiAsync();
+            _ = RefreshAiAsync();
             _settings.Changed += (_, __) => { Rebuild(); UpdateState(); };
             Rebuild();
             UpdateState();
@@ -349,6 +361,41 @@ namespace Formcraft.Shell.ViewModels
         public bool IsMain => Screen == ShellScreen.Main;
 
         // Header: the Connected chip is the Revit/Claude service; licence problems show in the state banners (U08).
+        // ---- The General AI switch (owner 26 Oct): top of the pane and beside Connect on the ribbon; always shows its state.
+        private readonly IAiTools _ai;
+        private string _aiState = "Off";
+        private string _aiTip = "AI is off. Turn it on with the AI switch.";
+        /// <summary>On, Off or Stopped for the open model's project (Stop AI wins).</summary>
+        public string AiState { get => _aiState; private set { if (_aiState == value) return; _aiState = value; OnPropertyChanged(nameof(AiState)); OnPropertyChanged(nameof(AiStateText)); OnPropertyChanged(nameof(DocumentLine)); OnPropertyChanged(nameof(IsAiOn)); OnPropertyChanged(nameof(IsAiStopped)); } }
+        public string AiStateText => AiState == "Stopped" ? "Stopped" : "AI " + AiState;
+        /// <summary>The document card's second line (owner 26 Oct): with AI On it says so, instead of the lock's "AI reads and reports".</summary>
+        public string DocumentLine => Document.State == DocState.Live && AiState == "On" ? "AI On: its changes wait for your approval"
+            : Document.State == DocState.Live && AiState == "Stopped" ? "Live project: AI stopped" : Document.LockText;
+        public bool IsAiOn => AiState == "On";
+        public bool IsAiStopped => AiState == "Stopped";
+        public string AiStateTip { get => _aiTip; private set { _aiTip = value; OnPropertyChanged(nameof(AiStateTip)); } }
+        public ICommand ToggleAiCommand { get; }
+
+        public async Task RefreshAiAsync()
+        {
+            try
+            {
+                AiPolicy p = await _ai.StatusAsync();
+                AiState = p.General;
+                AiStateTip = p.GeneralLine + (p.Project.Length > 0 ? " Project " + p.Project + "." : "") + " Click to switch.";
+            }
+            catch { /* the switch keeps its last known state; Connect shows why the server can't be reached */ }
+        }
+
+        public async Task ToggleAiAsync()
+        {
+            await RefreshAiAsync();
+            if (IsAiStopped) { Status = "AI is stopped. Resume it in Admin › AI involvement (Stop AI overrides the switch)."; return; }
+            ToolResult r = await _ai.SetGeneralAsync(!IsAiOn);
+            Status = r.Messages.Count > 0 ? r.Messages[0].Text : r.Ok ? "Saved." : "Refused.";
+            await RefreshAiAsync();
+        }
+
         public bool IsConnected => _connection.State != ConnectionState.NotConnected;
         public string ConnectionText => IsConnected ? "Connected" : "Not connected";
         /// <summary>The chip by the pane title is where the AI connection shows; clicking it opens Connect.</summary>
@@ -399,6 +446,7 @@ namespace Formcraft.Shell.ViewModels
                 OnPropertyChanged(nameof(IsConnectOpen));
                 OnPropertyChanged(nameof(SettingsOpen));
                 OnPropertyChanged(nameof(IsAdminOpen));
+                OnPropertyChanged(nameof(IsApprovalsOpen));
                 OnPropertyChanged(nameof(ShowNoParts));
                 OnHostChanged();
                 UpdateFooter();
@@ -408,6 +456,13 @@ namespace Formcraft.Shell.ViewModels
         public bool IsConnectOpen => Page == ShellPage.Connect;
         public bool SettingsOpen => Page == ShellPage.Settings;
         public bool IsAdminOpen => Page == ShellPage.Admin;
+        public bool IsApprovalsOpen => Page == ShellPage.Approvals;
+        public ApprovalsViewModel Approvals { get; }
+        public RelayCommand OpenApprovalsCommand { get; }
+        public bool HasAiWaiting => Approvals.Waiting > 0;
+        public string AiWaitingText => "AI: " + Approvals.Waiting + " waiting";
+        private readonly System.Threading.SynchronizationContext? _ui;
+        private void OnUi(Action a) { if (_ui == null) a(); else _ui.Post(_ => a(), null); }
         /// <summary>A section's placeholder or locked state; hidden while the host supplies the section (<see cref="HostContent"/>).</summary>
         public bool ShowSection => Page == ShellPage.Section && HostContent == null;
 

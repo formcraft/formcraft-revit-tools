@@ -1,1248 +1,1251 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_A_SpecEq_GrabRail_LShape",
- "template": "Metric Generic Model.rft",
- "about": "L rail modelled as a generic product: horizontal and vertical tubes, bends, three returns with flanges, polished grip band. Horizontal centreline at z = 0; Default Elevation 900. Reference: query: grab rail lshape specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=grab+rail+lshape+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Specialty Equipment"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
-  },
-  {
-   "op": "add_type",
-   "name": "600x600_LShape"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_LShape/FMC_Cost_Unit",
-   "type": "600x600_LShape",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_LShape/FMC_Geometry_Stage",
-   "type": "600x600_LShape",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_LShape/IfcExportAs",
-   "type": "600x600_LShape",
-   "param": "IfcExportAs",
-   "value": "IfcDiscreteAccessory"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_LShape/Description",
-   "type": "600x600_LShape",
-   "param": "Description",
-   "value": "L-shaped grab rail 600 x 600 mm, 32 mm stainless steel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_LShape/Keynote",
-   "type": "600x600_LShape",
-   "param": "Keynote",
-   "value": "A.SAC_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_LShape/FMC_Keynote_Code",
-   "type": "600x600_LShape",
-   "param": "FMC_Keynote_Code",
-   "value": "A.SAC_02"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600x600_LShape/Default Elevation",
-   "type": "600x600_LShape",
-   "param": "Default Elevation",
-   "value": 900
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Ss",
-   "color": [
-    180,
-    183,
-    186
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Ss Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_StainlessSteel_Brushed",
-   "param": "Ss Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Chrome",
-   "color": [
-    192,
-    195,
-    199
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Chrome Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_Chrome_Polished",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -336,
-     -83.0
-    ],
-    [
-     336,
-     -83.0
-    ],
-    [
-     336,
-     0
-    ],
-    [
-     -336,
-     0
-    ]
-   ],
-   "start": -36,
-   "end": 636
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Horizontal Tube",
-   "points": [
-    [
-     -50.0,
-     0.0
-    ],
-    [
-     -50.55,
-     4.14
-    ],
-    [
-     -52.14,
-     8.0
-    ],
-    [
-     -54.69,
-     11.31
-    ],
-    [
-     -58.0,
-     13.86
-    ],
-    [
-     -61.86,
-     15.45
-    ],
-    [
-     -66.0,
-     16.0
-    ],
-    [
-     -70.14,
-     15.45
-    ],
-    [
-     -74.0,
-     13.86
-    ],
-    [
-     -77.31,
-     11.31
-    ],
-    [
-     -79.86,
-     8.0
-    ],
-    [
-     -81.45,
-     4.14
-    ],
-    [
-     -82.0,
-     0.0
-    ],
-    [
-     -81.45,
-     -4.14
-    ],
-    [
-     -79.86,
-     -8.0
-    ],
-    [
-     -77.31,
-     -11.31
-    ],
-    [
-     -74.0,
-     -13.86
-    ],
-    [
-     -70.14,
-     -15.45
-    ],
-    [
-     -66.0,
-     -16.0
-    ],
-    [
-     -61.86,
-     -15.45
-    ],
-    [
-     -58.0,
-     -13.86
-    ],
-    [
-     -54.69,
-     -11.31
-    ],
-    [
-     -52.14,
-     -8.0
-    ],
-    [
-     -50.55,
-     -4.14
-    ]
-   ],
-   "start": -300,
-   "end": 300,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Horizontal Tube",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Horizontal Tube",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Horizontal Tube",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Vertical Tube",
-   "points": [
-    [
-     316.0,
-     -66.0
-    ],
-    [
-     315.45,
-     -61.86
-    ],
-    [
-     313.86,
-     -58.0
-    ],
-    [
-     311.31,
-     -54.69
-    ],
-    [
-     308.0,
-     -52.14
-    ],
-    [
-     304.14,
-     -50.55
-    ],
-    [
-     300.0,
-     -50.0
-    ],
-    [
-     295.86,
-     -50.55
-    ],
-    [
-     292.0,
-     -52.14
-    ],
-    [
-     288.69,
-     -54.69
-    ],
-    [
-     286.14,
-     -58.0
-    ],
-    [
-     284.55,
-     -61.86
-    ],
-    [
-     284.0,
-     -66.0
-    ],
-    [
-     284.55,
-     -70.14
-    ],
-    [
-     286.14,
-     -74.0
-    ],
-    [
-     288.69,
-     -77.31
-    ],
-    [
-     292.0,
-     -79.86
-    ],
-    [
-     295.86,
-     -81.45
-    ],
-    [
-     300.0,
-     -82.0
-    ],
-    [
-     304.14,
-     -81.45
-    ],
-    [
-     308.0,
-     -79.86
-    ],
-    [
-     311.31,
-     -77.31
-    ],
-    [
-     313.86,
-     -74.0
-    ],
-    [
-     315.45,
-     -70.14
-    ]
-   ],
-   "start": 0,
-   "end": 600
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Vertical Tube",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Vertical Tube",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Vertical Tube",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Corner Bend",
-   "profile": [
-    [
-     0,
-     82.0
-    ],
-    [
-     6.12,
-     80.78
-    ],
-    [
-     11.31,
-     77.31
-    ],
-    [
-     14.78,
-     72.12
-    ],
-    [
-     16.0,
-     66.0
-    ],
-    [
-     14.78,
-     59.88
-    ],
-    [
-     11.31,
-     54.69
-    ],
-    [
-     6.12,
-     51.22
-    ],
-    [
-     0,
-     50.0
-    ]
-   ],
-   "axis_at": [
-    300,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Corner Bend",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Corner Bend",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return",
-   "points": [
-    [
-     -284.0,
-     0.0
-    ],
-    [
-     -284.55,
-     4.14
-    ],
-    [
-     -286.14,
-     8.0
-    ],
-    [
-     -288.69,
-     11.31
-    ],
-    [
-     -292.0,
-     13.86
-    ],
-    [
-     -295.86,
-     15.45
-    ],
-    [
-     -300.0,
-     16.0
-    ],
-    [
-     -304.14,
-     15.45
-    ],
-    [
-     -308.0,
-     13.86
-    ],
-    [
-     -311.31,
-     11.31
-    ],
-    [
-     -313.86,
-     8.0
-    ],
-    [
-     -315.45,
-     4.14
-    ],
-    [
-     -316.0,
-     0.0
-    ],
-    [
-     -315.45,
-     -4.14
-    ],
-    [
-     -313.86,
-     -8.0
-    ],
-    [
-     -311.31,
-     -11.31
-    ],
-    [
-     -308.0,
-     -13.86
-    ],
-    [
-     -304.14,
-     -15.45
-    ],
-    [
-     -300.0,
-     -16.0
-    ],
-    [
-     -295.86,
-     -15.45
-    ],
-    [
-     -292.0,
-     -13.86
-    ],
-    [
-     -288.69,
-     -11.31
-    ],
-    [
-     -286.14,
-     -8.0
-    ],
-    [
-     -284.55,
-     -4.14
-    ]
-   ],
-   "start": 8,
-   "end": 66,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Corner",
-   "points": [
-    [
-     316.0,
-     0.0
-    ],
-    [
-     315.45,
-     4.14
-    ],
-    [
-     313.86,
-     8.0
-    ],
-    [
-     311.31,
-     11.31
-    ],
-    [
-     308.0,
-     13.86
-    ],
-    [
-     304.14,
-     15.45
-    ],
-    [
-     300.0,
-     16.0
-    ],
-    [
-     295.86,
-     15.45
-    ],
-    [
-     292.0,
-     13.86
-    ],
-    [
-     288.69,
-     11.31
-    ],
-    [
-     286.14,
-     8.0
-    ],
-    [
-     284.55,
-     4.14
-    ],
-    [
-     284.0,
-     0.0
-    ],
-    [
-     284.55,
-     -4.14
-    ],
-    [
-     286.14,
-     -8.0
-    ],
-    [
-     288.69,
-     -11.31
-    ],
-    [
-     292.0,
-     -13.86
-    ],
-    [
-     295.86,
-     -15.45
-    ],
-    [
-     300.0,
-     -16.0
-    ],
-    [
-     304.14,
-     -15.45
-    ],
-    [
-     308.0,
-     -13.86
-    ],
-    [
-     311.31,
-     -11.31
-    ],
-    [
-     313.86,
-     -8.0
-    ],
-    [
-     315.45,
-     -4.14
-    ]
-   ],
-   "start": 8,
-   "end": 66,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Corner",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Corner",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Corner",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Return Top",
-   "points": [
-    [
-     316.0,
-     600.0
-    ],
-    [
-     315.45,
-     604.14
-    ],
-    [
-     313.86,
-     608.0
-    ],
-    [
-     311.31,
-     611.31
-    ],
-    [
-     308.0,
-     613.86
-    ],
-    [
-     304.14,
-     615.45
-    ],
-    [
-     300.0,
-     616.0
-    ],
-    [
-     295.86,
-     615.45
-    ],
-    [
-     292.0,
-     613.86
-    ],
-    [
-     288.69,
-     611.31
-    ],
-    [
-     286.14,
-     608.0
-    ],
-    [
-     284.55,
-     604.14
-    ],
-    [
-     284.0,
-     600.0
-    ],
-    [
-     284.55,
-     595.86
-    ],
-    [
-     286.14,
-     592.0
-    ],
-    [
-     288.69,
-     588.69
-    ],
-    [
-     292.0,
-     586.14
-    ],
-    [
-     295.86,
-     584.55
-    ],
-    [
-     300.0,
-     584.0
-    ],
-    [
-     304.14,
-     584.55
-    ],
-    [
-     308.0,
-     586.14
-    ],
-    [
-     311.31,
-     588.69
-    ],
-    [
-     313.86,
-     592.0
-    ],
-    [
-     315.45,
-     595.86
-    ]
-   ],
-   "start": 8,
-   "end": 66,
-   "sketch": "front"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Return Top",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Return Top",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Return Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "End Bend",
-   "profile": [
-    [
-     0,
-     82.0
-    ],
-    [
-     6.12,
-     80.78
-    ],
-    [
-     11.31,
-     77.31
-    ],
-    [
-     14.78,
-     72.12
-    ],
-    [
-     16.0,
-     66.0
-    ],
-    [
-     14.78,
-     59.88
-    ],
-    [
-     11.31,
-     54.69
-    ],
-    [
-     6.12,
-     51.22
-    ],
-    [
-     0,
-     50.0
-    ]
-   ],
-   "axis_at": [
-    -300,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "End Bend",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "End Bend",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Top Bend",
-   "profile": [
-    [
-     0,
-     82.0
-    ],
-    [
-     6.12,
-     80.78
-    ],
-    [
-     11.31,
-     77.31
-    ],
-    [
-     14.78,
-     72.12
-    ],
-    [
-     16.0,
-     66.0
-    ],
-    [
-     14.78,
-     59.88
-    ],
-    [
-     11.31,
-     54.69
-    ],
-    [
-     6.12,
-     51.22
-    ],
-    [
-     0,
-     50.0
-    ]
-   ],
-   "axis_at": [
-    300,
-    600
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Top Bend",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top Bend",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flange",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     36,
-     0
-    ],
-    [
-     36,
-     4
-    ],
-    [
-     30,
-     9
-    ],
-    [
-     0,
-     9
-    ]
-   ],
-   "axis_at": [
-    -300,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flange Corner",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     36,
-     0
-    ],
-    [
-     36,
-     4
-    ],
-    [
-     30,
-     9
-    ],
-    [
-     0,
-     9
-    ]
-   ],
-   "axis_at": [
-    300,
-    0
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Corner",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Corner",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "revolution",
-   "name": "Flange Top",
-   "profile": [
-    [
-     0,
-     0
-    ],
-    [
-     36,
-     0
-    ],
-    [
-     36,
-     4
-    ],
-    [
-     30,
-     9
-    ],
-    [
-     0,
-     9
-    ]
-   ],
-   "axis_at": [
-    300,
-    600
-   ],
-   "axis": "y",
-   "subcategory": "Ss"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Flange Top",
-   "param": "Ss Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Flange Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grip Band",
-   "points": [
-    [
-     -49.0,
-     0.0
-    ],
-    [
-     -49.58,
-     4.4
-    ],
-    [
-     -51.28,
-     8.5
-    ],
-    [
-     -53.98,
-     12.02
-    ],
-    [
-     -57.5,
-     14.72
-    ],
-    [
-     -61.6,
-     16.42
-    ],
-    [
-     -66.0,
-     17.0
-    ],
-    [
-     -70.4,
-     16.42
-    ],
-    [
-     -74.5,
-     14.72
-    ],
-    [
-     -78.02,
-     12.02
-    ],
-    [
-     -80.72,
-     8.5
-    ],
-    [
-     -82.42,
-     4.4
-    ],
-    [
-     -83.0,
-     0.0
-    ],
-    [
-     -82.42,
-     -4.4
-    ],
-    [
-     -80.72,
-     -8.5
-    ],
-    [
-     -78.02,
-     -12.02
-    ],
-    [
-     -74.5,
-     -14.72
-    ],
-    [
-     -70.4,
-     -16.42
-    ],
-    [
-     -66.0,
-     -17.0
-    ],
-    [
-     -61.6,
-     -16.42
-    ],
-    [
-     -57.5,
-     -14.72
-    ],
-    [
-     -53.98,
-     -12.02
-    ],
-    [
-     -51.28,
-     -8.5
-    ],
-    [
-     -49.58,
-     -4.4
-    ]
-   ],
-   "start": -150,
-   "end": 150,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grip Band",
-   "subcategory": "Chrome"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grip Band",
-   "param": "Chrome Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grip Band",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_GrabRail_LShape.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_A_SpecEq_GrabRail_LShape",
+  "template": "Metric Generic Model.rft",
+  "about": "L rail modelled as a generic product: horizontal and vertical tubes, bends, three returns with flanges, polished grip band. Horizontal centreline at z = 0; Default Elevation 900. Reference: query: grab rail lshape specialty equipment hospital; images: https://www.google.com/search?tbm=isch&q=grab+rail+lshape+specialty+equipment+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Specialty Equipment"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce"
+    },
+    {
+      "op": "add_type",
+      "name": "600x600_LShape"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_LShape/FMC_Cost_Unit",
+      "type": "600x600_LShape",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_LShape/FMC_Geometry_Stage",
+      "type": "600x600_LShape",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_LShape/IfcExportAs",
+      "type": "600x600_LShape",
+      "param": "IfcExportAs",
+      "value": "IfcDiscreteAccessory"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_LShape/Description",
+      "type": "600x600_LShape",
+      "param": "Description",
+      "value": "L-shaped grab rail 600 x 600 mm, 32 mm stainless steel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_LShape/Keynote",
+      "type": "600x600_LShape",
+      "param": "Keynote",
+      "value": "A.SAC_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_LShape/FMC_Keynote_Code",
+      "type": "600x600_LShape",
+      "param": "FMC_Keynote_Code",
+      "value": "A.SAC_02"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600x600_LShape/Default Elevation",
+      "type": "600x600_LShape",
+      "param": "Default Elevation",
+      "value": 900
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Ss",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Ss Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_StainlessSteel_Brushed",
+      "param": "Ss Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Chrome",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Chrome Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_Chrome_Polished",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -336,
+          -83
+        ],
+        [
+          336,
+          -83
+        ],
+        [
+          336,
+          0
+        ],
+        [
+          -336,
+          0
+        ]
+      ],
+      "start": -36,
+      "end": 636
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Horizontal Tube",
+      "points": [
+        [
+          -50,
+          0
+        ],
+        [
+          -50.55,
+          4.14
+        ],
+        [
+          -52.14,
+          8
+        ],
+        [
+          -54.69,
+          11.31
+        ],
+        [
+          -58,
+          13.86
+        ],
+        [
+          -61.86,
+          15.45
+        ],
+        [
+          -66,
+          16
+        ],
+        [
+          -70.14,
+          15.45
+        ],
+        [
+          -74,
+          13.86
+        ],
+        [
+          -77.31,
+          11.31
+        ],
+        [
+          -79.86,
+          8
+        ],
+        [
+          -81.45,
+          4.14
+        ],
+        [
+          -82,
+          0
+        ],
+        [
+          -81.45,
+          -4.14
+        ],
+        [
+          -79.86,
+          -8
+        ],
+        [
+          -77.31,
+          -11.31
+        ],
+        [
+          -74,
+          -13.86
+        ],
+        [
+          -70.14,
+          -15.45
+        ],
+        [
+          -66,
+          -16
+        ],
+        [
+          -61.86,
+          -15.45
+        ],
+        [
+          -58,
+          -13.86
+        ],
+        [
+          -54.69,
+          -11.31
+        ],
+        [
+          -52.14,
+          -8
+        ],
+        [
+          -50.55,
+          -4.14
+        ]
+      ],
+      "start": -300,
+      "end": 300,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Horizontal Tube",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Horizontal Tube",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Horizontal Tube",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Vertical Tube",
+      "points": [
+        [
+          316,
+          -66
+        ],
+        [
+          315.45,
+          -61.86
+        ],
+        [
+          313.86,
+          -58
+        ],
+        [
+          311.31,
+          -54.69
+        ],
+        [
+          308,
+          -52.14
+        ],
+        [
+          304.14,
+          -50.55
+        ],
+        [
+          300,
+          -50
+        ],
+        [
+          295.86,
+          -50.55
+        ],
+        [
+          292,
+          -52.14
+        ],
+        [
+          288.69,
+          -54.69
+        ],
+        [
+          286.14,
+          -58
+        ],
+        [
+          284.55,
+          -61.86
+        ],
+        [
+          284,
+          -66
+        ],
+        [
+          284.55,
+          -70.14
+        ],
+        [
+          286.14,
+          -74
+        ],
+        [
+          288.69,
+          -77.31
+        ],
+        [
+          292,
+          -79.86
+        ],
+        [
+          295.86,
+          -81.45
+        ],
+        [
+          300,
+          -82
+        ],
+        [
+          304.14,
+          -81.45
+        ],
+        [
+          308,
+          -79.86
+        ],
+        [
+          311.31,
+          -77.31
+        ],
+        [
+          313.86,
+          -74
+        ],
+        [
+          315.45,
+          -70.14
+        ]
+      ],
+      "start": 0,
+      "end": 600
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Vertical Tube",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Vertical Tube",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Vertical Tube",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Corner Bend",
+      "profile": [
+        [
+          0,
+          82
+        ],
+        [
+          6.12,
+          80.78
+        ],
+        [
+          11.31,
+          77.31
+        ],
+        [
+          14.78,
+          72.12
+        ],
+        [
+          16,
+          66
+        ],
+        [
+          14.78,
+          59.88
+        ],
+        [
+          11.31,
+          54.69
+        ],
+        [
+          6.12,
+          51.22
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "axis_at": [
+        300,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Corner Bend",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Corner Bend",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return",
+      "points": [
+        [
+          -284,
+          0
+        ],
+        [
+          -284.55,
+          4.14
+        ],
+        [
+          -286.14,
+          8
+        ],
+        [
+          -288.69,
+          11.31
+        ],
+        [
+          -292,
+          13.86
+        ],
+        [
+          -295.86,
+          15.45
+        ],
+        [
+          -300,
+          16
+        ],
+        [
+          -304.14,
+          15.45
+        ],
+        [
+          -308,
+          13.86
+        ],
+        [
+          -311.31,
+          11.31
+        ],
+        [
+          -313.86,
+          8
+        ],
+        [
+          -315.45,
+          4.14
+        ],
+        [
+          -316,
+          0
+        ],
+        [
+          -315.45,
+          -4.14
+        ],
+        [
+          -313.86,
+          -8
+        ],
+        [
+          -311.31,
+          -11.31
+        ],
+        [
+          -308,
+          -13.86
+        ],
+        [
+          -304.14,
+          -15.45
+        ],
+        [
+          -300,
+          -16
+        ],
+        [
+          -295.86,
+          -15.45
+        ],
+        [
+          -292,
+          -13.86
+        ],
+        [
+          -288.69,
+          -11.31
+        ],
+        [
+          -286.14,
+          -8
+        ],
+        [
+          -284.55,
+          -4.14
+        ]
+      ],
+      "start": 8,
+      "end": 66,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Corner",
+      "points": [
+        [
+          316,
+          0
+        ],
+        [
+          315.45,
+          4.14
+        ],
+        [
+          313.86,
+          8
+        ],
+        [
+          311.31,
+          11.31
+        ],
+        [
+          308,
+          13.86
+        ],
+        [
+          304.14,
+          15.45
+        ],
+        [
+          300,
+          16
+        ],
+        [
+          295.86,
+          15.45
+        ],
+        [
+          292,
+          13.86
+        ],
+        [
+          288.69,
+          11.31
+        ],
+        [
+          286.14,
+          8
+        ],
+        [
+          284.55,
+          4.14
+        ],
+        [
+          284,
+          0
+        ],
+        [
+          284.55,
+          -4.14
+        ],
+        [
+          286.14,
+          -8
+        ],
+        [
+          288.69,
+          -11.31
+        ],
+        [
+          292,
+          -13.86
+        ],
+        [
+          295.86,
+          -15.45
+        ],
+        [
+          300,
+          -16
+        ],
+        [
+          304.14,
+          -15.45
+        ],
+        [
+          308,
+          -13.86
+        ],
+        [
+          311.31,
+          -11.31
+        ],
+        [
+          313.86,
+          -8
+        ],
+        [
+          315.45,
+          -4.14
+        ]
+      ],
+      "start": 8,
+      "end": 66,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Corner",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Corner",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Corner",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Return Top",
+      "points": [
+        [
+          316,
+          600
+        ],
+        [
+          315.45,
+          604.14
+        ],
+        [
+          313.86,
+          608
+        ],
+        [
+          311.31,
+          611.31
+        ],
+        [
+          308,
+          613.86
+        ],
+        [
+          304.14,
+          615.45
+        ],
+        [
+          300,
+          616
+        ],
+        [
+          295.86,
+          615.45
+        ],
+        [
+          292,
+          613.86
+        ],
+        [
+          288.69,
+          611.31
+        ],
+        [
+          286.14,
+          608
+        ],
+        [
+          284.55,
+          604.14
+        ],
+        [
+          284,
+          600
+        ],
+        [
+          284.55,
+          595.86
+        ],
+        [
+          286.14,
+          592
+        ],
+        [
+          288.69,
+          588.69
+        ],
+        [
+          292,
+          586.14
+        ],
+        [
+          295.86,
+          584.55
+        ],
+        [
+          300,
+          584
+        ],
+        [
+          304.14,
+          584.55
+        ],
+        [
+          308,
+          586.14
+        ],
+        [
+          311.31,
+          588.69
+        ],
+        [
+          313.86,
+          592
+        ],
+        [
+          315.45,
+          595.86
+        ]
+      ],
+      "start": 8,
+      "end": 66,
+      "sketch": "front"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Return Top",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Return Top",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Return Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "End Bend",
+      "profile": [
+        [
+          0,
+          82
+        ],
+        [
+          6.12,
+          80.78
+        ],
+        [
+          11.31,
+          77.31
+        ],
+        [
+          14.78,
+          72.12
+        ],
+        [
+          16,
+          66
+        ],
+        [
+          14.78,
+          59.88
+        ],
+        [
+          11.31,
+          54.69
+        ],
+        [
+          6.12,
+          51.22
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "axis_at": [
+        -300,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "End Bend",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "End Bend",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Top Bend",
+      "profile": [
+        [
+          0,
+          82
+        ],
+        [
+          6.12,
+          80.78
+        ],
+        [
+          11.31,
+          77.31
+        ],
+        [
+          14.78,
+          72.12
+        ],
+        [
+          16,
+          66
+        ],
+        [
+          14.78,
+          59.88
+        ],
+        [
+          11.31,
+          54.69
+        ],
+        [
+          6.12,
+          51.22
+        ],
+        [
+          0,
+          50
+        ]
+      ],
+      "axis_at": [
+        300,
+        600
+      ],
+      "axis": "y",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Top Bend",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Top Bend",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flange",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          36,
+          0
+        ],
+        [
+          36,
+          4
+        ],
+        [
+          30,
+          9
+        ],
+        [
+          0,
+          9
+        ]
+      ],
+      "axis_at": [
+        -300,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flange Corner",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          36,
+          0
+        ],
+        [
+          36,
+          4
+        ],
+        [
+          30,
+          9
+        ],
+        [
+          0,
+          9
+        ]
+      ],
+      "axis_at": [
+        300,
+        0
+      ],
+      "axis": "y",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Corner",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Corner",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "revolution",
+      "name": "Flange Top",
+      "profile": [
+        [
+          0,
+          0
+        ],
+        [
+          36,
+          0
+        ],
+        [
+          36,
+          4
+        ],
+        [
+          30,
+          9
+        ],
+        [
+          0,
+          9
+        ]
+      ],
+      "axis_at": [
+        300,
+        600
+      ],
+      "axis": "y",
+      "subcategory": "Ss"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Flange Top",
+      "param": "Ss Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Flange Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grip Band",
+      "points": [
+        [
+          -49,
+          0
+        ],
+        [
+          -49.58,
+          4.4
+        ],
+        [
+          -51.28,
+          8.5
+        ],
+        [
+          -53.98,
+          12.02
+        ],
+        [
+          -57.5,
+          14.72
+        ],
+        [
+          -61.6,
+          16.42
+        ],
+        [
+          -66,
+          17
+        ],
+        [
+          -70.4,
+          16.42
+        ],
+        [
+          -74.5,
+          14.72
+        ],
+        [
+          -78.02,
+          12.02
+        ],
+        [
+          -80.72,
+          8.5
+        ],
+        [
+          -82.42,
+          4.4
+        ],
+        [
+          -83,
+          0
+        ],
+        [
+          -82.42,
+          -4.4
+        ],
+        [
+          -80.72,
+          -8.5
+        ],
+        [
+          -78.02,
+          -12.02
+        ],
+        [
+          -74.5,
+          -14.72
+        ],
+        [
+          -70.4,
+          -16.42
+        ],
+        [
+          -66,
+          -17
+        ],
+        [
+          -61.6,
+          -16.42
+        ],
+        [
+          -57.5,
+          -14.72
+        ],
+        [
+          -53.98,
+          -12.02
+        ],
+        [
+          -51.28,
+          -8.5
+        ],
+        [
+          -49.58,
+          -4.4
+        ]
+      ],
+      "start": -150,
+      "end": 150,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grip Band",
+      "subcategory": "Chrome"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grip Band",
+      "param": "Chrome Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grip Band",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\A\\_Images\\FMC_A_SpecEq_GrabRail_LShape.png"
+    }
+  ],
+  "values": {
+    "Legs 600 x 600 mm": {
+      "value": "600x600",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Tube 32 mm, 50 mm clear": {
+      "value": 32,
+      "source_status": "assumed",
+      "source": "BS 8300-2"
+    },
+    "Horizontal leg at 900 mm": {
+      "value": 900,
+      "source_status": "assumed",
+      "source": "shower practice"
+    }
   }
- ],
- "values": {
-  "Legs 600 x 600 mm": {
-   "value": "600x600",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Tube 32 mm, 50 mm clear": {
-   "value": 32,
-   "source_status": "assumed",
-   "source": "BS 8300-2"
-  },
-  "Horizontal leg at 900 mm": {
-   "value": 900,
-   "source_status": "assumed",
-   "source": "shower practice"
-  }
- }
 }

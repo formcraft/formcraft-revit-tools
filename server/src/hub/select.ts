@@ -9,7 +9,7 @@
  * Pure: the tool asks the apps and hands their answers to these functions.
  */
 import path from "node:path";
-import type { IdentityMap } from "./exchange.js";
+import { byOrder, candidates, type IdentityMap } from "./exchange.js";
 
 export const SELECT_APPS = ["revit", "navisworks", "rhino", "robot"] as const;
 export type SelectApp = (typeof SELECT_APPS)[number];
@@ -90,7 +90,15 @@ export function picksFromIds(from: SelectApp, ids: string[]): Pick[] {
 /** The Formcraft id of a pick, from any of its app ids. */
 export function fmcOf(map: IdentityMap, p: Pick): string | null {
   if (p.fmc && map.entries[p.fmc]) return p.fmc;
-  for (const e of Object.values(map.entries)) {
+  // owner 27 Oct, speed: only the entries the reverse index names for this pick's ids, earliest first (as the scan was)
+  const near = new Set<string>([
+    ...(p.revit?.unique_id ? candidates(map, "revit", p.revit.unique_id) : []),
+    ...(p.revit?.element_id ? candidates(map, "revit", p.revit.element_id) : []),
+    ...(p.navisworks?.guid ? candidates(map, "navisworks", p.navisworks.guid) : []),
+    ...(p.rhino?.id ? candidates(map, "rhino", p.rhino.id) : []),
+    ...(p.robot ? candidates(map, "robot", `${p.robot.run}#${p.robot.bar}`) : []),
+  ]);
+  for (const e of byOrder(map, near).map((f) => map.entries[f])) {
     const a = e.apps;
     if (p.revit?.unique_id && a.revit?.id === p.revit.unique_id) return e.fmc;
     // a Revit element linked by its id (no UniqueId known), in the same model
@@ -124,9 +132,16 @@ export function enrich(map: IdentityMap, picks: Pick[]): Pick[] {
 
 /** Revit's answer (found elements) fills in the UniqueId, element id and model of the picks it matched. */
 export function mergeRevit(picks: Pick[], found: any[]): Pick[] {
+  // owner 27 Oct, speed: Revit's answer indexed once, not searched again for every pick
+  const byUid = new Map<string, any>(), byEid = new Map<string, any[]>();
+  for (const x of found) {
+    if (str(x.unique_id) && !byUid.has(str(x.unique_id))) byUid.set(str(x.unique_id), x);
+    const k = str(x.element_id); if (k) (byEid.get(k) ?? byEid.set(k, []).get(k)!).push(x);
+  }
   return picks.map((p) => {
-    const f = found.find((x) => (p.revit?.unique_id && str(x.unique_id) === p.revit.unique_id) ||
-      (p.revit?.element_id && str(x.element_id) === p.revit.element_id && sameModel(str(x.model), p.revit.model ?? "")));
+    const u = p.revit?.unique_id ? byUid.get(p.revit.unique_id) : undefined;
+    const ei = p.revit?.element_id ? (byEid.get(p.revit.element_id) ?? []).find((x) => sameModel(str(x.model), p.revit!.model ?? "")) : undefined;
+    const f = u && ei ? (found.indexOf(u) < found.indexOf(ei) ? u : ei) : u ?? ei;
     if (!f) return p;
     return { ...p, name: p.name ?? (str(f.mark) || undefined), category: p.category ?? (str(f.category) || undefined),
       revit: { unique_id: str(f.unique_id), element_id: str(f.element_id), model: str(f.model) } };

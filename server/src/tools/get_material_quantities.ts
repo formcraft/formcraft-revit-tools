@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { toolFailure } from "./failure.js";
 
 export function registerGetMaterialQuantitiesTool(server: McpServer) {
   server.tool(
@@ -10,7 +11,7 @@ export function registerGetMaterialQuantitiesTool(server: McpServer) {
       categoryFilters: z
         .array(z.string())
         .optional()
-        .describe("Optional list of Revit category names to filter by (e.g., ['OST_Walls', 'OST_Floors', 'OST_Roofs']). If not specified, all categories are included."),
+        .describe("Optional list of Revit category names to filter by (e.g., ['OST_Walls', 'OST_Floors', 'OST_Roofs']). If not specified, all categories are included. Only BuiltInCategory names are accepted: a name such as 'Walls' is refused with FMC-BAD-CATEGORY (the takeoff is never widened to the whole project). The reply lists categories_applied."),
       selectedElementsOnly: z
         .boolean()
         .optional()
@@ -37,16 +38,9 @@ export function registerGetMaterialQuantitiesTool(server: McpServer) {
           ],
         };
       } catch (error) {
-        return {
-          content: [
-            {
-              type: "text",
-              text: `Get material quantities failed: ${
+        return toolFailure(`Get material quantities failed: ${
                 error instanceof Error ? error.message : String(error)
-              }`,
-            },
-          ],
-        };
+              }`);
       }
     }
   );

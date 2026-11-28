@@ -3,6 +3,7 @@ using Autodesk.Revit.DB.Architecture;
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Architecture;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPCommandSet.Utils;
 using RevitMCPSDK.API.Interfaces;
 
@@ -43,8 +44,7 @@ namespace RevitMCPCommandSet.Services.Architecture
     public class CreateRoomEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication _uiApp;
-        private UIDocument _uiDoc => _uiApp.ActiveUIDocument;
-        private Document _doc => _uiDoc.Document;
+        private Document _doc => FmcCallContext.Document(_uiApp);
 
         /// <summary>
         /// Event wait object for synchronization
@@ -455,7 +455,7 @@ namespace RevitMCPCommandSet.Services.Architecture
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>

@@ -1,2523 +1,2528 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_C_Structure_Drain_UChannel_Covered",
- "template": "Metric Generic Model.rft",
- "about": "Bed at z = 0, run along x: three U units with seat rebates on blinding, four precast covers with lifting slots (Fine) and one galvanised grating section with frame and 20 bars. Reference: query: structure drain uchannel covered structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+drain+uchannel+covered+structures+hospital; basis: generic product; brand, model and supplier open for review",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Site"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Unit_Rate",
-   "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Rate_Source_Date",
-   "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Waste_Factor",
-   "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Measurement_Rule",
-   "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Code_WBS",
-   "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Labour_Rate",
-   "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Procurement_Status",
-   "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Construction_Status",
-   "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Task_ID",
-   "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Zone",
-   "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Lead_Time_Weeks",
-   "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_PO_Reference",
-   "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Code",
-   "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Uniclass_Title",
-   "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportType",
-   "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Fire_Compartment",
-   "guid": "44835034-0592-5381-bec3-d5076c40966b",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Compaction_Pct_MDD",
-   "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_CBR_Pct",
-   "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Layer_Thickness_mm",
-   "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Factor",
-   "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Carbon_Source",
-   "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Recycled_Content_Pct",
-   "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Supply_Distance_km",
-   "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Description",
-   "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Code_Group",
-   "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Standard_Ref",
-   "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Local_Spec",
-   "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Data_Sync_Stamp",
-   "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Role_Code",
-   "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_QA_Status",
-   "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Author",
-   "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Prefabricated",
-   "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Delivery_Batch",
-   "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Laydown_Area",
-   "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Trade_Package",
-   "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Subcontractor_ID",
-   "guid": "116341a9-a803-502d-862d-9cde946a808a",
-   "instance": true
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Manufacturer",
-   "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
-   "instance": false
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Model_Number",
-   "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
-   "instance": false
-  },
-  {
-   "op": "add_type",
-   "name": "300_Covered"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/FMC_Cost_Unit",
-   "type": "300_Covered",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/FMC_Geometry_Stage",
-   "type": "300_Covered",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/IfcExportAs",
-   "type": "300_Covered",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/Description",
-   "type": "300_Covered",
-   "param": "Description",
-   "value": "300 mm wide channel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/Keynote",
-   "type": "300_Covered",
-   "param": "Keynote",
-   "value": "T.DRN_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/FMC_Keynote_Code",
-   "type": "300_Covered",
-   "param": "FMC_Keynote_Code",
-   "value": "T.DRN_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/FMC_Code_Description",
-   "type": "300_Covered",
-   "param": "FMC_Code_Description",
-   "value": "Drain UChannel Covered: Covered U-channel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/FMC_Code_Group",
-   "type": "300_Covered",
-   "param": "FMC_Code_Group",
-   "value": "T.DRN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "300_Covered/FMC_Role_Code",
-   "type": "300_Covered",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_type",
-   "name": "450_Covered"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/FMC_Cost_Unit",
-   "type": "450_Covered",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/FMC_Geometry_Stage",
-   "type": "450_Covered",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/IfcExportAs",
-   "type": "450_Covered",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/Description",
-   "type": "450_Covered",
-   "param": "Description",
-   "value": "450 mm wide channel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/Keynote",
-   "type": "450_Covered",
-   "param": "Keynote",
-   "value": "T.DRN_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/FMC_Keynote_Code",
-   "type": "450_Covered",
-   "param": "FMC_Keynote_Code",
-   "value": "T.DRN_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/FMC_Code_Description",
-   "type": "450_Covered",
-   "param": "FMC_Code_Description",
-   "value": "Drain UChannel Covered: Covered U-channel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/FMC_Code_Group",
-   "type": "450_Covered",
-   "param": "FMC_Code_Group",
-   "value": "T.DRN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "450_Covered/FMC_Role_Code",
-   "type": "450_Covered",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_type",
-   "name": "600_Covered"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/FMC_Cost_Unit",
-   "type": "600_Covered",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/FMC_Geometry_Stage",
-   "type": "600_Covered",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/IfcExportAs",
-   "type": "600_Covered",
-   "param": "IfcExportAs",
-   "value": "IfcBuildingElementProxy"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/Description",
-   "type": "600_Covered",
-   "param": "Description",
-   "value": "600 mm wide channel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/Keynote",
-   "type": "600_Covered",
-   "param": "Keynote",
-   "value": "T.DRN_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/FMC_Keynote_Code",
-   "type": "600_Covered",
-   "param": "FMC_Keynote_Code",
-   "value": "T.DRN_06"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/FMC_Code_Description",
-   "type": "600_Covered",
-   "param": "FMC_Code_Description",
-   "value": "Drain UChannel Covered: Covered U-channel"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/FMC_Code_Group",
-   "type": "600_Covered",
-   "param": "FMC_Code_Group",
-   "value": "T.DRN"
-  },
-  {
-   "op": "set_type_value",
-   "name": "600_Covered/FMC_Role_Code",
-   "type": "600_Covered",
-   "param": "FMC_Role_Code",
-   "value": "C"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Pre",
-   "color": [
-    178,
-    175,
-    167
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Pre Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_Manhole_Precast",
-   "param": "Pre Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Blind",
-   "color": [
-    175,
-    173,
-    165
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Blind Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Concrete_Blinding_C15",
-   "param": "Blind Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Black",
-   "color": [
-    30,
-    31,
-    34
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Black Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Plastic_ABS_Black",
-   "param": "Black Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Galv",
-   "color": [
-    167,
-    172,
-    175
-   ],
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_family_param",
-   "name": "Galv Material",
-   "type": "Material",
-   "group": "Materials"
-  },
-  {
-   "op": "add_material",
-   "name": "FMC_Metal_ColdFormed_Galvanised",
-   "param": "Galv Material"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "color": [
-    120,
-    130,
-    140
-   ],
-   "line_weight_projection": 2
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -1500,
-     -275
-    ],
-    [
-     1515,
-     -275
-    ],
-    [
-     1515,
-     275
-    ],
-    [
-     -1500,
-     275
-    ]
-   ],
-   "start": -50,
-   "end": 376
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit 1",
-   "points": [
-    [
-     -225.0,
-     0
-    ],
-    [
-     225.0,
-     0
-    ],
-    [
-     225.0,
-     75
-    ],
-    [
-     -225.0,
-     75
-    ]
-   ],
-   "start": -1500,
-   "end": -505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit 1",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit 1",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit 2",
-   "points": [
-    [
-     -225.0,
-     0
-    ],
-    [
-     225.0,
-     0
-    ],
-    [
-     225.0,
-     75
-    ],
-    [
-     -225.0,
-     75
-    ]
-   ],
-   "start": -495,
-   "end": 500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit 2",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit 2",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit 3",
-   "points": [
-    [
-     -225.0,
-     0
-    ],
-    [
-     225.0,
-     0
-    ],
-    [
-     225.0,
-     75
-    ],
-    [
-     -225.0,
-     75
-    ]
-   ],
-   "start": 510,
-   "end": 1505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit 3",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit 3",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 2 1",
-   "points": [
-    [
-     150.0,
-     75
-    ],
-    [
-     225.0,
-     75
-    ],
-    [
-     225.0,
-     325
-    ],
-    [
-     150.0,
-     325
-    ]
-   ],
-   "start": -1500,
-   "end": -505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 2 1",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 2 1",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 2 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 2 2",
-   "points": [
-    [
-     150.0,
-     75
-    ],
-    [
-     225.0,
-     75
-    ],
-    [
-     225.0,
-     325
-    ],
-    [
-     150.0,
-     325
-    ]
-   ],
-   "start": -495,
-   "end": 500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 2 2",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 2 2",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 2 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 2 3",
-   "points": [
-    [
-     150.0,
-     75
-    ],
-    [
-     225.0,
-     75
-    ],
-    [
-     225.0,
-     325
-    ],
-    [
-     150.0,
-     325
-    ]
-   ],
-   "start": 510,
-   "end": 1505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 2 3",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 2 3",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 2 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 3 1",
-   "points": [
-    [
-     -225.0,
-     75
-    ],
-    [
-     -150.0,
-     75
-    ],
-    [
-     -150.0,
-     325
-    ],
-    [
-     -225.0,
-     325
-    ]
-   ],
-   "start": -1500,
-   "end": -505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 3 1",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 3 1",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 3 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 3 2",
-   "points": [
-    [
-     -225.0,
-     75
-    ],
-    [
-     -150.0,
-     75
-    ],
-    [
-     -150.0,
-     325
-    ],
-    [
-     -225.0,
-     325
-    ]
-   ],
-   "start": -495,
-   "end": 500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 3 2",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 3 2",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 3 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 3 3",
-   "points": [
-    [
-     -225.0,
-     75
-    ],
-    [
-     -150.0,
-     75
-    ],
-    [
-     -150.0,
-     325
-    ],
-    [
-     -225.0,
-     325
-    ]
-   ],
-   "start": 510,
-   "end": 1505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 3 3",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 3 3",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 3 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 4 1",
-   "points": [
-    [
-     175.0,
-     325
-    ],
-    [
-     225.0,
-     325
-    ],
-    [
-     225.0,
-     375
-    ],
-    [
-     175.0,
-     375
-    ]
-   ],
-   "start": -1500,
-   "end": -505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 4 1",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 4 1",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 4 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 4 2",
-   "points": [
-    [
-     175.0,
-     325
-    ],
-    [
-     225.0,
-     325
-    ],
-    [
-     225.0,
-     375
-    ],
-    [
-     175.0,
-     375
-    ]
-   ],
-   "start": -495,
-   "end": 500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 4 2",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 4 2",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 4 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 4 3",
-   "points": [
-    [
-     175.0,
-     325
-    ],
-    [
-     225.0,
-     325
-    ],
-    [
-     225.0,
-     375
-    ],
-    [
-     175.0,
-     375
-    ]
-   ],
-   "start": 510,
-   "end": 1505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 4 3",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 4 3",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 4 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 5 1",
-   "points": [
-    [
-     -225.0,
-     325
-    ],
-    [
-     -175.0,
-     325
-    ],
-    [
-     -175.0,
-     375
-    ],
-    [
-     -225.0,
-     375
-    ]
-   ],
-   "start": -1500,
-   "end": -505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 5 1",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 5 1",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 5 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 5 2",
-   "points": [
-    [
-     -225.0,
-     325
-    ],
-    [
-     -175.0,
-     325
-    ],
-    [
-     -175.0,
-     375
-    ],
-    [
-     -225.0,
-     375
-    ]
-   ],
-   "start": -495,
-   "end": 500,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 5 2",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 5 2",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 5 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Channel Unit Part 5 3",
-   "points": [
-    [
-     -225.0,
-     325
-    ],
-    [
-     -175.0,
-     325
-    ],
-    [
-     -175.0,
-     375
-    ],
-    [
-     -225.0,
-     375
-    ]
-   ],
-   "start": 510,
-   "end": 1505,
-   "sketch": "right"
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Channel Unit Part 5 3",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Channel Unit Part 5 3",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Channel Unit Part 5 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Blinding",
-   "points": [
-    [
-     -1500,
-     -275
-    ],
-    [
-     1515,
-     -275
-    ],
-    [
-     1515,
-     275
-    ],
-    [
-     -1500,
-     275
-    ]
-   ],
-   "start": -50,
-   "end": 0
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Blinding",
-   "subcategory": "Blind"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Blinding",
-   "param": "Blind Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Blinding",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover Slab 1",
-   "points": [
-    [
-     -1500,
-     -174
-    ],
-    [
-     -1005,
-     -174
-    ],
-    [
-     -1005,
-     174
-    ],
-    [
-     -1500,
-     174
-    ]
-   ],
-   "start": 325,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover Slab 1",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover Slab 1",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover Slab 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover Slab 2",
-   "points": [
-    [
-     -1000,
-     -174
-    ],
-    [
-     -505,
-     -174
-    ],
-    [
-     -505,
-     174
-    ],
-    [
-     -1000,
-     174
-    ]
-   ],
-   "start": 325,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover Slab 2",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover Slab 2",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover Slab 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lifting Slot 1",
-   "points": [
-    [
-     -1300,
-     -60
-    ],
-    [
-     -1210,
-     -60
-    ],
-    [
-     -1210,
-     -40
-    ],
-    [
-     -1300,
-     -40
-    ]
-   ],
-   "start": 375,
-   "end": 376
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lifting Slot 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lifting Slot 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lifting Slot 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lifting Slot 2",
-   "points": [
-    [
-     -800,
-     -60
-    ],
-    [
-     -710,
-     -60
-    ],
-    [
-     -710,
-     -40
-    ],
-    [
-     -800,
-     -40
-    ]
-   ],
-   "start": 375,
-   "end": 376
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lifting Slot 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lifting Slot 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lifting Slot 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lifting Slot Back 1",
-   "points": [
-    [
-     -1300,
-     40
-    ],
-    [
-     -1210,
-     40
-    ],
-    [
-     -1210,
-     60
-    ],
-    [
-     -1300,
-     60
-    ]
-   ],
-   "start": 375,
-   "end": 376
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lifting Slot Back 1",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lifting Slot Back 1",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lifting Slot Back 1",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Lifting Slot Back 2",
-   "points": [
-    [
-     -800,
-     40
-    ],
-    [
-     -710,
-     40
-    ],
-    [
-     -710,
-     60
-    ],
-    [
-     -800,
-     60
-    ]
-   ],
-   "start": 375,
-   "end": 376
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Lifting Slot Back 2",
-   "subcategory": "Black"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Lifting Slot Back 2",
-   "param": "Black Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Lifting Slot Back 2",
-   "coarse": false,
-   "medium": false,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Frame Front",
-   "points": [
-    [
-     -500,
-     -174
-    ],
-    [
-     505,
-     -174
-    ],
-    [
-     505,
-     -160
-    ],
-    [
-     -500,
-     -160
-    ]
-   ],
-   "start": 340,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Frame Front",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Frame Front",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Frame Front",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Frame Back",
-   "points": [
-    [
-     -500,
-     160
-    ],
-    [
-     505,
-     160
-    ],
-    [
-     505,
-     174
-    ],
-    [
-     -500,
-     174
-    ]
-   ],
-   "start": 340,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Frame Back",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Frame Back",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Frame Back",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 1",
-   "points": [
-    [
-     -480,
-     -160
-    ],
-    [
-     -475,
-     -160
-    ],
-    [
-     -475,
-     160
-    ],
-    [
-     -480,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 1",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 1",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 2",
-   "points": [
-    [
-     -430,
-     -160
-    ],
-    [
-     -425,
-     -160
-    ],
-    [
-     -425,
-     160
-    ],
-    [
-     -430,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 2",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 2",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 3",
-   "points": [
-    [
-     -380,
-     -160
-    ],
-    [
-     -375,
-     -160
-    ],
-    [
-     -375,
-     160
-    ],
-    [
-     -380,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 3",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 3",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 4",
-   "points": [
-    [
-     -330,
-     -160
-    ],
-    [
-     -325,
-     -160
-    ],
-    [
-     -325,
-     160
-    ],
-    [
-     -330,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 4",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 4",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 5",
-   "points": [
-    [
-     -280,
-     -160
-    ],
-    [
-     -275,
-     -160
-    ],
-    [
-     -275,
-     160
-    ],
-    [
-     -280,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 5",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 5",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 5",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 6",
-   "points": [
-    [
-     -230,
-     -160
-    ],
-    [
-     -225,
-     -160
-    ],
-    [
-     -225,
-     160
-    ],
-    [
-     -230,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 6",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 6",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 6",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 7",
-   "points": [
-    [
-     -180,
-     -160
-    ],
-    [
-     -175,
-     -160
-    ],
-    [
-     -175,
-     160
-    ],
-    [
-     -180,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 7",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 7",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 7",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 8",
-   "points": [
-    [
-     -130,
-     -160
-    ],
-    [
-     -125,
-     -160
-    ],
-    [
-     -125,
-     160
-    ],
-    [
-     -130,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 8",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 8",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 8",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 9",
-   "points": [
-    [
-     -80,
-     -160
-    ],
-    [
-     -75,
-     -160
-    ],
-    [
-     -75,
-     160
-    ],
-    [
-     -80,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 9",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 9",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 9",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 10",
-   "points": [
-    [
-     -30,
-     -160
-    ],
-    [
-     -25,
-     -160
-    ],
-    [
-     -25,
-     160
-    ],
-    [
-     -30,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 10",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 10",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 10",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 11",
-   "points": [
-    [
-     20,
-     -160
-    ],
-    [
-     25,
-     -160
-    ],
-    [
-     25,
-     160
-    ],
-    [
-     20,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 11",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 11",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 11",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 12",
-   "points": [
-    [
-     70,
-     -160
-    ],
-    [
-     75,
-     -160
-    ],
-    [
-     75,
-     160
-    ],
-    [
-     70,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 12",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 12",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 12",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 13",
-   "points": [
-    [
-     120,
-     -160
-    ],
-    [
-     125,
-     -160
-    ],
-    [
-     125,
-     160
-    ],
-    [
-     120,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 13",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 13",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 13",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 14",
-   "points": [
-    [
-     170,
-     -160
-    ],
-    [
-     175,
-     -160
-    ],
-    [
-     175,
-     160
-    ],
-    [
-     170,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 14",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 14",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 14",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 15",
-   "points": [
-    [
-     220,
-     -160
-    ],
-    [
-     225,
-     -160
-    ],
-    [
-     225,
-     160
-    ],
-    [
-     220,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 15",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 15",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 15",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 16",
-   "points": [
-    [
-     270,
-     -160
-    ],
-    [
-     275,
-     -160
-    ],
-    [
-     275,
-     160
-    ],
-    [
-     270,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 16",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 16",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 16",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 17",
-   "points": [
-    [
-     320,
-     -160
-    ],
-    [
-     325,
-     -160
-    ],
-    [
-     325,
-     160
-    ],
-    [
-     320,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 17",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 17",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 17",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 18",
-   "points": [
-    [
-     370,
-     -160
-    ],
-    [
-     375,
-     -160
-    ],
-    [
-     375,
-     160
-    ],
-    [
-     370,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 18",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 18",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 18",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 19",
-   "points": [
-    [
-     420,
-     -160
-    ],
-    [
-     425,
-     -160
-    ],
-    [
-     425,
-     160
-    ],
-    [
-     420,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 19",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 19",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 19",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Grating Bar 20",
-   "points": [
-    [
-     470,
-     -160
-    ],
-    [
-     475,
-     -160
-    ],
-    [
-     475,
-     160
-    ],
-    [
-     470,
-     160
-    ]
-   ],
-   "start": 345,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Grating Bar 20",
-   "subcategory": "Galv"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Grating Bar 20",
-   "param": "Galv Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Grating Bar 20",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover Slab Far 1",
-   "points": [
-    [
-     510,
-     -174
-    ],
-    [
-     1005,
-     -174
-    ],
-    [
-     1005,
-     174
-    ],
-    [
-     510,
-     174
-    ]
-   ],
-   "start": 325,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover Slab Far 1",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover Slab Far 1",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover Slab Far 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Cover Slab Far 2",
-   "points": [
-    [
-     1010,
-     -174
-    ],
-    [
-     1505,
-     -174
-    ],
-    [
-     1505,
-     174
-    ],
-    [
-     1010,
-     174
-    ]
-   ],
-   "start": 325,
-   "end": 375
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Cover Slab Far 2",
-   "subcategory": "Pre"
-  },
-  {
-   "op": "set_material_param",
-   "name": "Cover Slab Far 2",
-   "param": "Pre Material"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Cover Slab Far 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "set_type_image",
-   "name": "Type image",
-   "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_Structure_Drain_UChannel_Covered.png"
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_C_Structure_Drain_UChannel_Covered",
+  "template": "Metric Generic Model.rft",
+  "about": "Bed at z = 0, run along x: three U units with seat rebates on blinding, four precast covers with lifting slots (Fine) and one galvanised grating section with frame and 20 bars. Reference: query: structure drain uchannel covered structures hospital; images: https://www.google.com/search?tbm=isch&q=structure+drain+uchannel+covered+structures+hospital; basis: generic product; brand, model and supplier open for review",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Site"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Unit_Rate",
+      "guid": "62f76d16-13cf-55e5-a826-96396f36ec5b",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Rate_Source_Date",
+      "guid": "ae803153-5718-53c7-bb5a-a539c4b5f74f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Waste_Factor",
+      "guid": "371c8acf-5a21-5815-ab3e-2b70d7e00a97",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Measurement_Rule",
+      "guid": "288b6d81-85f0-5615-9828-c9f6620889f0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Code_WBS",
+      "guid": "c8ed9837-11e6-5dda-a3be-7b94d0735fa0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Labour_Rate",
+      "guid": "f734cf2f-fdbb-5280-b56d-d4a79a408474",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Procurement_Status",
+      "guid": "97190dec-e4ef-5d69-8f13-cdcf9ebcab54",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Construction_Status",
+      "guid": "639b9358-a675-5932-8c19-3dc1552ab2c5",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Task_ID",
+      "guid": "12517656-7b11-510d-92b2-b4f0a36f6015",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Zone",
+      "guid": "dc0d41f2-5e20-5930-9ac1-214926cc10a4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Lead_Time_Weeks",
+      "guid": "84b1df49-9a5d-5d73-a495-2734715266b0",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_PO_Reference",
+      "guid": "46ad88a7-ef62-5723-9d72-83402d9092eb",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Code",
+      "guid": "604b9e35-27ac-524c-9e08-25f674a5a75c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Uniclass_Title",
+      "guid": "42ac14fe-3a6a-5ded-9e29-63937760af92",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportType",
+      "guid": "261a6035-3f5a-58c0-a009-7faea1641174",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Fire_Compartment",
+      "guid": "44835034-0592-5381-bec3-d5076c40966b",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Compaction_Pct_MDD",
+      "guid": "3694e24c-eacc-5409-81e2-f985cc1dda60",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_CBR_Pct",
+      "guid": "8c9ca741-f469-5a4d-bdf4-12a2eaaa8901",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Layer_Thickness_mm",
+      "guid": "6e7bbdb7-2de3-5a2a-a889-5f1d9f7db58a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Factor",
+      "guid": "b6c80b91-f090-57cb-b6e4-888fa83e25d2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Carbon_Source",
+      "guid": "536d211b-e51c-5dbf-a426-f8b51316bd23",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Recycled_Content_Pct",
+      "guid": "91d421fb-1ae0-5707-a18f-15c385667a16",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Supply_Distance_km",
+      "guid": "b0a6d6de-9c9c-5462-b546-54ffe256a9ce",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Description",
+      "guid": "54831722-135b-55ce-9f72-8835fdf4559a",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Code_Group",
+      "guid": "c542b5b3-0499-5b76-8f3e-7e4f9073c793",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Standard_Ref",
+      "guid": "84b25013-48b4-543e-bf13-efc13a08e33f",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Local_Spec",
+      "guid": "70578eec-025d-544c-b0cc-192fff949e7c",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Data_Sync_Stamp",
+      "guid": "41535c02-53ca-59a9-a6ac-0908fe1f12b4",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Role_Code",
+      "guid": "789bb22e-a3cf-5533-8d68-5109e6979bc8",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_QA_Status",
+      "guid": "9967de26-eeb2-5220-850e-c1cfa5444cab",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Author",
+      "guid": "4154d0b6-20c8-50ce-8126-e1d66868d022",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Prefabricated",
+      "guid": "0a9e6efe-a293-52de-b8f5-6e6f45549cc2",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Delivery_Batch",
+      "guid": "c2c30e39-36a7-50f5-a463-955962bbd5e4",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Laydown_Area",
+      "guid": "2beb3f66-838e-5cf0-b625-85bef904a8c9",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Trade_Package",
+      "guid": "07be2441-4eba-5d30-b0f1-ffca129d25f8",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Subcontractor_ID",
+      "guid": "116341a9-a803-502d-862d-9cde946a808a",
+      "instance": true
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Manufacturer",
+      "guid": "dc399f41-0c78-566b-bf6a-94cdba78e4fa",
+      "instance": false
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Model_Number",
+      "guid": "3278e3b0-76e8-57ec-b892-1b3b75af7dce",
+      "instance": false
+    },
+    {
+      "op": "add_type",
+      "name": "300_Covered"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/FMC_Cost_Unit",
+      "type": "300_Covered",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/FMC_Geometry_Stage",
+      "type": "300_Covered",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/IfcExportAs",
+      "type": "300_Covered",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/Description",
+      "type": "300_Covered",
+      "param": "Description",
+      "value": "300 mm wide channel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/Keynote",
+      "type": "300_Covered",
+      "param": "Keynote",
+      "value": "T.DRN_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/FMC_Keynote_Code",
+      "type": "300_Covered",
+      "param": "FMC_Keynote_Code",
+      "value": "T.DRN_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/FMC_Code_Description",
+      "type": "300_Covered",
+      "param": "FMC_Code_Description",
+      "value": "Drain UChannel Covered: Covered U-channel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/FMC_Code_Group",
+      "type": "300_Covered",
+      "param": "FMC_Code_Group",
+      "value": "T.DRN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "300_Covered/FMC_Role_Code",
+      "type": "300_Covered",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_type",
+      "name": "450_Covered"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/FMC_Cost_Unit",
+      "type": "450_Covered",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/FMC_Geometry_Stage",
+      "type": "450_Covered",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/IfcExportAs",
+      "type": "450_Covered",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/Description",
+      "type": "450_Covered",
+      "param": "Description",
+      "value": "450 mm wide channel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/Keynote",
+      "type": "450_Covered",
+      "param": "Keynote",
+      "value": "T.DRN_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/FMC_Keynote_Code",
+      "type": "450_Covered",
+      "param": "FMC_Keynote_Code",
+      "value": "T.DRN_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/FMC_Code_Description",
+      "type": "450_Covered",
+      "param": "FMC_Code_Description",
+      "value": "Drain UChannel Covered: Covered U-channel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/FMC_Code_Group",
+      "type": "450_Covered",
+      "param": "FMC_Code_Group",
+      "value": "T.DRN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "450_Covered/FMC_Role_Code",
+      "type": "450_Covered",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_type",
+      "name": "600_Covered"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/FMC_Cost_Unit",
+      "type": "600_Covered",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/FMC_Geometry_Stage",
+      "type": "600_Covered",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/IfcExportAs",
+      "type": "600_Covered",
+      "param": "IfcExportAs",
+      "value": "IfcBuildingElementProxy"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/Description",
+      "type": "600_Covered",
+      "param": "Description",
+      "value": "600 mm wide channel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/Keynote",
+      "type": "600_Covered",
+      "param": "Keynote",
+      "value": "T.DRN_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/FMC_Keynote_Code",
+      "type": "600_Covered",
+      "param": "FMC_Keynote_Code",
+      "value": "T.DRN_06"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/FMC_Code_Description",
+      "type": "600_Covered",
+      "param": "FMC_Code_Description",
+      "value": "Drain UChannel Covered: Covered U-channel"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/FMC_Code_Group",
+      "type": "600_Covered",
+      "param": "FMC_Code_Group",
+      "value": "T.DRN"
+    },
+    {
+      "op": "set_type_value",
+      "name": "600_Covered/FMC_Role_Code",
+      "type": "600_Covered",
+      "param": "FMC_Role_Code",
+      "value": "C"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Pre",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Pre Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_Manhole_Precast",
+      "param": "Pre Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Blind",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Blind Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Concrete_Blinding_C15",
+      "param": "Blind Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Black",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Black Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Plastic_ABS_Black",
+      "param": "Black Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Galv",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 2,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_family_param",
+      "name": "Galv Material",
+      "type": "Material",
+      "group": "Materials"
+    },
+    {
+      "op": "add_material",
+      "name": "FMC_Metal_ColdFormed_Galvanised",
+      "param": "Galv Material"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_projection": 3,
+      "line_weight_cut": 4
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -1500,
+          -275
+        ],
+        [
+          1515,
+          -275
+        ],
+        [
+          1515,
+          275
+        ],
+        [
+          -1500,
+          275
+        ]
+      ],
+      "start": -50,
+      "end": 376
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit 1",
+      "points": [
+        [
+          -225,
+          0
+        ],
+        [
+          225,
+          0
+        ],
+        [
+          225,
+          75
+        ],
+        [
+          -225,
+          75
+        ]
+      ],
+      "start": -1500,
+      "end": -505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit 1",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit 1",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit 2",
+      "points": [
+        [
+          -225,
+          0
+        ],
+        [
+          225,
+          0
+        ],
+        [
+          225,
+          75
+        ],
+        [
+          -225,
+          75
+        ]
+      ],
+      "start": -495,
+      "end": 500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit 2",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit 2",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit 3",
+      "points": [
+        [
+          -225,
+          0
+        ],
+        [
+          225,
+          0
+        ],
+        [
+          225,
+          75
+        ],
+        [
+          -225,
+          75
+        ]
+      ],
+      "start": 510,
+      "end": 1505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit 3",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit 3",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 2 1",
+      "points": [
+        [
+          150,
+          75
+        ],
+        [
+          225,
+          75
+        ],
+        [
+          225,
+          325
+        ],
+        [
+          150,
+          325
+        ]
+      ],
+      "start": -1500,
+      "end": -505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 2 1",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 2 1",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 2 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 2 2",
+      "points": [
+        [
+          150,
+          75
+        ],
+        [
+          225,
+          75
+        ],
+        [
+          225,
+          325
+        ],
+        [
+          150,
+          325
+        ]
+      ],
+      "start": -495,
+      "end": 500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 2 2",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 2 2",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 2 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 2 3",
+      "points": [
+        [
+          150,
+          75
+        ],
+        [
+          225,
+          75
+        ],
+        [
+          225,
+          325
+        ],
+        [
+          150,
+          325
+        ]
+      ],
+      "start": 510,
+      "end": 1505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 2 3",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 2 3",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 2 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 3 1",
+      "points": [
+        [
+          -225,
+          75
+        ],
+        [
+          -150,
+          75
+        ],
+        [
+          -150,
+          325
+        ],
+        [
+          -225,
+          325
+        ]
+      ],
+      "start": -1500,
+      "end": -505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 3 1",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 3 1",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 3 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 3 2",
+      "points": [
+        [
+          -225,
+          75
+        ],
+        [
+          -150,
+          75
+        ],
+        [
+          -150,
+          325
+        ],
+        [
+          -225,
+          325
+        ]
+      ],
+      "start": -495,
+      "end": 500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 3 2",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 3 2",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 3 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 3 3",
+      "points": [
+        [
+          -225,
+          75
+        ],
+        [
+          -150,
+          75
+        ],
+        [
+          -150,
+          325
+        ],
+        [
+          -225,
+          325
+        ]
+      ],
+      "start": 510,
+      "end": 1505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 3 3",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 3 3",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 3 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 4 1",
+      "points": [
+        [
+          175,
+          325
+        ],
+        [
+          225,
+          325
+        ],
+        [
+          225,
+          375
+        ],
+        [
+          175,
+          375
+        ]
+      ],
+      "start": -1500,
+      "end": -505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 4 1",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 4 1",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 4 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 4 2",
+      "points": [
+        [
+          175,
+          325
+        ],
+        [
+          225,
+          325
+        ],
+        [
+          225,
+          375
+        ],
+        [
+          175,
+          375
+        ]
+      ],
+      "start": -495,
+      "end": 500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 4 2",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 4 2",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 4 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 4 3",
+      "points": [
+        [
+          175,
+          325
+        ],
+        [
+          225,
+          325
+        ],
+        [
+          225,
+          375
+        ],
+        [
+          175,
+          375
+        ]
+      ],
+      "start": 510,
+      "end": 1505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 4 3",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 4 3",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 4 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 5 1",
+      "points": [
+        [
+          -225,
+          325
+        ],
+        [
+          -175,
+          325
+        ],
+        [
+          -175,
+          375
+        ],
+        [
+          -225,
+          375
+        ]
+      ],
+      "start": -1500,
+      "end": -505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 5 1",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 5 1",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 5 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 5 2",
+      "points": [
+        [
+          -225,
+          325
+        ],
+        [
+          -175,
+          325
+        ],
+        [
+          -175,
+          375
+        ],
+        [
+          -225,
+          375
+        ]
+      ],
+      "start": -495,
+      "end": 500,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 5 2",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 5 2",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 5 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Channel Unit Part 5 3",
+      "points": [
+        [
+          -225,
+          325
+        ],
+        [
+          -175,
+          325
+        ],
+        [
+          -175,
+          375
+        ],
+        [
+          -225,
+          375
+        ]
+      ],
+      "start": 510,
+      "end": 1505,
+      "sketch": "right"
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Channel Unit Part 5 3",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Channel Unit Part 5 3",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Channel Unit Part 5 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Blinding",
+      "points": [
+        [
+          -1500,
+          -275
+        ],
+        [
+          1515,
+          -275
+        ],
+        [
+          1515,
+          275
+        ],
+        [
+          -1500,
+          275
+        ]
+      ],
+      "start": -50,
+      "end": 0
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Blinding",
+      "subcategory": "Blind"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Blinding",
+      "param": "Blind Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Blinding",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover Slab 1",
+      "points": [
+        [
+          -1500,
+          -174
+        ],
+        [
+          -1005,
+          -174
+        ],
+        [
+          -1005,
+          174
+        ],
+        [
+          -1500,
+          174
+        ]
+      ],
+      "start": 325,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover Slab 1",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover Slab 1",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover Slab 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover Slab 2",
+      "points": [
+        [
+          -1000,
+          -174
+        ],
+        [
+          -505,
+          -174
+        ],
+        [
+          -505,
+          174
+        ],
+        [
+          -1000,
+          174
+        ]
+      ],
+      "start": 325,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover Slab 2",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover Slab 2",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover Slab 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lifting Slot 1",
+      "points": [
+        [
+          -1300,
+          -60
+        ],
+        [
+          -1210,
+          -60
+        ],
+        [
+          -1210,
+          -40
+        ],
+        [
+          -1300,
+          -40
+        ]
+      ],
+      "start": 375,
+      "end": 376
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lifting Slot 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lifting Slot 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lifting Slot 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lifting Slot 2",
+      "points": [
+        [
+          -800,
+          -60
+        ],
+        [
+          -710,
+          -60
+        ],
+        [
+          -710,
+          -40
+        ],
+        [
+          -800,
+          -40
+        ]
+      ],
+      "start": 375,
+      "end": 376
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lifting Slot 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lifting Slot 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lifting Slot 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lifting Slot Back 1",
+      "points": [
+        [
+          -1300,
+          40
+        ],
+        [
+          -1210,
+          40
+        ],
+        [
+          -1210,
+          60
+        ],
+        [
+          -1300,
+          60
+        ]
+      ],
+      "start": 375,
+      "end": 376
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lifting Slot Back 1",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lifting Slot Back 1",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lifting Slot Back 1",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Lifting Slot Back 2",
+      "points": [
+        [
+          -800,
+          40
+        ],
+        [
+          -710,
+          40
+        ],
+        [
+          -710,
+          60
+        ],
+        [
+          -800,
+          60
+        ]
+      ],
+      "start": 375,
+      "end": 376
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Lifting Slot Back 2",
+      "subcategory": "Black"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Lifting Slot Back 2",
+      "param": "Black Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Lifting Slot Back 2",
+      "coarse": false,
+      "medium": false,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Frame Front",
+      "points": [
+        [
+          -500,
+          -174
+        ],
+        [
+          505,
+          -174
+        ],
+        [
+          505,
+          -160
+        ],
+        [
+          -500,
+          -160
+        ]
+      ],
+      "start": 340,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Frame Front",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Frame Front",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Frame Front",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Frame Back",
+      "points": [
+        [
+          -500,
+          160
+        ],
+        [
+          505,
+          160
+        ],
+        [
+          505,
+          174
+        ],
+        [
+          -500,
+          174
+        ]
+      ],
+      "start": 340,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Frame Back",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Frame Back",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Frame Back",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 1",
+      "points": [
+        [
+          -480,
+          -160
+        ],
+        [
+          -475,
+          -160
+        ],
+        [
+          -475,
+          160
+        ],
+        [
+          -480,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 1",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 1",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 2",
+      "points": [
+        [
+          -430,
+          -160
+        ],
+        [
+          -425,
+          -160
+        ],
+        [
+          -425,
+          160
+        ],
+        [
+          -430,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 2",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 2",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 3",
+      "points": [
+        [
+          -380,
+          -160
+        ],
+        [
+          -375,
+          -160
+        ],
+        [
+          -375,
+          160
+        ],
+        [
+          -380,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 3",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 3",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 4",
+      "points": [
+        [
+          -330,
+          -160
+        ],
+        [
+          -325,
+          -160
+        ],
+        [
+          -325,
+          160
+        ],
+        [
+          -330,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 4",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 4",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 5",
+      "points": [
+        [
+          -280,
+          -160
+        ],
+        [
+          -275,
+          -160
+        ],
+        [
+          -275,
+          160
+        ],
+        [
+          -280,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 5",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 5",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 5",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 6",
+      "points": [
+        [
+          -230,
+          -160
+        ],
+        [
+          -225,
+          -160
+        ],
+        [
+          -225,
+          160
+        ],
+        [
+          -230,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 6",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 6",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 6",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 7",
+      "points": [
+        [
+          -180,
+          -160
+        ],
+        [
+          -175,
+          -160
+        ],
+        [
+          -175,
+          160
+        ],
+        [
+          -180,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 7",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 7",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 7",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 8",
+      "points": [
+        [
+          -130,
+          -160
+        ],
+        [
+          -125,
+          -160
+        ],
+        [
+          -125,
+          160
+        ],
+        [
+          -130,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 8",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 8",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 8",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 9",
+      "points": [
+        [
+          -80,
+          -160
+        ],
+        [
+          -75,
+          -160
+        ],
+        [
+          -75,
+          160
+        ],
+        [
+          -80,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 9",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 9",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 9",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 10",
+      "points": [
+        [
+          -30,
+          -160
+        ],
+        [
+          -25,
+          -160
+        ],
+        [
+          -25,
+          160
+        ],
+        [
+          -30,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 10",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 10",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 10",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 11",
+      "points": [
+        [
+          20,
+          -160
+        ],
+        [
+          25,
+          -160
+        ],
+        [
+          25,
+          160
+        ],
+        [
+          20,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 11",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 11",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 11",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 12",
+      "points": [
+        [
+          70,
+          -160
+        ],
+        [
+          75,
+          -160
+        ],
+        [
+          75,
+          160
+        ],
+        [
+          70,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 12",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 12",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 12",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 13",
+      "points": [
+        [
+          120,
+          -160
+        ],
+        [
+          125,
+          -160
+        ],
+        [
+          125,
+          160
+        ],
+        [
+          120,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 13",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 13",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 13",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 14",
+      "points": [
+        [
+          170,
+          -160
+        ],
+        [
+          175,
+          -160
+        ],
+        [
+          175,
+          160
+        ],
+        [
+          170,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 14",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 14",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 14",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 15",
+      "points": [
+        [
+          220,
+          -160
+        ],
+        [
+          225,
+          -160
+        ],
+        [
+          225,
+          160
+        ],
+        [
+          220,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 15",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 15",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 15",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 16",
+      "points": [
+        [
+          270,
+          -160
+        ],
+        [
+          275,
+          -160
+        ],
+        [
+          275,
+          160
+        ],
+        [
+          270,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 16",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 16",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 16",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 17",
+      "points": [
+        [
+          320,
+          -160
+        ],
+        [
+          325,
+          -160
+        ],
+        [
+          325,
+          160
+        ],
+        [
+          320,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 17",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 17",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 17",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 18",
+      "points": [
+        [
+          370,
+          -160
+        ],
+        [
+          375,
+          -160
+        ],
+        [
+          375,
+          160
+        ],
+        [
+          370,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 18",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 18",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 18",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 19",
+      "points": [
+        [
+          420,
+          -160
+        ],
+        [
+          425,
+          -160
+        ],
+        [
+          425,
+          160
+        ],
+        [
+          420,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 19",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 19",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 19",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Grating Bar 20",
+      "points": [
+        [
+          470,
+          -160
+        ],
+        [
+          475,
+          -160
+        ],
+        [
+          475,
+          160
+        ],
+        [
+          470,
+          160
+        ]
+      ],
+      "start": 345,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Grating Bar 20",
+      "subcategory": "Galv"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Grating Bar 20",
+      "param": "Galv Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Grating Bar 20",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover Slab Far 1",
+      "points": [
+        [
+          510,
+          -174
+        ],
+        [
+          1005,
+          -174
+        ],
+        [
+          1005,
+          174
+        ],
+        [
+          510,
+          174
+        ]
+      ],
+      "start": 325,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover Slab Far 1",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover Slab Far 1",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover Slab Far 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Cover Slab Far 2",
+      "points": [
+        [
+          1010,
+          -174
+        ],
+        [
+          1505,
+          -174
+        ],
+        [
+          1505,
+          174
+        ],
+        [
+          1010,
+          174
+        ]
+      ],
+      "start": 325,
+      "end": 375
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Cover Slab Far 2",
+      "subcategory": "Pre"
+    },
+    {
+      "op": "set_material_param",
+      "name": "Cover Slab Far 2",
+      "param": "Pre Material"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Cover Slab Far 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "set_type_image",
+      "name": "Type image",
+      "path": "D:\\Fomcraft\\FMC_BIM_27\\FMC_Kit_v2.2\\FMC_Kit_v2.2\\04_Families\\_Staging\\C\\_Images\\FMC_C_Structure_Drain_UChannel_Covered.png"
+    }
+  ],
+  "values": {
+    "Internal 300 x 250, walls 75 mm (geometry)": {
+      "value": "300x250 t75",
+      "source_status": "assumed",
+      "source": "typical precast U-drain"
+    },
+    "Units 1000 long, 3 shown": {
+      "value": 1000,
+      "source_status": "assumed",
+      "source": "typical"
+    },
+    "Covers 50 mm in a 25 x 50 rebate": {
+      "value": "50 / 25x50",
+      "source_status": "assumed",
+      "source": "typical"
+    },
+    "Grating every third cover": {
+      "value": "1 in 3",
+      "source_status": "assumed",
+      "source": "typical for inlets; designer to confirm"
+    }
   }
- ],
- "values": {
-  "Internal 300 x 250, walls 75 mm (geometry)": {
-   "value": "300x250 t75",
-   "source_status": "assumed",
-   "source": "typical precast U-drain"
-  },
-  "Units 1000 long, 3 shown": {
-   "value": 1000,
-   "source_status": "assumed",
-   "source": "typical"
-  },
-  "Covers 50 mm in a 25 x 50 rebate": {
-   "value": "50 / 25x50",
-   "source_status": "assumed",
-   "source": "typical"
-  },
-  "Grating every third cover": {
-   "value": "1 in 3",
-   "source_status": "assumed",
-   "source": "typical for inlets; designer to confirm"
-  }
- }
 }

@@ -1,6 +1,7 @@
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
 using RevitMCPCommandSet.Utils;
 using RevitMCPSDK.API.Interfaces;
 using LevelCreationInfo = RevitMCPCommandSet.Models.Architecture.LevelInfo;
@@ -13,8 +14,7 @@ namespace RevitMCPCommandSet.Services.Architecture
     public class CreateLevelEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication _uiApp;
-        private UIDocument _uiDoc => _uiApp.ActiveUIDocument;
-        private Document _doc => _uiDoc.Document;
+        private Document _doc => FmcCallContext.Document(_uiApp);
 
         /// <summary>
         /// Event wait object for synchronization
@@ -29,7 +29,10 @@ namespace RevitMCPCommandSet.Services.Architecture
         /// <summary>
         /// Execution result (output)
         /// </summary>
-        public AIResult<List<LevelResultInfo>> Result { get; private set; }
+        public AIItemsResult<List<LevelResultInfo>> Result { get; private set; }
+
+        /// <summary>error (default): an existing or repeated name refuses the whole call. reuse: the old rule, the existing level is returned.</summary>
+        public string OnDuplicate { get; set; } = "error";
 
         /// <summary>
         /// Set the level creation parameters
@@ -61,8 +64,31 @@ namespace RevitMCPCommandSet.Services.Architecture
                     existingLevels.Select(l => l.Name),
                     StringComparer.OrdinalIgnoreCase);
 
+                var items = new List<Dictionary<string, object>>();
+                bool reuse = string.Equals(OnDuplicate, "reuse", StringComparison.OrdinalIgnoreCase);
+                var requested = LevelData.Select(l => l.Name ?? "").ToList();
+                var clashes = FmcPlacementCore.Duplicates(requested, reuse ? Enumerable.Empty<string>() : existingLevelNames);
+                if (clashes.Count > 0)
+                {
+                    var byIndex = clashes.ToDictionary(c => c.Key, c => c.Value);
+                    for (int i = 0; i < requested.Count; i++)
+                        items.Add(byIndex.TryGetValue(i, out string why)
+                            ? FmcPlacementCore.Item(i, "failed", null, "FMC-LEVEL-DUPLICATE", why == "exists" ? "A level with this name exists." : "The name is repeated in the request.", requested[i])
+                            : FmcPlacementCore.Item(i, "failed", null, "FMC-DATUM-BLOCKED", "Not made: another level in the call has a duplicate name.", requested[i]));
+                    Result = new AIItemsResult<List<LevelResultInfo>>
+                    {
+                        Success = false,
+                        Message = $"[FMC-LEVEL-DUPLICATE] {string.Join(", ", clashes.Select(c => requested[c.Key]))}: the name exists or repeats. No level was made.",
+                        Response = new List<LevelResultInfo>(),
+                        Items = items,
+                    };
+                    return;
+                }
+                int index = -1;
+
                 foreach (var levelInfo in LevelData)
                 {
+                    index++;
                     using (Transaction tx = new Transaction(_doc, "Create Level"))
                     {
                         tx.Start();
@@ -88,6 +114,7 @@ namespace RevitMCPCommandSet.Services.Architecture
                                         Elevation = existingLevel.Elevation * 304.8, // Convert to mm
                                         AlreadyExisted = true
                                     });
+                                    items.Add(FmcPlacementCore.Item(index, "reused", existingLevel.Id.GetValue(), "FMC-LEVEL-REUSED", "The level exists and was kept (on_duplicate reuse).", existingLevel.Name));
 
                                     tx.RollBack();
                                     continue;
@@ -165,6 +192,10 @@ namespace RevitMCPCommandSet.Services.Architecture
 
                                 // Add to existing names set
                                 existingLevelNames.Add(newLevel.Name);
+                                // The server sends internal elevations. If the API measured from elsewhere, say so.
+                                double madeMm = newLevel.ProjectElevation * 304.8;
+                                string drift = Math.Abs(madeMm - levelInfo.Elevation) > 1.0 ? $"Made at {madeMm:F1} mm internal, asked {levelInfo.Elevation:F1} mm." : null;
+                                items.Add(FmcPlacementCore.Item(index, "created", newLevel.Id.GetValue(), drift != null ? "FMC-LEVEL-ELEVATION-DRIFT" : null, drift, newLevel.Name));
 
                                 createdLevels.Add(new LevelResultInfo
                                 {
@@ -181,12 +212,14 @@ namespace RevitMCPCommandSet.Services.Architecture
                             {
                                 tx.RollBack();
                                 warnings.Add($"Failed to create level '{levelInfo.Name}'");
+                                items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-LEVEL-NOT-CREATED", "Revit did not create the level.", levelInfo.Name));
                             }
                         }
                         catch (Exception ex)
                         {
-                            tx.RollBack();
+                            if (tx.HasStarted() && !tx.HasEnded()) tx.RollBack();
                             warnings.Add($"Error creating level '{levelInfo.Name}': {ex.Message}");
+                            items.Add(FmcPlacementCore.Item(index, "failed", null, "FMC-TOOL-FAILED", ex.Message, levelInfo.Name));
                         }
                     }
                 }
@@ -213,16 +246,18 @@ namespace RevitMCPCommandSet.Services.Architecture
                     message += "\n\n⚠ Warnings:\n  • " + string.Join("\n  • ", warnings);
                 }
 
-                Result = new AIResult<List<LevelResultInfo>>
+                Result = new AIItemsResult<List<LevelResultInfo>>
                 {
                     Success = true,
                     Message = message,
-                    Response = createdLevels
+                    Response = createdLevels,
+                    Items = items,
                 };
             }
             catch (Exception ex)
             {
-                Result = new AIResult<List<LevelResultInfo>>
+                // Items stay empty: the server reports every level it sent as unknown, not as created.
+                Result = new AIItemsResult<List<LevelResultInfo>>
                 {
                     Success = false,
                     Message = $"Error creating levels: {ex.Message}",
@@ -242,7 +277,7 @@ namespace RevitMCPCommandSet.Services.Architecture
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-        return _resetEvent.WaitOne(timeoutMilliseconds);
+        return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>

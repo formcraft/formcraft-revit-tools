@@ -1,6 +1,9 @@
 using Autodesk.Revit.DB.Mechanical;
 using Autodesk.Revit.UI;
 using RevitMCPCommandSet.Models.Common;
+using RevitMCPCommandSet.Services.Fmc;
+using RevitMCPCommandSet.Services.Fmc.SystemTypes;
+using Newtonsoft.Json.Linq;
 using RevitMCPCommandSet.Utils;
 using RevitMCPSDK.API.Interfaces;
 
@@ -9,8 +12,7 @@ namespace RevitMCPCommandSet.Services
     public class CreateLineElementEventHandler : IExternalEventHandler, IWaitableExternalEventHandler
     {
         private UIApplication uiApp;
-        private UIDocument uiDoc => uiApp.ActiveUIDocument;
-        private Document doc => uiDoc.Document;
+        private Document doc => FmcCallContext.Document(uiApp);
         private Autodesk.Revit.ApplicationServices.Application app => uiApp.Application;
         /// <summary>
         /// 事件等待对象
@@ -25,6 +27,11 @@ namespace RevitMCPCommandSet.Services
         /// </summary>
         public AIResult<List<long>> Result { get; private set; }
         private List<string> _warnings = new List<string>();
+        private JArray _items = new JArray();
+
+        /// <summary>A per-item refusal: every item answers, none is skipped silently.</summary>
+        private void Refuse(int item, string code, string reason) =>
+            _items.Add(new JObject { ["item"] = item, ["ok"] = false, ["code"] = code, ["reason"] = reason });
 
         public string _wallName = "常规 - ";
         public string _ductName = "矩形风管 - ";
@@ -47,9 +54,13 @@ namespace RevitMCPCommandSet.Services
             {
                 var elementIds = new List<long>();
                 _warnings.Clear();
+                _items = new JArray();
+                int itemNo = 0;
                 foreach (var data in CreatedInfo)
                 {
+                    itemNo++;
                     long requestedTypeId = data.TypeId;
+                    int madeBefore = elementIds.Count;
 
                     // Step0 获取构件类型
                     BuiltInCategory builtInCategory = BuiltInCategory.INVALID;
@@ -61,113 +72,50 @@ namespace RevitMCPCommandSet.Services
                     double topOffset = -1;  // ft
                     double baseOffset = -1; // ft
                     baseLevel = doc.FindNearestLevel(data.BaseLevel / 304.8);
-                    baseOffset = (data.BaseOffset + data.BaseLevel) / 304.8 - baseLevel.Elevation;
                     topLevel = doc.FindNearestLevel((data.BaseLevel + data.BaseOffset + data.Height) / 304.8);
-                    topOffset = (data.BaseLevel + data.BaseOffset + data.Height) / 304.8 - topLevel.Elevation;
-                    if (baseLevel == null)
+                    if (baseLevel == null || topLevel == null)
+                    {
+                        Refuse(itemNo, "FMC-NO-LEVEL", "the model has no level near baseLevel");
                         continue;
+                    }
+                    baseOffset = (data.BaseOffset + data.BaseLevel) / 304.8 - baseLevel.Elevation;
+                    topOffset = (data.BaseLevel + data.BaseOffset + data.Height) / 304.8 - topLevel.Elevation;
 
                     // Step2 获取族类型
                     FamilySymbol symbol = null;
                     WallType wallType = null;
                     DuctType ductType = null;
 
-                    if (data.TypeId != -1 && data.TypeId != 0)
-                    {
-                        ElementId typeELeId = new ElementId(data.TypeId);
-                        if (typeELeId != null)
-                        {
-                            Element typeEle = doc.GetElement(typeELeId);
-                            if (typeEle != null && typeEle is FamilySymbol)
-                            {
-                                symbol = typeEle as FamilySymbol;
-                                // 获取symbol的Category对象并转换为BuiltInCategory枚举
-                                builtInCategory = (BuiltInCategory)symbol.Category.Id.GetIntValue();
-                            }
-                            else if (typeEle != null && typeEle is WallType)
-                            {
-                                wallType = typeEle as WallType;
-                                builtInCategory = (BuiltInCategory)wallType.Category.Id.GetIntValue();
-                            }
-                            else if (typeEle != null && typeEle is DuctType)
-                            {
-                                ductType = typeEle as DuctType;
-                                builtInCategory = (BuiltInCategory)ductType.Category.Id.GetIntValue();
-                            }
-                        }
-                    }
+                    // Review gap 11 (28 Nov): no silent first type and no ignored thickness. The typeId is used, or refused
+                    // when it is missing or doesn't fit; with no typeId a wall is the one wall type of that thickness.
+                    Element typeEle = data.TypeId != -1 && data.TypeId != 0 ? doc.GetElement(new ElementId(data.TypeId)) : null;
+                    if (typeEle is FamilySymbol fsym) builtInCategory = (BuiltInCategory)fsym.Category.Id.GetIntValue();
+                    else if (typeEle is WallType) builtInCategory = BuiltInCategory.OST_Walls;
+                    else if (typeEle is DuctType) builtInCategory = BuiltInCategory.OST_DuctCurves;
                     if (builtInCategory == BuiltInCategory.INVALID)
-                        continue;
-                    switch (builtInCategory)
                     {
-                        case BuiltInCategory.OST_Walls:
-                            if (wallType == null)
-                            {
-                                // Requested typeId was invalid or not provided, fall back to first available
-                                wallType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(WallType))
-                                    .Cast<WallType>()
-                                    .FirstOrDefault();
-                                if (wallType == null)
-                                {
-                                    _warnings.Add($"No wall types available in project.");
-                                    continue;
-                                }
-                                if (requestedTypeId != -1 && requestedTypeId != 0)
-                                {
-                                    _warnings.Add($"Requested wall typeId {requestedTypeId} not found. Defaulted to '{wallType.Name}' (ID: {wallType.Id.GetValue()})");
-                                }
-                            }
-                            break;
-                        case BuiltInCategory.OST_DuctCurves:
-                            if (ductType == null)
-                            {
-                                // Requested typeId was invalid or not provided, fall back to first available rectangular duct
-                                ductType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(DuctType))
-                                    .Cast<DuctType>()
-                                    .FirstOrDefault(d => d.Shape == ConnectorProfileType.Rectangular);
-                                if (ductType == null)
-                                {
-                                    _warnings.Add($"No rectangular duct types available in project.");
-                                    continue;
-                                }
-                                if (requestedTypeId != -1 && requestedTypeId != 0)
-                                {
-                                    _warnings.Add($"Requested duct typeId {requestedTypeId} not found. Defaulted to '{ductType.Name}' (ID: {ductType.Id.GetValue()})");
-                                }
-                            }
-                            break;
-                        default:
-                            if (symbol == null)
-                            {
-                                symbol = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(FamilySymbol))
-                                    .OfCategory(builtInCategory)
-                                    .Cast<FamilySymbol>()
-                                    .FirstOrDefault(fs => fs.IsActive); // 获取激活的类型作为默认类型
-                                if (symbol == null)
-                                {
-                                    symbol = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(FamilySymbol))
-                                    .OfCategory(builtInCategory)
-                                    .Cast<FamilySymbol>()
-                                    .FirstOrDefault();
-                                }
-                                if (symbol == null)
-                                {
-                                    _warnings.Add($"No family types available for category {builtInCategory}.");
-                                    continue;
-                                }
-                                if (requestedTypeId != -1 && requestedTypeId != 0)
-                                {
-                                    _warnings.Add($"Requested typeId {requestedTypeId} not found. Defaulted to '{symbol.FamilyName}: {symbol.Name}' (ID: {symbol.Id.GetValue()})");
-                                }
-                            }
-                            break;
+                        Refuse(itemNo, "FMC-BAD-CATEGORY", $"category {data.Category} isn't a Revit category and typeId {data.TypeId} names no type");
+                        continue;
                     }
+                    var candidates = new List<TypeEditCore.TypeCandidate>();
+                    bool layered = builtInCategory == BuiltInCategory.OST_Walls;
+                    if (layered)
+                        candidates = new FilteredElementCollector(doc).OfClass(typeof(WallType)).Cast<WallType>()
+                            .Where(w => w.Kind == WallKind.Basic)
+                            .Select(w => new TypeEditCore.TypeCandidate { Id = w.Id.GetValue(), Name = w.Name, WidthMm = w.Width * 304.8 }).ToList();
+                    else if (builtInCategory == BuiltInCategory.OST_DuctCurves)
+                        candidates = new FilteredElementCollector(doc).OfClass(typeof(DuctType)).Cast<DuctType>()
+                            .Select(d => new TypeEditCore.TypeCandidate { Id = d.Id.GetValue(), Name = d.Name }).ToList();
+                    else
+                        candidates = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol)).OfCategory(builtInCategory).Cast<FamilySymbol>()
+                            .Select(f => new TypeEditCore.TypeCandidate { Id = f.Id.GetValue(), Name = $"{f.FamilyName} : {f.Name}" }).ToList();
+                    bool fits = typeEle != null && candidates.Any(c => c.Id == data.TypeId) || typeEle is WallType;
+                    var pick = TypeEditCore.PickType(builtInCategory.ToString(), requestedTypeId, typeEle != null, fits, data.Thickness, layered, candidates);
+                    if (!pick.Ok) { Refuse(itemNo, pick.Code, pick.Reason); continue; }
+                    Element picked = doc.GetElement(new ElementId(pick.Id.Value));
+                    wallType = picked as WallType; ductType = picked as DuctType; symbol = picked as FamilySymbol;
+                    if (pick.Note != null) _warnings.Add($"item {itemNo}: {pick.Note}");
 
-                    // Step3 调用通用方法创建族实例
                     using (Transaction transaction = new Transaction(doc, "创建点状构件"))
                     {
                         transaction.Start();
@@ -235,17 +183,22 @@ namespace RevitMCPCommandSet.Services
                         //doc.Refresh();
                         transaction.Commit();
                     }
+                    if (elementIds.Count > madeBefore) _items.Add(new JObject { ["item"] = itemNo, ["ok"] = true, ["id"] = elementIds[elementIds.Count - 1], ["type_id"] = pick.Id });
+                    else Refuse(itemNo, "FMC-NOT-MADE", builtInCategory == BuiltInCategory.OST_DuctCurves ? "no supply air system type in this model, so no duct was made" : "Revit made nothing for this item");
                 }
-                string message = $"Successfully created {elementIds.Count} element(s).";
+                int refused = _items.Count(x => !x.Value<bool>("ok"));
+                string message = $"Created {elementIds.Count} of {CreatedInfo.Count} element(s)" + (refused > 0 ? $"; {refused} refused, nothing made for them: " +
+                    string.Join(" | ", _items.Where(x => !x.Value<bool>("ok")).Select(x => $"item {x["item"]} [{x["code"]}] {x["reason"]}")) : ".");
                 if (_warnings.Count > 0)
                 {
                     message += "\n\n⚠ Warnings:\n  • " + string.Join("\n  • ", _warnings);
                 }
-                Result = new AIResult<List<long>>
+                Result = new ItemsResult<List<long>>
                 {
-                    Success = true,
+                    Success = refused == 0,
                     Message = message,
                     Response = elementIds,
+                    Items = _items,
                 };
             }
             catch (Exception ex)
@@ -271,7 +224,7 @@ namespace RevitMCPCommandSet.Services
         public bool WaitForCompletion(int timeoutMilliseconds = 10000)
         {
             _resetEvent.Reset();
-            return _resetEvent.WaitOne(timeoutMilliseconds);
+            return FmcBusy.Wait(_resetEvent, timeoutMilliseconds);
         }
 
         /// <summary>
@@ -282,112 +235,7 @@ namespace RevitMCPCommandSet.Services
             return "创建线状构件";
         }
 
-        /// <summary>
-        /// 创建或获取指定厚度的墙体类型
-        /// </summary>
-        /// <param name="doc">Revit文档</param>
-        /// <param name="width">宽度（ft）</param>
-        /// <returns></returns>
-        /// <exception cref="InvalidOperationException"></exception>
-        private WallType CreateOrGetWallType(Document doc, double width = 200 / 304.8)
-        {
-            // 如果没有有效的类型
-            // 先查找是否存在指定厚度的建筑墙类型
-            WallType existingType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(WallType))
-                                    .Cast<WallType>()
-                                    .FirstOrDefault(w => w.Name == $"{_wallName}{width * 304.8}mm");
-            if (existingType != null)
-                return existingType;
-
-            // 不存在则创建新的墙体类型，基于基本墙
-            WallType baseWallType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(WallType))
-                                    .Cast<WallType>()
-                                    .FirstOrDefault(w => w.Name.Contains("常规")); ;
-            if (baseWallType == null)
-            {
-                baseWallType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(WallType))
-                                    .Cast<WallType>()
-                                    .FirstOrDefault(); ;
-            }
-
-            if (baseWallType == null)
-                throw new InvalidOperationException("No basic wall type is available");
-
-            // 复制墙体类型
-            WallType newWallType = null;
-            newWallType = baseWallType.Duplicate($"{_wallName}{width * 304.8}mm") as WallType;
-
-            // 设置墙厚
-            CompoundStructure cs = newWallType.GetCompoundStructure();
-            if (cs != null)
-            {
-                // 获取原始层的材料ID
-                ElementId materialId = cs.GetLayers().First().MaterialId;
-
-                // 创建新的单层结构
-                CompoundStructureLayer newLayer = new CompoundStructureLayer(
-                    width,  // 宽度（转换为英尺）
-                    MaterialFunctionAssignment.Structure,  // 功能分配
-                    materialId  // 材料ID
-                );
-
-                // 创建新的复合结构
-                IList<CompoundStructureLayer> newLayers = new List<CompoundStructureLayer> { newLayer };
-                cs.SetLayers(newLayers);
-
-                // 应用新的复合结构
-                newWallType.SetCompoundStructure(cs);
-            }
-            return newWallType;
-        }
-
-        /// <summary>
-        /// 创建或获取指定尺寸的风管类型
-        /// </summary>
-        /// <param name="doc">Revit文档</param>
-        /// <param name="width">宽度（ft）</param>
-        /// <param name="height">高度（ft）</param>
-        /// <returns>风管类型</returns>
-        private DuctType CreateOrGetDuctType(Document doc, double width, double height)
-        {
-            string typeName = $"{_ductName}{width * 304.8}x{height * 304.8}mm";
-
-            // 先查找是否存在指定尺寸的风管类型
-            DuctType existingType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(DuctType))
-                                    .Cast<DuctType>()
-                                    .FirstOrDefault(d => d.Name == typeName && d.Shape == ConnectorProfileType.Rectangular);
-
-            if (existingType != null)
-                return existingType;
-
-            // 不存在则创建新的风管类型，基于已有的矩形风管类型
-            DuctType baseDuctType = new FilteredElementCollector(doc)
-                                    .OfClass(typeof(DuctType))
-                                    .Cast<DuctType>()
-                                    .FirstOrDefault(d => d.Shape == ConnectorProfileType.Rectangular);
-
-            if (baseDuctType == null)
-                throw new InvalidOperationException("No rectangular duct type is available");
-
-            // 复制风管类型
-            DuctType newDuctType = baseDuctType.Duplicate(typeName) as DuctType;
-
-            // 设置风管尺寸参数
-            Parameter widthParam = newDuctType.get_Parameter(BuiltInParameter.RBS_CURVE_WIDTH_PARAM);
-            Parameter heightParam = newDuctType.get_Parameter(BuiltInParameter.RBS_CURVE_HEIGHT_PARAM);
-
-            if (widthParam != null && heightParam != null)
-            {
-                widthParam.Set(width);
-                heightParam.Set(height);
-            }
-
-            return newDuctType;
-        }
-
+        // The CreateOrGetWallType / CreateOrGetDuctType helpers (never called) were removed with review gap 11:
+        // a new thickness is made deliberately with modify_model duplicate_type, never as a side effect of creating a wall.
     }
 }

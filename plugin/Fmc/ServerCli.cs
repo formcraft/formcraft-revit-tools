@@ -154,6 +154,8 @@ namespace revit_mcp_plugin.Fmc
                 // The pane's tools reach this Revit, even when another Revit is open on another port.
                 if (revit_mcp_plugin.Core.SocketService.Instance.IsRunning)
                     psi.EnvironmentVariables["REVIT_PORT"] = revit_mcp_plugin.Core.SocketService.Instance.Port.ToString();
+                // The AI activity strip shows AI work only: a person's click in the pane is "pane"; Ask Claude is AI, so it isn't.
+                if (command != "ask") psi.EnvironmentVariables["FMC_CALLER"] = "pane";
                 try
                 {
                     using (var p = Process.Start(psi))

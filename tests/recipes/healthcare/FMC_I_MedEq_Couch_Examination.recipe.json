@@ -1,448 +1,472 @@
 {
- "schema": "fmc-recipe/0.1",
- "family": "FMC_I_MedEq_Couch_Examination",
- "template": "Metric Generic Model.rft",
- "about": "Wave 1: exam couch in Medical Equipment (no connectors); 900 mm side clearance solid; raised back by blend.",
- "ops": [
-  {
-   "op": "set_category",
-   "name": "Medical Equipment"
-  },
-  {
-   "op": "add_type",
-   "name": "1900x650_2Section"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Keynote_Code",
-   "guid": "2d089b32-0589-516b-8952-9f6afad95971"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Cost_Unit",
-   "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "FMC_Geometry_Stage",
-   "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
-  },
-  {
-   "op": "add_shared_param",
-   "name": "IfcExportAs",
-   "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1900x650_2Section/Keynote",
-   "type": "1900x650_2Section",
-   "param": "Keynote",
-   "value": "F.MED_09"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1900x650_2Section/FMC_Keynote_Code",
-   "type": "1900x650_2Section",
-   "param": "FMC_Keynote_Code",
-   "value": "F.MED_09"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1900x650_2Section/FMC_Cost_Unit",
-   "type": "1900x650_2Section",
-   "param": "FMC_Cost_Unit",
-   "value": "nr"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1900x650_2Section/FMC_Geometry_Stage",
-   "type": "1900x650_2Section",
-   "param": "FMC_Geometry_Stage",
-   "value": "G4"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1900x650_2Section/IfcExportAs",
-   "type": "1900x650_2Section",
-   "param": "IfcExportAs",
-   "value": "IfcMedicalDevice"
-  },
-  {
-   "op": "set_type_value",
-   "name": "1900x650_2Section/Description",
-   "type": "1900x650_2Section",
-   "param": "Description",
-   "value": "Examination couch, 2 sections, fixed height 700 mm, vinyl top, steel frame"
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Frame",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Top",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Coarse Envelope",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "add_subcategory",
-   "name": "Clearance Accessibility",
-   "line_weight_projection": 1
-  },
-  {
-   "op": "extrusion",
-   "name": "Coarse Envelope",
-   "points": [
-    [
-     -950,
-     -325
-    ],
-    [
-     950,
-     -325
-    ],
-    [
-     950,
-     325
-    ],
-    [
-     -950,
-     325
-    ]
-   ],
-   "start": 0,
-   "end": 750
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Coarse Envelope",
-   "subcategory": "Coarse Envelope"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Coarse Envelope",
-   "coarse": true,
-   "medium": false,
-   "fine": false
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg 1",
-   "points": [
-    [
-     -900,
-     -280
-    ],
-    [
-     -850,
-     -280
-    ],
-    [
-     -850,
-     -230
-    ],
-    [
-     -900,
-     -230
-    ]
-   ],
-   "start": 0,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg 1",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg 1",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg 2",
-   "points": [
-    [
-     850,
-     -280
-    ],
-    [
-     900,
-     -280
-    ],
-    [
-     900,
-     -230
-    ],
-    [
-     850,
-     -230
-    ]
-   ],
-   "start": 0,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg 2",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg 2",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg 3",
-   "points": [
-    [
-     -900,
-     230
-    ],
-    [
-     -850,
-     230
-    ],
-    [
-     -850,
-     280
-    ],
-    [
-     -900,
-     280
-    ]
-   ],
-   "start": 0,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg 3",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg 3",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Leg 4",
-   "points": [
-    [
-     850,
-     230
-    ],
-    [
-     900,
-     230
-    ],
-    [
-     900,
-     280
-    ],
-    [
-     850,
-     280
-    ]
-   ],
-   "start": 0,
-   "end": 640
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Leg 4",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Leg 4",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Rails",
-   "points": [
-    [
-     -950,
-     -325
-    ],
-    [
-     950,
-     -325
-    ],
-    [
-     950,
-     325
-    ],
-    [
-     -950,
-     325
-    ]
-   ],
-   "start": 640,
-   "end": 680
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Rails",
-   "subcategory": "Frame"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Rails",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Top",
-   "points": [
-    [
-     -950,
-     -325
-    ],
-    [
-     350,
-     -325
-    ],
-    [
-     350,
-     325
-    ],
-    [
-     -950,
-     325
-    ]
-   ],
-   "start": 680,
-   "end": 750
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Top",
-   "subcategory": "Top"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Top",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "blend",
-   "name": "Back Rest",
-   "base": [
-    [
-     350,
-     -325
-    ],
-    [
-     950,
-     -325
-    ],
-    [
-     950,
-     325
-    ],
-    [
-     350,
-     325
-    ]
-   ],
-   "top": [
-    [
-     500,
-     -325
-    ],
-    [
-     950,
-     -325
-    ],
-    [
-     950,
-     325
-    ],
-    [
-     500,
-     325
-    ]
-   ],
-   "start": 680,
-   "end": 900,
-   "subcategory": "Top"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Back Rest",
-   "coarse": false,
-   "medium": true,
-   "fine": true
-  },
-  {
-   "op": "extrusion",
-   "name": "Side Clearance",
-   "points": [
-    [
-     -950,
-     -1225
-    ],
-    [
-     950,
-     -1225
-    ],
-    [
-     950,
-     -325
-    ],
-    [
-     -950,
-     -325
-    ]
-   ],
-   "start": 0,
-   "end": 10
-  },
-  {
-   "op": "set_subcategory",
-   "name": "Side Clearance",
-   "subcategory": "Clearance Accessibility"
-  },
-  {
-   "op": "set_visibility",
-   "name": "Side Clearance",
-   "coarse": true,
-   "medium": true,
-   "fine": true
+  "schema": "fmc-recipe/0.1",
+  "family": "FMC_I_MedEq_Couch_Examination",
+  "template": "Metric Generic Model.rft",
+  "about": "Wave 1: exam couch in Medical Equipment (no connectors); 900 mm side clearance solid; raised back by blend.",
+  "ops": [
+    {
+      "op": "set_category",
+      "name": "Medical Equipment"
+    },
+    {
+      "op": "add_type",
+      "name": "1900x650_2Section"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Keynote_Code",
+      "guid": "2d089b32-0589-516b-8952-9f6afad95971"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Cost_Unit",
+      "guid": "6f0f6197-4d1e-5601-afd7-98d436c0bd40"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "FMC_Geometry_Stage",
+      "guid": "27c3be4d-9757-51ba-aa96-6c7a3a061025"
+    },
+    {
+      "op": "add_shared_param",
+      "name": "IfcExportAs",
+      "guid": "bae7a5f9-3ec7-57e3-ba6b-bcd858fd95f7"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1900x650_2Section/Keynote",
+      "type": "1900x650_2Section",
+      "param": "Keynote",
+      "value": "F.MED_09"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1900x650_2Section/FMC_Keynote_Code",
+      "type": "1900x650_2Section",
+      "param": "FMC_Keynote_Code",
+      "value": "F.MED_09"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1900x650_2Section/FMC_Cost_Unit",
+      "type": "1900x650_2Section",
+      "param": "FMC_Cost_Unit",
+      "value": "nr"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1900x650_2Section/FMC_Geometry_Stage",
+      "type": "1900x650_2Section",
+      "param": "FMC_Geometry_Stage",
+      "value": "G4"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1900x650_2Section/IfcExportAs",
+      "type": "1900x650_2Section",
+      "param": "IfcExportAs",
+      "value": "IfcMedicalDevice"
+    },
+    {
+      "op": "set_type_value",
+      "name": "1900x650_2Section/Description",
+      "type": "1900x650_2Section",
+      "param": "Description",
+      "value": "Examination couch, 2 sections, fixed height 700 mm, vinyl top, steel frame"
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Frame",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Top",
+      "line_weight_projection": 2,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Coarse Envelope",
+      "line_weight_projection": 3,
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "line_weight_cut": 4
+    },
+    {
+      "op": "add_subcategory",
+      "name": "Clearance Accessibility",
+      "line_weight_projection": 1,
+      "color": [
+        80,
+        80,
+        80
+      ],
+      "line_weight_cut": 1
+    },
+    {
+      "op": "extrusion",
+      "name": "Coarse Envelope",
+      "points": [
+        [
+          -950,
+          -325
+        ],
+        [
+          950,
+          -325
+        ],
+        [
+          950,
+          325
+        ],
+        [
+          -950,
+          325
+        ]
+      ],
+      "start": 0,
+      "end": 750
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Coarse Envelope",
+      "subcategory": "Coarse Envelope"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Coarse Envelope",
+      "coarse": true,
+      "medium": false,
+      "fine": false
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg 1",
+      "points": [
+        [
+          -900,
+          -280
+        ],
+        [
+          -850,
+          -280
+        ],
+        [
+          -850,
+          -230
+        ],
+        [
+          -900,
+          -230
+        ]
+      ],
+      "start": 0,
+      "end": 640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg 1",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg 1",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg 2",
+      "points": [
+        [
+          850,
+          -280
+        ],
+        [
+          900,
+          -280
+        ],
+        [
+          900,
+          -230
+        ],
+        [
+          850,
+          -230
+        ]
+      ],
+      "start": 0,
+      "end": 640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg 2",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg 2",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg 3",
+      "points": [
+        [
+          -900,
+          230
+        ],
+        [
+          -850,
+          230
+        ],
+        [
+          -850,
+          280
+        ],
+        [
+          -900,
+          280
+        ]
+      ],
+      "start": 0,
+      "end": 640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg 3",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg 3",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Leg 4",
+      "points": [
+        [
+          850,
+          230
+        ],
+        [
+          900,
+          230
+        ],
+        [
+          900,
+          280
+        ],
+        [
+          850,
+          280
+        ]
+      ],
+      "start": 0,
+      "end": 640
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Leg 4",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Leg 4",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Rails",
+      "points": [
+        [
+          -950,
+          -325
+        ],
+        [
+          950,
+          -325
+        ],
+        [
+          950,
+          325
+        ],
+        [
+          -950,
+          325
+        ]
+      ],
+      "start": 640,
+      "end": 680
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Rails",
+      "subcategory": "Frame"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Rails",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Top",
+      "points": [
+        [
+          -950,
+          -325
+        ],
+        [
+          350,
+          -325
+        ],
+        [
+          350,
+          325
+        ],
+        [
+          -950,
+          325
+        ]
+      ],
+      "start": 680,
+      "end": 750
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Top",
+      "subcategory": "Top"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Top",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "blend",
+      "name": "Back Rest",
+      "base": [
+        [
+          350,
+          -325
+        ],
+        [
+          950,
+          -325
+        ],
+        [
+          950,
+          325
+        ],
+        [
+          350,
+          325
+        ]
+      ],
+      "top": [
+        [
+          500,
+          -325
+        ],
+        [
+          950,
+          -325
+        ],
+        [
+          950,
+          325
+        ],
+        [
+          500,
+          325
+        ]
+      ],
+      "start": 680,
+      "end": 900,
+      "subcategory": "Top"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Back Rest",
+      "coarse": false,
+      "medium": true,
+      "fine": true
+    },
+    {
+      "op": "extrusion",
+      "name": "Side Clearance",
+      "points": [
+        [
+          -950,
+          -1225
+        ],
+        [
+          950,
+          -1225
+        ],
+        [
+          950,
+          -325
+        ],
+        [
+          -950,
+          -325
+        ]
+      ],
+      "start": 0,
+      "end": 10
+    },
+    {
+      "op": "set_subcategory",
+      "name": "Side Clearance",
+      "subcategory": "Clearance Accessibility"
+    },
+    {
+      "op": "set_visibility",
+      "name": "Side Clearance",
+      "coarse": true,
+      "medium": true,
+      "fine": true
+    }
+  ],
+  "values": {
+    "Top 1900 x 650 mm, 700 high": {
+      "value": "1900 x 650",
+      "source_status": "assumed",
+      "source": "typical product, to confirm with the supplier"
+    },
+    "Side clearance 900 mm": {
+      "value": "900",
+      "source_status": "assumed",
+      "source": "HBN 00-03 basis"
+    }
   }
- ],
- "values": {
-  "Top 1900 x 650 mm, 700 high": {
-   "value": "1900 x 650",
-   "source_status": "assumed",
-   "source": "typical product, to confirm with the supplier"
-  },
-  "Side clearance 900 mm": {
-   "value": "900",
-   "source_status": "assumed",
-   "source": "HBN 00-03 basis"
-  }
- }
 }

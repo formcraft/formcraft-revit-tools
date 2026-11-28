@@ -184,7 +184,7 @@ export function detailWindow(std: RecipeLike, componentPath: (family: string) =>
       { op: "set_formula", name: "Pass Door Shut", formula: "and(Pass Hatch, not(Open))" },
       { op: "add_family_param", name: "Pass Door Open", type: "YesNo", group: "Constraints", instance: true },
       { op: "set_formula", name: "Pass Door Open", formula: "and(Pass Hatch, Open)" },
-      { op: "add_subcategory", name: "Pass Box", line_weight_projection: 2 },
+      { op: "add_subcategory", name: "Pass Box", color: [0, 0, 0], line_weight_projection: 2, line_weight_cut: 4 },
       ...(ownSteel ? [] : [{ op: "add_family_param", name: "Pass Box Material", type: "Material", group: "Materials" }, { op: "add_material", name: steel, param: "Pass Box Material" }]),
       ...["Box Width", "Box Height", "Box Lip", "Pass Door Thickness", "Pass Handle Height"].map((n) => ({ op: "add_family_param", name: n, type: "Length", group: "Dimensions" })),
       ...types.flatMap((t) => [["Box Width", 450], ["Box Height", 400], ["Box Lip", 30], ["Pass Door Thickness", 6], ["Pass Handle Height", 330]]
