@@ -1158,7 +1158,7 @@
     "feature": "Lighting family light source (fmc_fam_light)",
     "status": "Built, Revit check due",
     "ref": "fmc_fam_light, server/src/fmc/famtools.ts, docs/tools/fmc_fam_light.md, commandset/Services/Fmc/FmcDocFam.cs, docs/handoff/kisic_gap_scripts/revit/16_family_light_source.cs",
-    "note": "New fmc_doc op light_source, ported from the hand script: Light Source on, family types made again when light types are missing, shape, distribution, lumens (all or by type), kelvin, spot beam/field, source height; only differences changed. LightFamily API unverified in Revit. Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
+    "note": "New fmc_doc op light_source, ported from the hand script: Light Source on, family types made again when light types are missing, shape, distribution, lumens (all or by type), kelvin, spot beam/field, source height; only differences changed. LightFamily API members checked against the R25 reference assembly (builder16: CustomInitialColor.Temperature, not TemperatureValue; kelvin 1800 to 20000; spot defaults 60/90 written into the plan); not yet run in Revit. Thin wrapper over fmc_doc sessions (open, apply, save): dry run by default (no session: planned ops only), saves only into family_staging_root, an existing .rfa only with overwrite: true and archived to _Archive first (archivePlan plus .build.json). Branch feat/family-editor-tools; not merged."
   },
   {
     "id": "FE-05",

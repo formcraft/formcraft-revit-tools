@@ -6,7 +6,9 @@ The light source of a lighting family, ported from `docs/handoff/kisic_gap_scrip
 { "session": "S1", "distribution": "spot", "lumens_by_type": { "600": 1200, "1200": 2400 }, "kelvin": 4000, "beam_deg": 40, "field_deg": 60 }
 ```
 
-The LightFamily API path is not yet checked in Revit.
+`kelvin` is 1800 to 20000 (Revit's `CustomInitialColor` range). A spot without angles gets 60° beam and 90° field, written into `planned_ops`.
+
+API check (builder16, 28 Nov 2026, against the Revit 2025 reference `RevitAPI.xml`/`RevitAPI.dll` in `nice3point.revit.api.revitapi` 2025.4.0): `LightFamily.GetLightFamily`, `Get/SetLightShapeStyle`, `Get/SetLightDistributionStyle`, `GetNumberOfLightTypes`, `GetLightType(int)`, `GetLightTypeName(int)`, `LightType.Get/SetInitialIntensity`, `Get/SetInitialColor`, `Get/SetLightDistribution`, `InitialFluxIntensity.Flux`, `CustomInitialColor.Temperature` (the op used `TemperatureValue`; changed to the documented `Temperature`), `SpotLightDistribution.SpotBeamAngle/SpotFieldAngle` and `BuiltInCategory.OST_LightingFixtureSource` are all there. Not yet run in Revit: the Light Source switch by its English name, the family type rebuild, and moving the source element for `source_z_mm`.
 
 ## Safety
 

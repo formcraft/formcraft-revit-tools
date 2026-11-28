@@ -309,6 +309,8 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (lf.GetLightShapeStyle() != wantShape) { lf.SetLightShapeStyle(wantShape); changed.Add("shape " + shape); }
             if (lf.GetLightDistributionStyle() != wantDist) { lf.SetLightDistributionStyle(wantDist); changed.Add("distribution " + dist); }
             double kelvin = op.Value<double?>("kelvin") ?? 3000;
+            // R25 API: CustomInitialColor.Temperature takes 1800 to 20000 K (ArgumentOutOfRangeException otherwise)
+            if (kelvin < 1800 || kelvin > 20000) throw new InvalidOperationException("kelvin must be 1800 to 20000 (Revit's range)");
             var byType = op["lumens_by_type"] as JObject;
             double? all = op.Value<double?>("lumens");
             double LmFor(string type)
@@ -326,7 +328,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 LightType lt = lf.GetLightType(i);
                 double lm = LmFor(tn);
                 if (!(lt.GetInitialIntensity() is InitialFluxIntensity fi) || Math.Abs(fi.Flux - lm) > 0.5) { lt.SetInitialIntensity(new InitialFluxIntensity(lm)); changed.Add(tn + " " + lm + " lm"); }
-                if (!(lt.GetInitialColor() is CustomInitialColor ci) || Math.Abs(ci.TemperatureValue - kelvin) > 0.5) { lt.SetInitialColor(new CustomInitialColor(kelvin)); changed.Add(tn + " " + kelvin + " K"); }
+                if (!(lt.GetInitialColor() is CustomInitialColor ci) || Math.Abs(ci.Temperature - kelvin) > 0.5) { lt.SetInitialColor(new CustomInitialColor(kelvin)); changed.Add(tn + " " + kelvin + " K"); }
                 if (wantDist == LightDistributionStyle.Spot && lt.GetLightDistribution() is SpotLightDistribution sd)
                 {
                     double beam = (op.Value<double?>("beam_deg") ?? 60) * Math.PI / 180, field = (op.Value<double?>("field_deg") ?? 90) * Math.PI / 180;

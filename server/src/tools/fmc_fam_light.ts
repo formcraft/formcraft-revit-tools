@@ -18,9 +18,9 @@ export const FMC_FAM_LIGHT_SHAPE = {
   distribution: z.enum(["spherical", "hemispherical", "spot"]).optional().default("hemispherical"),
   lumens: z.number().positive().optional().describe("initial intensity of every light type, lm"),
   lumens_by_type: z.record(z.string(), z.number().positive()).optional().describe("lm by family type name (or name prefix)"),
-  kelvin: z.number().min(1000).max(20000).optional().default(3000),
-  beam_deg: z.number().positive().max(179).optional().describe("spot only"),
-  field_deg: z.number().positive().max(179).optional().describe("spot only, at least the beam angle"),
+  kelvin: z.number().min(1800).max(20000).optional().default(3000).describe("colour temperature, K (Revit takes 1800 to 20000)"),
+  beam_deg: z.number().min(1).max(179).optional().describe("spot only (default 60)"),
+  field_deg: z.number().min(1).max(179).optional().describe("spot only, at least the beam angle (default 90)"),
   source_z_mm: z.number().finite().optional().describe("the light source's height in the family, mm"),
   ensure_category: z.boolean().optional().default(true),
 };

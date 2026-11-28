@@ -250,6 +250,7 @@ export function twoDOps(items: Array<Record<string, unknown>>): { ops: Array<Rec
 
 // ---------- FE-04 fmc_fam_light ----------
 
+export const SPOT_DEFAULT = { beam_deg: 60, field_deg: 90 } as const;
 export interface LightArgs { name?: string; shape?: string; distribution?: string; lumens?: number; lumens_by_type?: Record<string, number>; kelvin?: number;
   beam_deg?: number; field_deg?: number; source_z_mm?: number; ensure_category?: boolean }
 export function lightOps(a: LightArgs): Array<Record<string, unknown>> {
@@ -258,6 +259,9 @@ export function lightOps(a: LightArgs): Array<Record<string, unknown>> {
   const l: Record<string, unknown> = { op: "light_source", name: a.name || "Light source" };
   for (const k of ["shape", "distribution", "lumens", "lumens_by_type", "kelvin", "beam_deg", "field_deg", "source_z_mm"] as const)
     if (a[k] !== undefined) l[k] = a[k];
+  // builder16: a spot gets the angles the C# op would use (60° beam, 90° field) written into the plan, so the plan shows
+  // what Revit will get and opsProblems checks field >= beam on the real values.
+  if (a.distribution === "spot") { l.beam_deg ??= SPOT_DEFAULT.beam_deg; l.field_deg ??= SPOT_DEFAULT.field_deg; }
   ops.push(l);
   return ops;
 }

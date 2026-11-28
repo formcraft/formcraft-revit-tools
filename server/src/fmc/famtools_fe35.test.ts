@@ -4,8 +4,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { DEFAULT_CONFIG, GuardConfig } from "./policy.js";
 import { SpParam } from "./specs.js";
-import { FamIo, checkOps, twoDOps } from "./famtools.js";
+import { FamIo, SPOT_DEFAULT, checkOps, lightOps, twoDOps } from "./famtools.js";
 import { runFmcFam2d } from "../tools/fmc_fam_2d.js";
+import { FMC_FAM_LIGHT_SHAPE, runFmcFamLight } from "../tools/fmc_fam_light.js";
+import { z } from "zod";
 
 const STAGING = "D:\\Kit\\04_Families\\_Staging";
 const cfg: GuardConfig = { ...DEFAULT_CONFIG, library_roots: [STAGING], write_roots: [STAGING], family_staging_root: STAGING };
@@ -92,4 +94,46 @@ test("FE-03: fmc_fam_2d plans subcategory, model lines, a region and model text 
 test("FE-03: a pale or pen-1 outline subcategory is reported under FAM-044", () => {
   const r = checkOps([{ op: "add_subcategory", name: "Plan Outline", color: [230, 230, 230], line_weight_projection: 1 }], { config: cfg, dictionary });
   assert.ok([...r.errors, ...r.notes].some((e) => /FAM-044/.test(e)));
+});
+
+// ---------- FE-04 fmc_fam_light ----------
+
+const LIGHT = { ...COMMON, name: "Light source", shape: "point" as const, distribution: "hemispherical" as const, kelvin: 3000, ensure_category: true };
+
+test("FE-04: a spot without angles gets the op's 60/90 defaults in the plan; a hemispherical light gets none", () => {
+  const spot = lightOps({ distribution: "spot", lumens: 900 })[1];
+  assert.deepEqual([spot.beam_deg, spot.field_deg], [SPOT_DEFAULT.beam_deg, SPOT_DEFAULT.field_deg]);
+  assert.equal(lightOps({ distribution: "spot", lumens: 900, beam_deg: 30 })[1].field_deg, 90);
+  const hemi = lightOps({ distribution: "hemispherical", lumens: 900 })[1];
+  assert.equal(hemi.beam_deg, undefined);
+});
+
+test("FE-04: a spot beam wider than the default field is refused before Revit is asked", async () => {
+  const { io, calls } = fakeIo();
+  const r = body(await runFmcFamLight({ ...LIGHT, session: "S1", distribution: "spot", lumens: 900, beam_deg: 120 }, io));
+  assert.equal(r.isError, true);
+  assert.ok(r.reasons.some((x: string) => /field_deg must be at least beam_deg/.test(x)), r.reasons.join("\n"));
+  assert.equal(calls.length, 0);
+});
+
+test("FE-04: kelvin outside Revit's 1800 to 20000 K is refused by the tool schema and by the op check", () => {
+  const shape = z.object(FMC_FAM_LIGHT_SHAPE);
+  assert.equal(shape.safeParse({ lumens: 800, kelvin: 1500 }).success, false);
+  assert.equal(shape.safeParse({ lumens: 800, kelvin: 2700 }).success, true);
+  assert.ok(checkOps([{ op: "light_source", name: "L", lumens: 800, kelvin: 1500 }], { config: cfg, dictionary }).errors.length > 0);
+});
+
+test("FE-04: no lumens at all is refused; lumens_by_type alone is enough", async () => {
+  const { io } = fakeIo();
+  const none = body(await runFmcFamLight({ ...LIGHT }, io));
+  assert.equal(none.isError, true);
+  assert.ok(none.reasons.some((x: string) => /lumens/.test(x)));
+  const byType = body(await runFmcFamLight({ ...LIGHT, lumens_by_type: { "600": 1200 } }, io));
+  assert.equal(byType.isError, false);
+  assert.deepEqual(byType.planned_ops.map((o: { op: string }) => o.op), ["set_category", "light_source"]);
+});
+
+test("FE-04: a light source in a batch that sets another category is refused", () => {
+  const r = checkOps([...lightOps({ lumens: 800, ensure_category: false }).map((o) => o), { op: "set_category", name: "Furniture" }].reverse(), { config: cfg, dictionary });
+  assert.ok(r.errors.some((e) => /Lighting Fixtures/.test(e)), r.errors.join("\n"));
 });
