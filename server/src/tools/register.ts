@@ -144,6 +144,9 @@ export async function registerTools(server: McpServer): Promise<RegistrationRepo
   const hiddenInFmcProfile = new Set([
     "say_hello", "color_elements", "tag_all_walls", "tag_all_rooms", "store_project_data", "store_room_data",
     "query_stored_data", "export_room_data", "search_modules", "use_module",
+    // build plan item 32 (Emlyn 28 Nov, decision 5): ai_element_filter retires; select_by's filter engine replaces it.
+    // FMC_TOOL_PROFILE=full still lists it for one release.
+    "ai_element_filter",
   ]);
 
   // Two or more Revits: every tool takes an optional `revit` (a project or document name, a pid or a port) saying which

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Build plan item 32: the select_by filter engine's Revit-free core (criteria tree, three-valued logic, units,
+       polygons, cursor, snapshots, byte cap), tested offline. The Revit side is covered by the live recipes. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>FilterCore.Tests</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\commandset\Services\Fmc\Filter\FilterCore.cs" Link="FilterCore.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <!-- xunit v3 runs as its own exe: dotnet run, project tests/filter/FilterCore.Tests.csproj (CI: addin job) -->
+    <PackageReference Include="xunit.v3" Version="3.1.0" />
+  </ItemGroup>
+</Project>
