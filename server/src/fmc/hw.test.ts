@@ -2,12 +2,19 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { healthReport } from "./httpservice.js";
 import { runFmcHw } from "../tools/fmc_hw.js";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import {
-  advise, applyGraphicsText, autosaveWouldSave, graphicsPlan, parseDriverDate, parseHost,
-  planFree, primeHardwareScan, readGraphics, stripSecrets, upsertIni, type HostRaw,
+  advise, applyGraphicsText, autoFreeIfHard, autosaveWouldSave, graphicsPlan, parseDriverDate, parseHost,
+  planFree, primeHardwareScan, readGraphics, stripSecrets, upsertIni, writeIniWithBackup, type HostRaw,
 } from "./hw.js";
 import { clashPairs, dispatchJob, rayHitsAabb, rayVoxelHits, type GpuRunner } from "./hwgpu.js";
-import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
+import { DEFAULT_CONFIG, WRITE_COMMANDS, type GuardConfig } from "./policy.js";
+import { NEVER } from "./aiuse.js";
+import { MemoryGate, admitWrite, memoryLimits } from "./memory.js";
+
+const HOST_WRITES = { ...DEFAULT_CONFIG, hw_host_writes: true } as GuardConfig;
 
 const NOW = Date.parse("2026-11-22T00:00:00Z");
 
@@ -73,6 +80,7 @@ test("gpu_prefer is a dry run until confirm, and it never writes Revit.ini", asy
     readIni: () => ini,
     writeIni: (text: string) => { ini = text; },
     writePreference: (_exe: string, value: string) => { wrote = value; },
+    config: HOST_WRITES,
   };
   const dry = JSON.parse((await runFmcHw({ action: "gpu_prefer" }, io)).content[0].text);
   assert.equal(dry.applied, false);
@@ -97,6 +105,7 @@ test("offload reports graphics and writes them only with confirm", async () => {
     writeIni: (text: string) => { ini = text; },
     gpuRunner: null,
     revit: async () => ({ graphics: null }),
+    config: HOST_WRITES,
   };
   const planned = JSON.parse((await runFmcHw({ action: "offload" }, io)).content[0].text);
   assert.equal(planned.applied, false);
@@ -198,4 +207,93 @@ test("scan and health expose the cache and do not print a token", async () => {
   assert.ok(Array.isArray(scan.advice));
   const stripped = stripSecrets({ token: "abc", name: "gpu" });
   assert.equal("token" in stripped, false);
+});
+
+test("gpu_prefer and offload with confirm still refuse until a person turns on hw_host_writes", async () => {
+  let wrote = "";
+  let ini = "[Graphics]\r\nUseHardwareAcceleration=0\r\n";
+  const io = {
+    collect: async () => fixture(),
+    readIni: () => ini,
+    writeIni: (text: string) => { ini = text; },
+    writePreference: (_exe: string, value: string) => { wrote = value; },
+    gpuRunner: null,
+    config: { ...DEFAULT_CONFIG } as GuardConfig,
+  };
+  const gpu = await runFmcHw({ action: "gpu_prefer", dry_run: false, confirm: true }, io);
+  assert.equal(gpu.isError, true);
+  assert.match(gpu.content[0].text, /FMC-HW-PERSON/);
+  assert.equal(wrote, "");
+  const off = await runFmcHw({ action: "offload", dry_run: false, confirm: true }, io);
+  assert.equal(off.isError, true);
+  assert.match(off.content[0].text, /FMC-HW-PERSON/);
+  assert.equal(ini, "[Graphics]\r\nUseHardwareAcceleration=0\r\n");
+  // the dry runs are unchanged
+  assert.equal(JSON.parse((await runFmcHw({ action: "gpu_prefer" }, io)).content[0].text).applied, false);
+});
+
+test("Revit.ini is backed up to Revit.ini.bak before it is replaced", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-hw-ini-"));
+  const file = path.join(dir, "Revit.ini");
+  assert.deepEqual(writeIniWithBackup(file, "first"), { backup: null });
+  assert.equal(fs.readFileSync(file, "utf8"), "first");
+  const second = writeIniWithBackup(file, "second");
+  assert.equal(second.backup, `${file}.bak`);
+  assert.equal(fs.readFileSync(`${file}.bak`, "utf8"), "first");
+  assert.equal(fs.readFileSync(file, "utf8"), "second");
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test("free needs confirm and one document, and a real free goes through the gated write (fmc_hw_free)", async () => {
+  const docs = [
+    { title: "Tower", path: "C:\\WIP\\Tower.rvt", person_working: false, open_views: [
+      { id: "1", name: "L1", active: true, pinned: false }, { id: "2", name: "3D", active: false, pinned: false },
+      { id: "3", name: "S", active: false, pinned: false }, { id: "4", name: "E", active: false, pinned: false }] },
+    { title: "Annex", path: "C:\\WIP\\Annex.rvt", person_working: false, open_views: [
+      { id: "7", name: "L1", active: true, pinned: false }, { id: "8", name: "3D", active: false, pinned: false },
+      { id: "9", name: "S", active: false, pinned: false }] },
+  ];
+  const raw: string[] = [];
+  const writes: Array<{ command: string; body: Record<string, unknown> }> = [];
+  const io = {
+    revit: async (action: string) => { raw.push(action); return { documents: docs }; },
+    revitWrite: async (command: string, body: Record<string, unknown>) => { writes.push({ command, body }); return { closed: [] }; },
+    config: { ...DEFAULT_CONFIG } as GuardConfig,
+  };
+  const noConfirm = await runFmcHw({ action: "free", dry_run: false }, io);
+  assert.equal(noConfirm.isError, true);
+  assert.match(noConfirm.content[0].text, /FMC-HW-CONFIRM/);
+  const noDoc = await runFmcHw({ action: "free", dry_run: false, confirm: true }, io);
+  assert.equal(noDoc.isError, true);
+  assert.match(noDoc.content[0].text, /FMC-DOC-REQUIRED/);
+  const missing = await runFmcHw({ action: "free", dry_run: false, confirm: true, document: "Nope" }, io);
+  assert.match(missing.content[0].text, /Nope is not open/);
+  assert.equal(writes.length, 0);
+  assert.ok(raw.every((action) => action === "memory"), "only the memory read goes raw; free never does");
+  const done = JSON.parse((await runFmcHw({ action: "free", dry_run: false, confirm: true, document: "tower", keep: 2 }, io)).content[0].text);
+  assert.equal(done.applied, true);
+  assert.equal(writes.length, 1);
+  assert.equal(writes[0].command, "fmc_hw_free");
+  assert.equal(writes[0].body.document, "C:\\WIP\\Tower.rvt");
+  const close = writes[0].body.close as Array<{ document: string }>;
+  assert.ok(close.length > 0);
+  assert.ok(close.every((row) => row.document === "C:\\WIP\\Tower.rvt"), "only the named document's views");
+});
+
+test("fmc_hw_free is a gated write, people-only for AI below full access, and never waits on the memory hold", async () => {
+  assert.equal(WRITE_COMMANDS.has("fmc_hw_free"), true);
+  assert.equal(WRITE_COMMANDS.has("fmc_hw"), false, "scan, memory and advice stay reads");
+  assert.ok(NEVER.fmc_hw_free);
+  const hard = new MemoryGate(() => ({ freeMb: 100, totalMb: 16000, revitWorkingSetMb: 4000, source: "os" }), () => memoryLimits(1024), () => {}, 0);
+  assert.equal(hard.view().tier, "hard");
+  await admitWrite(hard, "fmc_hw_free", {}, 0);
+  await assert.rejects(() => admitWrite(hard, "create_level", {}, 0), /FMC-RAM-PAUSE/);
+});
+
+test("auto free stays off unless hw_auto_free is on", async () => {
+  let called = false;
+  const result = await autoFreeIfHard({ config: { ...DEFAULT_CONFIG } as GuardConfig, idle: () => true, revit: async () => { called = true; return {}; } });
+  assert.equal(result.ran, false);
+  assert.match(result.reason, /hw_auto_free/);
+  assert.equal(called, false);
 });

@@ -248,6 +248,8 @@ export function classifyTier(freeMb: number, limits: MemoryLimits, paused: boole
 export async function admitWrite(gate: MemoryGate, command: string, params: unknown, maxMs: number): Promise<void> {
   const view = gate.view();
   if (view.tier === "off" || view.tier === "ok") return;
+  // Closing spare views is how memory comes back: it must not wait for memory.
+  if (command === "fmc_hw_free") return;
   if (view.tier === "hard" || view.paused) {
     await gate.holdWrites(maxMs);
     return;
