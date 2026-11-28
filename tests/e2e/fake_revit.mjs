@@ -110,7 +110,38 @@ const fixtures = {
     sheets: [{ id: 10, number: "A-0001", name: "Cover", parameters: {} }], types: [{ id: 20, family: "Basic Wall", name: "Generic - 200mm", category: "Walls", bic: "OST_Walls", parameters: {} }],
     families: [{ id: 30, name: "FMC_A_Door_Single", in_place: false }], links: [] },
   fmc_issue_facts: { sheets: [{ id: 10, current_revision: "" }], revisions: [] },
+  fmc_directshape: (p) => dsRead(p),
+  fmc_directshape_apply: (p) => dsApply(p),
 };
+
+// fmc_directshape (gap proposal 25): a stand-in that keeps what fmc_directshape_apply "made". Id 1 is another tool's DirectShape.
+const dsStore = [];
+let dsNext = 5000;
+const dsOurs = (p) => (s) => (!p.of_run || s.run_id === p.of_run) && (!(p.ids && p.ids.length) || p.ids.includes(String(s.id)));
+function dsRead(p) {
+  if (p.mode === "list") {
+    const sel = dsStore.filter(dsOurs(p));
+    const runs = {};
+    for (const s of sel) runs[s.run_id] = (runs[s.run_id] || 0) + 1;
+    return { read_only: true, count: sel.length, runs: Object.entries(runs).map(([run_id, count]) => ({ run_id, count })), shapes: sel.slice(0, p.limit || 50) };
+  }
+  return { read_only: true, resolved_document: { title: p.document }, problems: [], shapes: (p.shapes || []).map((s) => ({ index: s.index, name: s.name, category: s.category, ok: true, solid_count: s.parts.length })) };
+}
+function dsApply(p) {
+  if (p.mode === "remove") {
+    const asked = (p.ids || []).map(String);
+    const sel = dsStore.filter(dsOurs(p));
+    for (const s of sel) dsStore.splice(dsStore.indexOf(s), 1);
+    const skipped = asked.filter((id) => !sel.some((s) => String(s.id) === id)).map((id) => ({ id, code: "FMC-DS-NOT-OURS" }));
+    return { ok: true, removed: sel.map((s) => s.id), skipped, rolled_back: false };
+  }
+  const created = (p.shapes || []).map((s) => {
+    const rec = { id: dsNext++, name: s.name, category: s.category, run_id: p.run_id, index: s.index, application_data_id: `fmc_directshape|${p.run_id}|${s.index + 1}` };
+    dsStore.push(rec);
+    return rec;
+  });
+  return { ok: true, created, rolled_back: false };
+}
 
 const server = net.createServer((sock) => {
   let buf = "";
