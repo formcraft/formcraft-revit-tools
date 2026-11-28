@@ -45,12 +45,17 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         /// <summary>What every reply says about one element: enough for the identity map and for Navisworks (id + model).</summary>
-        private static JObject Describe(Document doc, Element e) => new JObject
+        private static JObject Describe(Document doc, Element e)
         {
-            ["unique_id"] = e.UniqueId, ["element_id"] = e.Id.Value, ["category"] = e.Category?.Name ?? "",
-            ["name"] = e.Name ?? "", ["mark"] = e.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)?.AsString() ?? "",
-            ["model"] = doc.Title, ["path"] = doc.PathName ?? "",
-        };
+            var o = new JObject
+            {
+                ["unique_id"] = e.UniqueId, ["element_id"] = e.Id.Value, ["category"] = e.Category?.Name ?? "",
+                ["name"] = e.Name ?? "", ["mark"] = e.get_Parameter(BuiltInParameter.ALL_MODEL_MARK)?.AsString() ?? "",
+                ["model"] = doc.Title, ["path"] = doc.PathName ?? "",
+            };
+            if (e is View view) o["view_type"] = view.ViewType.ToString();
+            return o;
+        }
 
         private JObject Get(UIApplication app)
         {
@@ -146,26 +151,57 @@ namespace RevitMCPCommandSet.Services.Fmc
             if (q.Length == 0) throw new ArgumentException("query is needed: a mark, a number or a name");
             bool partial = Parameters.Value<bool?>("partial") == true;
             int limit = Math.Max(1, Math.Min(Parameters.Value<int?>("limit") ?? 50, 500));
+            // Tool Research (fmc_find): paging, a category filter, a named parameter, and no work plane grids by default
+            int offset = Math.Max(0, Parameters.Value<int?>("offset") ?? 0);
+            bool allCategories = Parameters.Value<bool?>("all_categories") == true;
+            string paramName = (Parameters.Value<string>("parameter") ?? "").Trim();
+            var categories = (Parameters["categories"] as JArray ?? new JArray()).Select(t => (t.Value<string>() ?? "").Trim()).Where(s => s.Length > 0).ToList();
+            var sketchGrid = new ElementId(BuiltInCategory.OST_IOSSketchGrid);
+            int skippedNonModel = 0;
+            bool Wanted(Element e)
+            {
+                Category c = e.Category;
+                if (categories.Count > 0)
+                    return categories.Any(n => string.Equals(n, c.Name, StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(n, "OST_" + c.Name.Replace(" ", ""), StringComparison.OrdinalIgnoreCase));
+                if (allCategories) return true;
+                // "Work Plane Grid" elements are named after their level, so "Level 1" matched them beside the Level
+                if (c.Id == sketchGrid || c.CategoryType == CategoryType.Internal) { skippedNonModel++; return false; }
+                return true;
+            }
             bool Hit(string v, bool contains) => !string.IsNullOrEmpty(v) &&
                 (contains || partial ? v.IndexOf(q, StringComparison.OrdinalIgnoreCase) >= 0 : string.Equals(v.Trim(), q, StringComparison.OrdinalIgnoreCase));
+            string ParamText(Parameter p) => p == null ? null : p.StorageType == StorageType.String ? p.AsString() : p.AsValueString();
 
             var matches = new List<(Element E, string Field)>();
+            int seen = 0;
+            bool more = false;
             // Owner 26 Oct: an element id or UniqueId is looked up directly (ids made minutes ago were "not found")
-            Element byId = long.TryParse(q, out long idValue) ? doc.GetElement(new ElementId(idValue)) : q.Length > 30 ? doc.GetElement(q) : null;
+            Element byId = paramName.Length > 0 ? null : long.TryParse(q, out long idValue) ? doc.GetElement(new ElementId(idValue)) : q.Length > 30 ? doc.GetElement(q) : null;
             if (byId != null && byId.Category != null) matches.Add((byId, "element id"));
             foreach (Element e in byId != null ? Enumerable.Empty<Element>() : new FilteredElementCollector(doc).WhereElementIsNotElementType())
             {
                 if (e.Category == null) continue;
                 string field = null;
-                foreach (var f in Fields)
+                if (paramName.Length > 0)
                 {
-                    Parameter p = e.get_Parameter(f.Bip) ?? (f.Field == "type mark" ? doc.GetElement(e.GetTypeId())?.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_MARK) : null);
-                    if (p != null && p.StorageType == StorageType.String && Hit(p.AsString(), f.Field == "comments")) { field = f.Field; break; }
+                    // parameter: only that parameter, on the instance and then its type
+                    Parameter p = e.LookupParameter(paramName) ?? doc.GetElement(e.GetTypeId())?.LookupParameter(paramName);
+                    if (Hit(ParamText(p), false)) field = "parameter " + paramName;
                 }
-                if (field == null && Hit(e.Name, false)) field = "name";
-                if (field == null) continue;
+                else
+                {
+                    foreach (var f in Fields)
+                    {
+                        Parameter p = e.get_Parameter(f.Bip) ?? (f.Field == "type mark" ? doc.GetElement(e.GetTypeId())?.get_Parameter(BuiltInParameter.ALL_MODEL_TYPE_MARK) : null);
+                        if (p != null && p.StorageType == StorageType.String && Hit(p.AsString(), f.Field == "comments")) { field = f.Field; break; }
+                    }
+                    if (field == null && Hit(e.Name, false)) field = "name";
+                }
+                if (field == null || !Wanted(e)) continue;
+                if (seen++ < offset) continue;
+                if (matches.Count >= limit) { more = true; break; }
                 matches.Add((e, field));
-                if (matches.Count >= limit) break;
             }
 
             var touching = new JArray();
@@ -185,7 +221,15 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
             }
             var found = new JArray(matches.Select(m => { JObject o = Describe(doc, m.E); o["matched"] = m.Field; return o; }));
-            return new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["query"] = q, ["found"] = found, ["touching"] = touching, ["truncated"] = matches.Count >= limit };
+            var reply = new JObject
+            {
+                ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["query"] = q, ["found"] = found, ["touching"] = touching,
+                ["truncated"] = more, ["offset"] = offset, ["skipped_non_model"] = skippedNonModel,
+            };
+            if (more) reply["next_offset"] = offset + matches.Count;
+            if (paramName.Length > 0) reply["parameter"] = paramName;
+            if (categories.Count > 0) reply["categories"] = new JArray(categories);
+            return reply;
         }
     }
 }

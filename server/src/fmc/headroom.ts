@@ -16,7 +16,6 @@ export const HEADROOM_BANK_SHAPE = {
   note: "Minimum clear headroom over stairs, corridors and rooms, measured to the underside of a beam, duct, pipe or soffit.",
 };
 
-const TALL_CROSSING_MM = 1500;
 const ABOVE_FLOOR_MM = 50;
 
 export interface Xy {
@@ -76,7 +75,14 @@ export interface CitedClear {
   bank_source: "standards" | "provisional" | "unknown";
   clause: string;
   can_pass: boolean;
+  /** The bank's own value when the call passed min_clear_mm (so a what-if is visible next to the bank). */
+  bank_value?: number;
+  /** True when the call value is below the bank value: a what-if that cannot PASS. */
+  below_bank?: boolean;
 }
+
+/** Status of a scan. NOT_CHECKED: no stair, corridor or room was found, so nothing was measured. */
+export type HeadroomStatus = "PASS" | "FAIL" | "PROVISIONAL" | "NOT_CHECKED";
 
 interface BankEntry {
   value: unknown;
@@ -139,12 +145,23 @@ export function citeHeadroom(standards: Record<string, unknown> | null | undefin
     }
   }
   if (typeof callMm === "number" && Number.isFinite(callMm)) {
-    return { ...cited, value: callMm, source: cited.bank_source === "standards" ? "call" : cited.source };
+    const called: CitedClear = { ...cited, value: callMm, bank_value: cited.value, source: cited.bank_source === "standards" ? "call" : cited.source };
+    // A call can raise the bar (stricter) and still PASS, but a value below the bank's is a what-if only:
+    // min_clear_mm:1 must not turn a FAIL into a PASS.
+    if (cited.can_pass && callMm < cited.value) {
+      return {
+        ...called, can_pass: false, below_bank: true,
+        clause: `${cited.clause} The call's ${callMm} mm is below the bank's ${cited.value} mm: a what-if that cannot PASS.`,
+      };
+    }
+    return called;
   }
   return cited;
 }
 
-export function verdict(hitCount: number, cited: CitedClear): "PASS" | "FAIL" | "PROVISIONAL" {
+/** zones is the number of zones scanned; 0 means nothing was measured (NOT_CHECKED, never a PASS or a clean PROVISIONAL). */
+export function verdict(hitCount: number, cited: CitedClear, zones?: number): HeadroomStatus {
+  if (zones === 0) return "NOT_CHECKED";
   if (!cited.can_pass) return "PROVISIONAL";
   return hitCount > 0 ? "FAIL" : "PASS";
 }
@@ -168,10 +185,9 @@ export function bboxClearMm(zone: HeadroomZone, obstacle: HeadroomObstacle): num
   const underside = num(obstacle.min, 2);
   const top = num(obstacle.max, 2);
   if (underside == null || top == null) return null;
-  if (underside < zone.floor_z_mm + ABOVE_FLOOR_MM) {
-    if (top - underside > TALL_CROSSING_MM) return null;
-    return null;
-  }
+  // Underside at or below the walking surface: a riser crossing the floor, or something standing on it.
+  // Neither is a headroom obstacle.
+  if (underside < zone.floor_z_mm + ABOVE_FLOOR_MM) return null;
   return Math.round(underside - zone.floor_z_mm);
 }
 

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { collectJobs, findJob, jobFiles, jobResult, requestCancel } from "./jobs.js";
+import { collectJobs, findJob, jobFiles, jobResult, requestCancel, STALE_DIALOG_MS } from "./jobs.js";
 import { AIUSE_FILES, pickAiRulebook } from "./aiuse.js";
 import { aiRulebookLine } from "./selftest.js";
 
@@ -17,6 +17,7 @@ function home() {
   return env;
 }
 const line = (file: string, o: object) => fs.appendFileSync(file, JSON.stringify(o) + "\n");
+const iso = (ms: number) => new Date(ms).toISOString();
 
 test("F-030/F-036: a job's state comes from the server's record, Revit's record and the late results", () => {
   const env = home();
@@ -36,7 +37,8 @@ test("F-030/F-036: a job's state comes from the server's record, Revit's record 
   // An F-022 line from before jobs: no job field, the id is the job.
   line(f.late, { at: "2026-10-14T10:00:00Z", command: "fmc_doc", id: "999", result: { error: { message: "boom" } } });
 
-  const jobs = collectJobs(env);
+  // "now" a few minutes after the fixture: a dialog older than STALE_DIALOG_MS with no heartbeat is expired.
+  const jobs = collectJobs(env, Date.parse("2026-10-15T09:45:00Z"));
   const by = Object.fromEntries(jobs.map((j) => [j.job, j]));
   assert.equal(jobs[0].job, "444", "newest first");
   assert.equal(by["111"].state, "finished");
@@ -59,24 +61,26 @@ test("F-030/F-036: a job's state comes from the server's record, Revit's record 
 test("F-030: cancel is a request file and a record line; a cancelled result reads as cancelled", () => {
   const env = home();
   const f = jobFiles(env);
-  line(f.server, { at: "2026-10-15T10:00:50Z", job: "555", event: "running", command: "send_code_to_revit", started: "2026-10-15T10:00:00Z" });
+  const now = Date.now();
+  line(f.server, { at: iso(now - 50_000), job: "555", event: "running", command: "send_code_to_revit", started: iso(now - 100_000) });
   const file = requestCancel("555", env);
   assert.ok(fs.existsSync(file));
   assert.equal(path.basename(file), "555");
-  assert.ok(findJob("555", env)!.cancel_requested);
-  assert.match(findJob("555", env)!.summary, /cancel requested/);
+  assert.ok(findJob("555", env, now)!.cancel_requested);
+  assert.match(findJob("555", env, now)!.summary, /cancel requested/);
   assert.throws(() => requestCancel("..\\evil", env), /Not a job id/);
-  line(f.late, { at: "2026-10-15T10:01:30Z", command: "send_code_to_revit", job: "555",
+  line(f.late, { at: iso(now - 10_000), command: "send_code_to_revit", job: "555",
     result: { result: { success: false, errorCode: "FMC-CODE-CANCELLED", errorMessage: "[FMC-CODE-CANCELLED] Job 555 was cancelled" } } });
-  assert.equal(findJob("555", env)!.state, "cancelled");
+  assert.equal(findJob("555", env, now)!.state, "cancelled");
 });
 
 test("fmc_job: list, status, result, and cancel with a dry run first", async () => {
   const { runFmcJob } = await import("../tools/fmc_job.js");
   const env = home();
   const f = jobFiles(env);
-  line(f.server, { at: "2026-10-15T11:00:50Z", job: "777", event: "running", command: "send_code_to_revit", started: "2026-10-15T11:00:00Z" });
-  const text = async (a: object) => JSON.parse((await runFmcJob({ action: "list", job: "", limit: 20, confirm: false, ...a } as any, env)).content[0].text);
+  const now = Date.now();
+  line(f.server, { at: iso(now - 50_000), job: "777", event: "running", command: "send_code_to_revit", started: iso(now - 100_000) });
+  const text = async (a: object) => JSON.parse((await runFmcJob({ action: "list", job: "", limit: 20, confirm: false, ...a } as any, env, () => now)).content[0].text);
 
   assert.equal((await text({})).jobs[0].state, "running");
   assert.equal((await text({ action: "status", job: "777" })).state, "running");
@@ -91,7 +95,7 @@ test("fmc_job: list, status, result, and cancel with a dry run first", async () 
   assert.equal(sent.cancel_requested, true);
   assert.ok(fs.existsSync(path.join(f.cancelDir, "777")));
 
-  line(f.late, { at: "2026-10-15T11:01:30Z", command: "send_code_to_revit", job: "777", result: { result: { success: true, result: "42" } } });
+  line(f.late, { at: iso(now - 10_000), command: "send_code_to_revit", job: "777", result: { result: { success: true, result: "42" } } });
   const done = await text({ action: "result", job: "777" });
   assert.equal(done.ready, true);
   assert.equal(done.result.result.result, "42");
@@ -186,19 +190,22 @@ test("F-064: a job the server stopped waiting for stays running while Revit's he
   const { lastHeartbeatMs } = await import("./jobs.js");
   const env = home();
   const f = jobFiles(env);
-  line(f.server, { at: "2026-10-18T00:00:50Z", job: "777", event: "running", command: "send_code_to_revit", started: "2026-10-18T00:00:00Z" });
-  line(f.revit, { at: "2026-10-18T00:00:20Z", job: "777", command: "send_code_to_revit", event: "running", started: "2026-10-18T00:00:00Z" });
-  line(f.server, { at: "2026-10-18T00:35:00Z", job: "777", event: "gave_up", command: "send_code_to_revit", after_s: 2100 });
-  line(f.revit, { at: "2026-10-18T02:10:00Z", job: "777", command: "send_code_to_revit", event: "heartbeat", ms: 7800000 });
-  let j = findJob("777", env)!;
+  const t0 = Date.now() - (2 * 3600_000 + 11 * 60_000);
+  const started = iso(t0), gaveUp = iso(t0 + 35 * 60_000), beat = iso(t0 + 2 * 3600_000 + 10 * 60_000), now = t0 + 2 * 3600_000 + 11 * 60_000;
+  line(f.server, { at: iso(t0 + 50_000), job: "777", event: "running", command: "send_code_to_revit", started });
+  line(f.revit, { at: iso(t0 + 20_000), job: "777", command: "send_code_to_revit", event: "running", started });
+  line(f.server, { at: gaveUp, job: "777", event: "gave_up", command: "send_code_to_revit", after_s: 2100 });
+  line(f.revit, { at: beat, job: "777", command: "send_code_to_revit", event: "heartbeat", ms: 7800000 });
+  let j = findJob("777", env, now)!;
   assert.equal(j.state, "running", "heartbeats after the server gave up: still running, not no_answer");
-  assert.match(j.summary, /last heartbeat at 2026-10-18T02:10:00Z \(this server stopped waiting at 2026-10-18T00:35:00Z; Revit keeps the answer\)/);
-  assert.equal(lastHeartbeatMs("777", env), Date.parse("2026-10-18T02:10:00Z"));
+  assert.ok(j.summary.includes(`last heartbeat at ${beat}`), j.summary);
+  assert.ok(j.summary.includes(`this server stopped waiting at ${gaveUp}`), j.summary);
+  assert.equal(lastHeartbeatMs("777", env), Date.parse(beat));
   assert.equal(lastHeartbeatMs("nope", env), 0);
   // Revit writes the result itself when the job ends
-  line(f.revit, { at: "2026-10-18T03:00:00Z", job: "777", command: "send_code_to_revit", event: "finished", ms: 10800000, ok: true });
-  line(f.late, { at: "2026-10-18T03:00:00Z", job: "777", command: "send_code_to_revit", from: "revit", result: { result: { success: true, result: "{\"built\":590}" } } });
-  j = findJob("777", env)!;
+  line(f.revit, { at: iso(t0 + 3 * 3600_000), job: "777", command: "send_code_to_revit", event: "finished", ms: 10800000, ok: true });
+  line(f.late, { at: iso(t0 + 3 * 3600_000), job: "777", command: "send_code_to_revit", from: "revit", result: { result: { success: true, result: "{\"built\":590}" } } });
+  j = findJob("777", env, t0 + 3 * 3600_000)!;
   assert.equal(j.state, "finished");
   assert.deepEqual(jobResult("777", env).result, { result: { success: true, result: "{\"built\":590}" } });
 });
@@ -211,24 +218,132 @@ test("F-064: job times are shown in local time with the offset beside the UTC on
   assert.equal(localIso(undefined), undefined);
   assert.equal(localIso("not a time"), undefined);
   const env = home();
-  line(jobFiles(env).server, { at: "2026-10-18T00:00:50Z", job: "888", event: "running", command: "fmc_doc", started: "2026-10-18T00:00:00Z" });
-  assert.match(findJob("888", env)!.local!.started!, /^2026-10-1[78]T\d\d:00:00[+-]\d\d:\d\d$/);
+  const now = Date.now();
+  line(jobFiles(env).server, { at: iso(now - 50_000), job: "888", event: "running", command: "fmc_doc", started: iso(now - 60_000) });
+  assert.match(findJob("888", env, now)!.local!.started!, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/);
 });
 
 test("F-064: a command that arrives while another runs is queued in Revit, then runs, then finishes", () => {
   const env = home();
   const f = jobFiles(env);
-  line(f.server, { at: "2026-10-18T10:00:50Z", job: "901", event: "running", command: "fmc_recipe", started: "2026-10-18T10:00:00Z" });
-  line(f.revit, { at: "2026-10-18T10:00:00Z", job: "901", command: "fmc_doc", event: "queued", started: "2026-10-18T10:00:00Z", ahead: 1 });
-  line(f.revit, { at: "2026-10-18T10:01:00Z", job: "901", command: "fmc_doc", event: "heartbeat", ms: 60000 });
-  let j = findJob("901", env)!;
+  const t0 = Date.now() - 26 * 60_000;
+  const queuedAt = iso(t0), beat = iso(t0 + 60_000), runningAt = iso(t0 + 20 * 60_000), finishedAt = iso(t0 + 25 * 60_000);
+  line(f.server, { at: iso(t0 + 50_000), job: "901", event: "running", command: "fmc_recipe", started: queuedAt });
+  line(f.revit, { at: queuedAt, job: "901", command: "fmc_doc", event: "queued", started: queuedAt, ahead: 1 });
+  line(f.revit, { at: beat, job: "901", command: "fmc_doc", event: "heartbeat", ms: 60000 });
+  let j = findJob("901", env, t0 + 90_000)!;
   assert.equal(j.state, "queued");
-  assert.match(j.summary, /Waiting in Revit behind 1 command\(s\) since 2026-10-18T10:00:00Z, last heartbeat 2026-10-18T10:01:00Z: it starts when they end/);
-  line(f.revit, { at: "2026-10-18T10:20:00Z", job: "901", command: "fmc_doc", event: "running", started: "2026-10-18T10:00:00Z", queued_ms: 1200000 });
-  j = findJob("901", env)!;
+  assert.ok(j.summary.includes(`since ${queuedAt}`), j.summary);
+  assert.ok(j.summary.includes(`last heartbeat ${beat}`), j.summary);
+  line(f.revit, { at: runningAt, job: "901", command: "fmc_doc", event: "running", started: queuedAt, queued_ms: 1200000 });
+  j = findJob("901", env, t0 + 21 * 60_000)!;
   assert.equal(j.state, "running");
-  assert.equal(j.revit!.running_since, "2026-10-18T10:20:00Z");
-  line(f.revit, { at: "2026-10-18T10:25:00Z", job: "901", command: "fmc_doc", event: "finished", ms: 1500000, ok: true });
-  line(f.late, { at: "2026-10-18T10:25:00Z", job: "901", command: "fmc_doc", from: "revit", result: { result: { ok: true } } });
-  assert.equal(findJob("901", env)!.state, "finished");
+  assert.equal(j.revit!.running_since, runningAt);
+  line(f.revit, { at: finishedAt, job: "901", command: "fmc_doc", event: "finished", ms: 1500000, ok: true });
+  line(f.late, { at: finishedAt, job: "901", command: "fmc_doc", from: "revit", result: { result: { ok: true } } });
+  assert.equal(findJob("901", env, t0 + 26 * 60_000)!.state, "finished");
+});
+test("fmc_job: a dialog stops holding a job when it came between jobs, Revit moved on, or it went silent", () => {
+  const env = home();
+  const f = jobFiles(env);
+  // A: an old dialog with no heartbeat after it, nothing else from that Revit.
+  line(f.revit, { at: "2026-11-28T02:19:33Z", job: "A", event: "dialog", pid: 6, dialog_id: "TaskDialog_File_Name_In_Use", message: "in use", answer: "left for a person" });
+  // B: a dialog, then the same Revit finished another job.
+  line(f.revit, { at: "2026-11-28T05:20:24Z", job: "B", event: "dialog", pid: 7, dialog_id: "TaskDialog_Save_Changes_To_Local_File", message: "ownership", answer: "left for a person" });
+  line(f.revit, { at: "2026-11-28T05:33:40Z", job: "C", command: "fmc_document_info", event: "finished", pid: 7, ms: 35800, ok: true, started: "2026-11-28T05:33:04Z" });
+  // D: the add-in says it came between jobs.
+  line(f.revit, { at: "2026-11-28T05:50:00Z", job: "D", event: "dialog", pid: 8, executing: false, dialog_id: "Dialog_Revit_SheetTitle", message: "", answer: "left for a person" });
+  // E: a dialog with heartbeats after it is still waiting, however old.
+  line(f.revit, { at: "2026-11-28T03:00:00Z", job: "E", command: "fmc_revit_file", event: "running", pid: 9, started: "2026-11-28T02:59:40Z" });
+  line(f.revit, { at: "2026-11-28T03:00:05Z", job: "E", event: "dialog", pid: 9, dialog_id: "TaskDialog_Confirm_Create_New_Local", message: "create a local copy", answer: "left for a person" });
+  line(f.revit, { at: "2026-11-28T05:59:00Z", job: "E", command: "fmc_revit_file", event: "heartbeat", pid: 9, started: "2026-11-28T02:59:40Z" });
+  const now = Date.parse("2026-11-28T06:00:00Z");
+  const by = Object.fromEntries(collectJobs(env, now).map((j) => [j.job, j]));
+  assert.equal(by.A.state, "expired");
+  assert.match(by.A.summary, /min ago/);
+  assert.equal(by.B.state, "expired");
+  assert.match(by.B.summary, /ended job C/);
+  assert.equal(by.D.state, "expired");
+  assert.match(by.D.summary, /between jobs/);
+  assert.equal(by.E.state, "waiting_for_dialog");
+  assert.equal(by.E.pid, 9);
+  // A fresh dialog with no heartbeat yet still waits.
+  assert.equal(findJob("A", env, Date.parse("2026-11-28T02:25:00Z"))!.state, "waiting_for_dialog");
+});test("fmc_job: list filters by state, command and since, and result waits with wait_s", async () => {
+  const { runFmcJob } = await import("../tools/fmc_job.js");
+  const env = home();
+  const f = jobFiles(env);
+  line(f.revit, { at: "2026-11-28T05:33:40Z", job: "F1", command: "fmc_document_info", event: "finished", pid: 3, ms: 35800, ok: true, started: "2026-11-28T05:33:04Z" });
+  line(f.late, { at: "2026-11-28T05:33:40Z", command: "fmc_document_info", job: "F1", result: { result: { success: true } } });
+  line(f.server, { at: "2026-11-28T05:50:50Z", job: "R1", event: "running", command: "send_code_to_revit", started: "2026-11-28T05:50:00Z", port: 8080 });
+  const now = () => Date.parse("2026-11-28T05:55:00Z");
+  const text = async (a: object) => JSON.parse((await runFmcJob({ action: "list", job: "", limit: 20, confirm: false, command: "", since: "", wait_s: 0, ...a } as any, env, now)).content[0].text);
+  const running = await text({ state: "running" });
+  assert.deepEqual(running.jobs.map((j: { job: string }) => j.job), ["R1"]);
+  assert.equal(running.jobs[0].port, 8080);
+  assert.equal(running.matched, 1);
+  const finished = await text({ state: ["finished", "failed"], command: "document" });
+  assert.equal(finished.jobs[0].job, "F1");
+  assert.equal(finished.jobs[0].ended, "2026-11-28T05:33:40Z");
+  assert.equal(finished.jobs[0].pid, 3);
+  assert.equal(typeof finished.jobs[0].duration_s, "number");
+  assert.equal((await text({ since: "2026-11-28T05:40:00Z" })).jobs.length, 1);
+  assert.equal((await text({ since: "yesterday" })).refused, true);
+  setTimeout(() => line(f.late, { at: "2026-11-28T05:55:01Z", command: "send_code_to_revit", job: "R1", result: { result: { success: true, result: "7" } } }), 300);
+  const waited = await text({ action: "result", job: "R1", wait_s: 5 });
+  assert.equal(waited.ready, true);
+  assert.equal(waited.result.result.result, "7");
+});test("fmc_job: list and status honour document", async () => {
+  const { runFmcJob } = await import("../tools/fmc_job.js");
+  const env = home();
+  const f = jobFiles(env);
+  line(f.revit, { at: "2026-11-28T06:00:01Z", job: "P1", command: "fmc_headroom", event: "finished", pid: 4, ms: 500, ok: true, started: "2026-11-28T06:00:00Z", document: "plumbing_USER" });
+  line(f.revit, { at: "2026-11-28T06:00:02Z", job: "E1", command: "fmc_headroom", event: "finished", pid: 4, ms: 500, ok: true, started: "2026-11-28T06:00:00Z", document: "electrical_USER" });
+  line(f.server, { at: "2026-11-28T06:00:03Z", job: "X1", event: "running", command: "fmc_health", started: "2026-11-28T06:00:03Z" });
+  const now = () => Date.parse("2026-11-28T06:01:00Z");
+  const text = async (a: object) => JSON.parse((await runFmcJob({ action: "list", job: "", limit: 20, confirm: false, command: "", since: "", wait_s: 0, document: "", ...a } as any, env, now)).content[0].text);
+  const all = await text({});
+  assert.equal(all.scope, "machine-wide");
+  assert.equal(all.total, 3);
+  const plum = await text({ document: "plumbing_USER" });
+  assert.equal(plum.scope, "document plumbing_USER");
+  assert.deepEqual(plum.jobs.map((j: { job: string }) => j.job), ["P1"]);
+  assert.equal(plum.jobs[0].document, "plumbing_USER");
+  assert.equal(plum.matched, 1);
+  assert.equal(plum.unscoped, 1);
+  const same = await text({ action: "status", job: "P1", document: "C:\\\\M\\\\plumbing_USER.rvt" });
+  assert.equal(same.state, "finished");
+  assert.equal(same.notes, undefined);
+  const other = await text({ action: "status", job: "P1", document: "electrical_USER" });
+  assert.match(other.notes[0], /plumbing_USER, not electrical_USER/);
+  const none = await text({ action: "status", job: "X1", document: "plumbing_USER" });
+  assert.match(none.notes[0], /did not record a document/);
+});test("fmc_job: a running row with no fresh heartbeat is expired (F65)", () => {
+  const env = home();
+  const f = jobFiles(env);
+  const now = Date.parse("2026-11-28T08:45:00Z");
+  // ~43.5 days with no heartbeat: the live fmc_queue row.
+  line(f.server, { at: "2026-10-15T20:00:00Z", job: "OLD", event: "running", command: "send_code_to_revit", started: "2026-10-15T20:00:00Z", port: 8080 });
+  line(f.revit, { at: "2026-11-28T08:14:00Z", job: "FRESH", event: "running", command: "fmc_headroom", started: "2026-11-28T08:10:00Z", pid: 5 });
+  line(f.revit, { at: "2026-11-28T08:44:00Z", job: "FRESH", event: "heartbeat", pid: 5 });
+  line(f.revit, { at: "2026-11-28T08:00:00Z", job: "QUIET", event: "running", command: "fmc_find", started: "2026-11-28T07:50:00Z", pid: 5 });
+  line(f.revit, { at: "2026-11-28T08:14:00Z", job: "QUIET", event: "heartbeat", pid: 5 });
+  const by = Object.fromEntries(collectJobs(env, now).map((j) => [j.job, j]));
+  assert.equal(by.OLD.state, "expired");
+  assert.match(by.OLD.summary, /stale/);
+  assert.ok((now - Date.parse(by.OLD.started)) > STALE_DIALOG_MS);
+  assert.equal(by.FRESH.state, "running");
+  assert.equal(by.QUIET.state, "expired");
+  assert.match(by.QUIET.summary, /31 min/);
+});test("fmc_job: a cancel-requested row stays cancel-requested, not stale, when heartbeats stop", () => {
+  const env = home();
+  const f = jobFiles(env);
+  const now = Date.parse("2026-11-28T08:45:00Z");
+  line(f.server, { at: "2026-10-15T20:00:00Z", job: "OLD-CANCEL", event: "running", command: "send_code_to_revit", started: "2026-10-15T20:00:00Z" });
+  line(f.server, { at: "2026-10-15T20:01:00Z", job: "OLD-CANCEL", event: "cancel_requested" });
+  const j = findJob("OLD-CANCEL", env, now)!;
+  assert.equal(j.state, "running");
+  assert.ok(j.cancel_requested);
+  assert.match(j.summary, /cancel requested/);
+  assert.doesNotMatch(j.summary, /stale/);
 });

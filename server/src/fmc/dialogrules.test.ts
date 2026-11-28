@@ -131,7 +131,7 @@ test("history counts dialogs, alerts name never-auto ids, and a blocking dialog 
     at: "2026-11-22T08:00:00Z", job: "job1", event: "dialog", dialog_id: "TaskDialog_Fatal_Error_Occured",
     message: "A fatal error occurred", answer: "left for a person (never auto)",
   }) + "\n");
-  const jobs = collectJobs(env);
+  const jobs = collectJobs(env, Date.parse("2026-11-22T08:05:00Z"));
   assert.equal(jobs[0].state, "waiting_for_dialog");
   assert.match(jobs[0].summary, /FMC-DIALOG-BLOCKING/);
   assert.match(jobs[0].summary, /TaskDialog_Fatal_Error_Occured/);

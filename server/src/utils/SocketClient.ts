@@ -455,7 +455,12 @@ export class RevitClientConnection {
             const blocked = blockingForJob(requestId, process.env, this.instancePid());
             settled = true;
             stillRunning = true;
-            appendJobEvent({ job: requestId, event: "running", command, port: this.port, started });
+            // sendOnce's requested document: params.document (filled from the target store above) or the store itself.
+            const requested = (params && typeof params.document === "string" && params.document.trim())
+              || (typeof document === "string" && document.trim())
+              || "";
+            const jobDoc = requested && requested !== "active" ? requested : "";
+            appendJobEvent({ job: requestId, event: "running", command, port: this.port, started, ...(jobDoc ? { document: jobDoc } : {}) });
             if (blocked) reject(new DialogBlockingError(blocked.dialog_id, blocked.message, requestId));
             else reject(new JobStillRunning(requestId, command, Math.round(soft / 1000)));
           }, soft);

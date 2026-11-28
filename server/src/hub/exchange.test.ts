@@ -5,6 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { counterpart, exchangeRoot, findFmc, identityStats, link, listPackages, loadIdentity, saveIdentity, verifyPackage, writePackage } from "./exchange.js";
 import { BUILTIN_FLOWS, FLOW, fill, runFlow } from "./flows.js";
+import { listRuns, projectFolderFromPath, readRun, resolveFlowRoot, runFmcFlow } from "../tools/fmc_flow.js";
 
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), "fmc-exchange-"));
 
@@ -97,4 +98,55 @@ test("Speed (owner 27 Oct): the reverse index finds 2,000 links without scanning
   // an entry added straight into the map (as clash review does) is still found
   map.entries["FMC-direct"] = { fmc: "FMC-direct", apps: { navisworks: { id: "GUID-1", at: "" } } };
   assert.equal(findFmc(map, "navisworks", "GUID-1"), "FMC-direct");
+});
+test("fmc_flow runs: run records are listed newest first, narrowed by flow, and one shows in full", () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-runs-"));
+  const dir = path.join(root, "Runs");
+  fs.mkdirSync(dir, { recursive: true });
+  const put = (id: string, rec: object | string) => fs.writeFileSync(path.join(dir, `${id}.json`), typeof rec === "string" ? rec : JSON.stringify(rec));
+  put("2026-11-28T06-00-00-000Z_health_dry", { flow: "health", dry_run: true, ok: true, steps: [{}, {}], started: "2026-11-28T06:00:00.000Z", ended: "2026-11-28T06:00:01.000Z" });
+  put("2026-11-28T07-00-00-000Z_legend_chain", { flow: "legend_chain", dry_run: false, ok: false, stopped_at: "chain", steps: [{}], started: "2026-11-28T07:00:00.000Z", ended: "2026-11-28T07:00:05.000Z" });
+  put("2026-11-28T05-00-00-000Z_broken", "{not json");
+  const all = listRuns(root);
+  assert.equal(all.total, 3);
+  assert.equal(all.runs[0].flow, "legend_chain");
+  assert.equal(all.runs[0].stopped_at, "chain");
+  assert.ok(all.runs.some((r) => r.problem));
+  assert.deepEqual(listRuns(root, { flow: "health" }).runs.map((r) => r.id), ["2026-11-28T06-00-00-000Z_health_dry"]);
+  assert.equal((readRun(root, "2026-11-28T06-00-00-000Z_health_dry")!.record as { ok: boolean }).ok, true);
+  assert.equal(readRun(root, "..\\..\\secret"), null);
+  assert.equal(readRun(root, "nope"), null);
+  assert.deepEqual(listRuns(path.join(root, "missing")).runs, []);
+});test("fmc_flow list and packages honour document, say when they used the default exchange, and note 30 of N", async () => {
+  assert.equal(projectFolderFromPath("D:\\P\\F26902_TestHouse\\01_WIP\\P\\plumbing_USER.rvt"), "D:\\P\\F26902_TestHouse");
+  assert.equal(projectFolderFromPath("plumbing_USER"), "");
+  const reports = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-flow-ex-"));
+  const project = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-flow-proj-"));
+  const open = [{ title: "plumbing_USER", path: path.join(project, "01_WIP", "P", "plumbing_USER.rvt") }];
+  const machine = resolveFlowRoot({ document: "plumbing_USER", reportsDir: reports, openDocs: [] });
+  assert.equal(machine.scope, "machine-wide default");
+  assert.ok(machine.notes.some((n) => /project flows were not searched/.test(n)));
+  const honoured = resolveFlowRoot({ document: "plumbing_USER", reportsDir: reports, openDocs: open });
+  assert.equal(honoured.scope, "project");
+  assert.equal(honoured.project_folder, project);
+  const body = (r: { content: Array<{ text: string }> }) => JSON.parse(r.content[0].text);
+  const listed = body(await runFmcFlow({ action: "list", project_folder: "", flow: "", vars: {}, description: "", needs: [], package: "", app: "", dry_run: true, document: "plumbing_USER" }, { reportsDir: reports, openDocs: open }));
+  assert.equal(listed.scope, "project");
+  assert.equal(listed.project_folder, project);
+  const packRoot = path.join(listed.exchange as string, "Packages");
+  fs.mkdirSync(packRoot, { recursive: true });
+  for (let i = 0; i < 32; i++) {
+    const id = `20261128-${String(100000 + i).slice(1)}_revit-robot_p${i}`;
+    const dir = path.join(packRoot, id);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, "manifest.json"), JSON.stringify({ id, from: "revit", to: "robot", what: "t", created: `2026-11-27T04:28:32.${String(i).padStart(3, "0")}Z`, files: [] }));
+  }
+  const packs = body(await runFmcFlow({ action: "packages", project_folder: "", flow: "", vars: {}, description: "", needs: [], package: "", app: "", dry_run: true, document: "plumbing_USER" }, { reportsDir: reports, openDocs: open }));
+  assert.equal(packs.packages, 32);
+  assert.equal(packs.shown, 30);
+  assert.equal(packs.truncated, true);
+  assert.equal(packs.note, "30 of 32");
+  assert.ok(packs.newest[0].created_local);
+  const def = body(await runFmcFlow({ action: "list", project_folder: "", flow: "", vars: {}, description: "", needs: [], package: "", app: "", dry_run: true }, { reportsDir: reports, openDocs: [] }));
+  assert.equal(def.scope, "machine-wide default");
 });

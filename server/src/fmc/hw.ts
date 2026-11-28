@@ -4,6 +4,7 @@
  *
  * The GPU draws views. It does not hold the Revit model, and it does not run the Revit API.
  */
+import fs from "node:fs";
 import os from "node:os";
 import { spawn } from "node:child_process";
 import { memoryGate, type MemoryView } from "./memory.js";
@@ -73,7 +74,7 @@ export interface RevitProcessMemory {
 }
 
 export interface HardwareScan {
-  status: "ready" | "pending";
+  status: "ready" | "pending" | "partial";
   cached_at: string | null;
   platform: string;
   gpus: GpuAdapter[];
@@ -148,8 +149,14 @@ export function hwHealth(): HardwareScan {
   return cache.scan;
 }
 
+/** Ready only when the scan has GPUs, page files or disks; the OS-only fallback is partial (P-fmc_health-04). */
+export function hardwareStatus(scan: { gpus?: unknown[]; page_files?: unknown[]; disks?: unknown[] }): "ready" | "partial" {
+  const empty = !(scan.gpus && scan.gpus.length) && !(scan.page_files && scan.page_files.length) && !(scan.disks && scan.disks.length);
+  return empty ? "partial" : "ready";
+}
+
 export function rememberScan(scan: HardwareScan, at = new Date().toISOString()): HardwareScan {
-  const stored = { ...scan, status: "ready" as const, cached_at: at };
+  const stored = { ...scan, status: hardwareStatus(scan), cached_at: at };
   cache.at = at;
   cache.scan = stored;
   return stored;
@@ -163,7 +170,7 @@ export function hostFromOs(): HostRaw {
     memory: { total_mb: Math.round(os.totalmem() / 1048576), free_mb: Math.round(os.freemem() / 1048576), source: "os" },
     pagefiles: [],
     disks: [],
-    cpu: { name: cpus[0]?.model ?? "", cores: cpus.length, logical: cpus.length },
+    cpu: { name: cpus[0]?.model ?? "", cores: 0, logical: cpus.length },
     processes: [],
     gpu_engines: [],
     video_memory: [],
@@ -201,7 +208,11 @@ export function parseDriverDate(value: unknown): string | null {
 export function classifyGpu(name: string, dedicatedMb: number | null): GpuAdapter["kind"] {
   const n = name.toLowerCase();
   if (/basic display|microsoft basic/.test(n)) return "basic";
-  if (/(uhd|iris|hd graphics)/.test(n) && (dedicatedMb == null || dedicatedMb < 512)) return "integrated";
+  // Tool Research (fmc_hw): an Intel UHD 630 reports 1024 MB in WMI AdapterRAM and was labelled dedicated. Intel
+  // graphics other than an Arc A/B card, and AMD's APU "Radeon Graphics", share system RAM whatever the size says.
+  if (/intel/.test(n) && !/\barc\b.*\b[ab]\d{3}/.test(n)) return "integrated";
+  if (/(uhd|iris|hd graphics)/.test(n)) return "integrated";
+  if (/radeon(\(tm\))? graphics\s*$|radeon vega|vega \d+ graphics/.test(n)) return "integrated";
   if (/nvidia|geforce|quadro|rtx|radeon|\brx\b|arc a/.test(n) && (dedicatedMb == null || dedicatedMb >= 512)) return "dedicated";
   if (dedicatedMb != null && dedicatedMb >= 1024) return "dedicated";
   if (/intel/.test(n) && (dedicatedMb == null || dedicatedMb < 512)) return "integrated";
@@ -687,7 +698,21 @@ export function dedicatedGpu(scan: HardwareScan): boolean {
   return scan.gpus.some((gpu) => gpu.kind === "dedicated");
 }
 
+/**
+ * Copies Revit.ini to Revit.ini.fmc-bak beside it before Formcraft rewrites it (the previous backup is replaced).
+ * Returns the backup path, or null when there was no file to keep. Throws when the copy fails, so nothing is written.
+ */
+export function backupIni(file: string, copy: (from: string, to: string) => void = (a, b) => fs.copyFileSync(a, b), exists: (p: string) => boolean = fs.existsSync): string | null {
+  if (!file || !exists(file)) return null;
+  const backup = `${file}.fmc-bak`;
+  try { copy(file, backup); }
+  catch (error) { throw new Error(`[FMC-HW-INI-BACKUP] Revit.ini could not be backed up to ${backup} (${error instanceof Error ? error.message : String(error)}). Nothing was written.`); }
+  return backup;
+}
+
 export interface HwIo {
+  /** fmc_hw memory: how long to wait for Revit's per-document figures before answering from the server's own state. */
+  memoryBudgetMs?: number;
   collect?: () => Promise<HostRaw>;
   now?: () => number;
   readIni?: () => string | null;

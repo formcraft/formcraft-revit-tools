@@ -61,6 +61,8 @@ foreach (Grid existing in new FilteredElementCollector(document).OfClass(typeof(
 var ids = new List<long>();
 var madeNames = new List<string>();
 var skipped = new List<object>();
+var lengths = new List<object>();
+bool extentsKept = true;
 int skippedCount = 0;
 foreach (Grid grid in new FilteredElementCollector(linked).OfClass(typeof(Grid)).Cast<Grid>())
 {
@@ -86,12 +88,21 @@ foreach (Grid grid in new FilteredElementCollector(linked).OfClass(typeof(Grid))
   {
     Grid made = Grid.Create(document, want);
     made.Name = name;
+    // the link grid's own 3D extents, moved by the link's Z
+    try
+    {
+      Outline ext = grid.GetExtents();
+      double bottom = xform.OfPoint(ext.MinimumPoint).Z, top = xform.OfPoint(ext.MaximumPoint).Z;
+      if (top - bottom > tol) made.SetVerticalExtents(bottom, top);
+    }
+    catch (Exception) { extentsKept = false; }
     ids.Add(made.Id.Value);
   }
+  if (lengths.Count < 40) lengths.Add(new { name, length_mm = Math.Round(want.Length * 304.8) });
   placed[name] = want;
   madeNames.Add(name);
 }
-return new { ok = true, dry_run = dry, created = madeNames.Count, skipped = skippedCount, ids, names = madeNames.Take(40).ToList(), skipped_names = skipped, monitored = false };
+return new { ok = true, dry_run = dry, created = madeNames.Count, skipped = skippedCount, ids, names = madeNames.Take(40).ToList(), skipped_names = skipped, monitored = false, lengths, extents_kept = extentsKept };
 Curve Moved(Curve curve, Transform t)
 {
   Line line = curve as Line;
@@ -101,6 +112,15 @@ Curve Moved(Curve curve, Transform t)
     dir = new XYZ(dir.X, dir.Y, 0);
     if (dir.GetLength() < 1e-9) return null;
     dir = dir.Normalize();
+    if (line.IsBound)
+    {
+      // keep the link grid's own length: its two ends, moved and laid flat at Z 0
+      XYZ a = t.OfPoint(line.GetEndPoint(0)), b = t.OfPoint(line.GetEndPoint(1));
+      a = new XYZ(a.X, a.Y, 0);
+      b = new XYZ(b.X, b.Y, 0);
+      if (a.DistanceTo(b) < 1e-6) return null;
+      return Line.CreateBound(a, b);
+    }
     XYZ p = t.OfPoint(line.Origin);
     p = new XYZ(p.X, p.Y, 0);
     return Line.CreateBound(p - dir * 100, p + dir * 100);

@@ -2,9 +2,10 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { healthReport } from "./httpservice.js";
 import { runFmcHw } from "../tools/fmc_hw.js";
+import { backupIni, classifyGpu } from "./hw.js";
 import {
   advise, applyGraphicsText, autosaveWouldSave, graphicsPlan, parseDriverDate, parseHost,
-  planFree, primeHardwareScan, readGraphics, stripSecrets, upsertIni, type HostRaw,
+  planFree, primeHardwareScan, readGraphics, stripSecrets, upsertIni, hardwareStatus, hostFromOs, type HostRaw,
 } from "./hw.js";
 import { clashPairs, dispatchJob, rayHitsAabb, rayVoxelHits, type GpuRunner } from "./hwgpu.js";
 import { DEFAULT_CONFIG, type GuardConfig } from "./policy.js";
@@ -198,4 +199,40 @@ test("scan and health expose the cache and do not print a token", async () => {
   assert.ok(Array.isArray(scan.advice));
   const stripped = stripSecrets({ token: "abc", name: "gpu" });
   assert.equal("token" in stripped, false);
+});
+test("an Intel UHD 630 with 1024 MB in WMI is integrated; Arc and Quadro cards are dedicated", () => {
+  assert.equal(classifyGpu("Intel(R) UHD Graphics 630", 1024), "integrated");
+  assert.equal(classifyGpu("Intel(R) Iris(R) Xe Graphics", 2048), "integrated");
+  assert.equal(classifyGpu("AMD Radeon(TM) Graphics", 2048), "integrated");
+  assert.equal(classifyGpu("Intel(R) Arc(TM) A770 Graphics", 16384), "dedicated");
+  assert.equal(classifyGpu("NVIDIA Quadro T1000", 4095), "dedicated");
+  assert.equal(classifyGpu("AMD Radeon RX 6600", 8192), "dedicated");
+});
+
+test("Revit.ini is backed up before a write, and a failed backup stops the write", () => {
+  const copies: Array<[string, string]> = [];
+  assert.equal(backupIni("C:\\R\\Revit.ini", (a, b) => copies.push([a, b]), () => true), "C:\\R\\Revit.ini.fmc-bak");
+  assert.deepEqual(copies, [["C:\\R\\Revit.ini", "C:\\R\\Revit.ini.fmc-bak"]]);
+  assert.equal(backupIni("C:\\R\\Revit.ini", () => { throw new Error("no"); }, () => false), null);
+  assert.throws(() => backupIni("C:\\R\\Revit.ini", () => { throw new Error("denied"); }, () => true), /FMC-HW-INI-BACKUP/);
+});
+
+test("memory answers from the server's own state when Revit is slow", async () => {
+  const started = Date.now();
+  const body = JSON.parse((await runFmcHw({ action: "memory" }, {
+    memoryBudgetMs: 150, revit: () => new Promise((resolve) => setTimeout(() => resolve({ documents: [] }), 5000).unref()),
+  })).content[0].text);
+  assert.ok(Date.now() - started < 3000, "it does not wait for Revit");
+  assert.equal(body.stale, true);
+  assert.match(String(body.addin), /did not answer|Not asked/);
+  assert.equal(typeof body.free_mb, "number");
+  assert.ok(["ok", "soft", "hard", "paused"].includes(body.state));
+  const quick = JSON.parse((await runFmcHw({ action: "memory" }, { memoryBudgetMs: 2000, revit: async () => ({ documents: [] }) })).content[0].text);
+  assert.ok(quick.stale === false || /Not asked/.test(String(quick.addin)));
+});test("an OS-only hardware scan is partial and does not call threads cores", () => {
+  const raw = hostFromOs();
+  assert.equal(raw.cpu?.cores, 0);
+  assert.ok((raw.cpu?.logical ?? 0) >= 1);
+  assert.equal(hardwareStatus({ gpus: [], page_files: [], disks: [] }), "partial");
+  assert.equal(hardwareStatus({ gpus: [{ name: "Quadro" }], page_files: [], disks: [] }), "ready");
 });

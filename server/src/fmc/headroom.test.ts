@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import { READ_VIA_SEND_COMMAND, WRITE_COMMANDS } from "./policy.js";
-import { bboxClearMm, citeHeadroom, headroomHits, type HeadroomObstacle, type HeadroomZone } from "./headroom.js";
+import { bboxClearMm, citeHeadroom, headroomHits, verdict, type HeadroomObstacle, type HeadroomZone } from "./headroom.js";
 import { FMC_HEADROOM_SHAPE, runFmcHeadroom, type FmcHeadroomArgs } from "../tools/fmc_headroom.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..", "..");
@@ -115,4 +115,39 @@ test("the tool is read-only, names the document, and the add-in starts no transa
   assert.match(source, /ReferenceIntersector/);
   assert.ok(READ_VIA_SEND_COMMAND.has("fmc_headroom"));
   assert.equal(WRITE_COMMANDS.has("fmc_headroom"), false);
+});
+test("a call below the bank value is a what-if that cannot PASS; a stricter call still can", () => {
+  const bank = { "headroom.min_clear_mm": { value: 2400, status: "approved", clause: "FMC-BIM-STD-002 4.2" } };
+  const low = citeHeadroom(bank, 1);
+  assert.equal(low.value, 1);
+  assert.equal(low.bank_value, 2400);
+  assert.equal(low.below_bank, true);
+  assert.equal(low.can_pass, false);
+  assert.equal(verdict(0, low, 3), "PROVISIONAL");
+  const strict = citeHeadroom(bank, 2600);
+  assert.equal(strict.can_pass, true);
+  assert.equal(strict.source, "call");
+  assert.equal(verdict(1, strict, 3), "FAIL");
+  assert.equal(verdict(0, strict, 3), "PASS");
+});
+
+test("no zones is NOT_CHECKED, never PASS or a clean PROVISIONAL", async () => {
+  const bank = { "headroom.min_clear_mm": { value: 2100, status: "approved", clause: "FMC-BIM-STD-002 4.2" } };
+  assert.equal(verdict(0, citeHeadroom(bank), 0), "NOT_CHECKED");
+  assert.equal(verdict(0, citeHeadroom(null), 0), "NOT_CHECKED");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "fmc-headroom-"));
+  const env = { ...process.env, APPDATA: dir, LOCALAPPDATA: dir, FMC_HEADROOM_DIR: path.join(dir, "headroom") } as NodeJS.ProcessEnv;
+  const body = textOf(await runFmcHeadroom(args({ document: "plumbing_USER" }), {
+    env, standards: bank,
+    read: async () => ({ resolved_document: { title: "plumbing_USER", path: "" }, method: "ray", view3d: "{3D}", zones: [], obstacles: [duct, beam] }),
+  }));
+  assert.equal(body.status, "NOT_CHECKED");
+  assert.equal(body.can_pass, false);
+  assert.match(String(body.message), /FMC-HEADROOM-NO-ZONES/);
+  assert.deepEqual(body.zone_kinds_found, {});
+});
+
+test("a low element standing on the floor is not a headroom obstacle", () => {
+  const plinth: HeadroomObstacle = { id: "23", kind: "duct", source: "host", min: [100, 100, 0], max: [400, 400, 300] };
+  assert.equal(bboxClearMm(corridor, plinth), null);
 });
