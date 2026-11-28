@@ -93,6 +93,14 @@ export function compactReply(value: unknown): unknown {
   return out;
 }
 
+/** GT-1: commands whose verbose reply is wrapped in an object, so verbose and compact have one shape and the document can be attached. */
+const FULL_OBJECT_READS = new Set(["get_available_family_types"]);
+
+export function fullReply(command: string, value: unknown): unknown {
+  if (!FULL_OBJECT_READS.has(command) || !Array.isArray(value)) return value;
+  return { count: value.length, verbose: true, types: value };
+}
+
 export function wantsFull(params: unknown): boolean {
   if (!params || typeof params !== "object") return false;
   const row = params as Record<string, unknown>;

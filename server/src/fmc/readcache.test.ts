@@ -34,3 +34,16 @@ test("levels, types and views are cached until a write or a lease release; docum
   invalidateReads("Plumbing");
   assert.equal(takeCachedRead("get_current_view_info", {}, "Plumbing"), undefined);
 });
+
+test("GT-1: verbose family types are one object like compact, so the document can be attached", async () => {
+  const { fullReply } = await import("./readcache.js");
+  const { attachResolvedDocument } = await import("./docresolve.js");
+  const { familyTypesShape } = await import("../tools/get_available_family_types.js");
+  const full = attachResolvedDocument(fullReply("get_available_family_types", []), { title: "Project1", path: "C:\\P\\Project1.rvt" }) as Record<string, unknown>;
+  assert.deepEqual(full, { count: 0, verbose: true, types: [], resolved_document: { title: "Project1", path: "C:\\P\\Project1.rvt" } });
+  assert.deepEqual(fullReply("get_current_view_elements", [1]), [1], "other reads keep their shape");
+  const shaped = familyTypesShape({ count: 100, ids: [1] }, 100, false) as Record<string, unknown>;
+  assert.equal(shaped.truncated, true);
+  assert.equal(shaped.verbose, false);
+  assert.equal((familyTypesShape([{ id: 1 }], 100, true) as Record<string, unknown>).count, 1);
+});
