@@ -247,6 +247,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_extstore_write",
   // fmc_schedule_data (GAP-06): edited marks, comments and key-schedule values, one transaction. Reads stay on fmc_schedule_data_read.
   "fmc_schedule_data_apply",
+  // fmc_wipe (GAP-02): deletes model clutter in one transaction under a batch lease
+  "fmc_wipe_apply",
 ]);
 
 /**
