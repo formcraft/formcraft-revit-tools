@@ -4,7 +4,7 @@ import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { GuardConfig, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
-import { ProjectInput, detailsCheck, planProject, projectInfo } from "../fmc/project.js";
+import { ProjectInput, detailsCheck, findKitTemplates, pickKitTemplate, planProject, projectInfo } from "../fmc/project.js";
 import { kitParams } from "../fmc/brief.js";
 import { readRulebooks } from "./fmc_qa.js";
 
@@ -32,15 +32,15 @@ export const FMC_PROJECT_DESCRIPTION =
     "(one per role, named by Manual 4.1, in 01_WIP\\<Role>) and the manifest. start makes them: dry_run (default) " +
     "shows the plan, dry_run=false builds the tree, writes 01_WIP\\FMC_Project.json and creates each model from its " +
     "template with Project Information filled in. Show the user the dry run before running it for real. " +
-    "templates_from_kit true takes the newest " +
+    "templates lists the kit's FMC_<Role>_Template_v*.rte under template_roots (released and _Staging); templates_from_kit true takes the newest " +
     "released one per role (else FMC_Base_Template; _Staging only with allow_staging true). models [{role, volume, level, type, number}] makes " +
     "several models per role instead of one per role. plan checks details keys: Revit's own fields, the kit's Project Information parameters, " +
     "and unknown names. after [\"links\", \"qa\"] returns the follow-up calls as dry runs to make next. After start the manifest records each model's status.";
 
 export const FMC_PROJECT_SHAPE = {
-  action: z.enum(["plan", "start"]),
-  project_folder: z.string().describe("Absolute path of the empty folder the user created"),
-  code: z.string().describe("Project code, 2-6 characters A-Z/0-9, e.g. F26001"),
+  action: z.enum(["plan", "start", "templates"]),
+  project_folder: z.string().optional().default("").describe("Absolute path of the empty folder the user created"),
+  code: z.string().optional().default("").describe("Project code, 2-6 characters A-Z/0-9, e.g. F26001"),
   originator: z.string().optional().default("FMC"),
   volume: z.string().optional().default("ZZ"),
   level: z.string().optional().default("ZZ"),
@@ -98,6 +98,20 @@ export function afterCalls(after: string[], models: Array<{ role: string; name: 
 
 export async function runFmcProject(args: FmcProjectArgs) {
   const { config, problem } = loadConfig();
+  if (args.action === "templates") {
+    const list = findKitTemplates(config.template_roots ?? [], realFs);
+    const roles = [...new Set(list.map((t) => t.role))].sort();
+    return reply({
+      read_only: true,
+      template_roots: config.template_roots ?? [],
+      templates: list,
+      by_role: Object.fromEntries(roles.map((role) => {
+        const pick = pickKitTemplate(list, role, args.allow_staging === true);
+        return [role, { chosen: pick.template?.path ?? null, note: pick.note }];
+      })),
+      summary: `${list.length} template(s): ${list.filter((t) => !t.staging).length} released, ${list.filter((t) => t.staging).length} in _Staging; roles ${roles.join(", ") || "none"}.`,
+    });
+  }
   const input: ProjectInput = { ...args, project_folder: args.project_folder, templates: args.templates ?? {}, details: args.details ?? {} };
   // F-019: the tree comes from the kit's rulebook (PST-002), rule 7.
   const pst = readRulebooks(config.rulebooks_dir).rules.find((r) => r.id === "PST-002");
