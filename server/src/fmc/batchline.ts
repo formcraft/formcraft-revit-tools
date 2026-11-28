@@ -945,7 +945,7 @@ export class BatchBoard {
     if (actives.length === 1) return actives[0];
     if (actives.length > 1) {
       throw new BatchGateError("FMC-BATCH-LOCKED",
-        `[FMC-BATCH-LOCKED] ${actives.length} documents are held (${actives.map((ticket) => ticket.document).join("; ")}). Pass document and batch_lease. Reads are still allowed.`);
+        `[FMC-BATCH-LOCKED] ${actives.length} documents are held (${actives.map((ticket) => ticket.document).join("; ")}). Pass document and batch_lease. Read tools are still allowed; send_code_to_revit needs batch_lease in every mode, read_only included (that flag is the caller's own claim).`);
     }
     return undefined;
   }
@@ -963,7 +963,7 @@ export class BatchBoard {
       position = "You are not in line. Call fmc_batch request for this document.";
     }
     const idNote = holder.client === client ? ` Your lease is ${holder.id}.` : "";
-    return `[FMC-BATCH-LOCKED] ${holder.document} is held by ${who}. ${position}${idNote} Pass batch_lease on each model-changing call. Reads are still allowed. busy_reason: lease held by ${holder.bot} on doc ${holder.document}.`;
+    return `[FMC-BATCH-LOCKED] ${holder.document} is held by ${who}. ${position}${idNote} Pass batch_lease on each model-changing call. Read tools are still allowed; send_code_to_revit needs batch_lease in every mode, read_only included (that flag is the caller's own claim). busy_reason: lease held by ${holder.bot} on doc ${holder.document}.`;
   }
 
   /**

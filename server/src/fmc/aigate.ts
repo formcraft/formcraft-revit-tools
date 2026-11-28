@@ -118,7 +118,8 @@ export async function aiGate(command: string, params: any, active: DocInfo | nul
   // Auto-approve (owner 26 Oct): testing mode only; the batch runs now and is still listed in Approvals.
   // Relinquish, and a sync auto_approve_sync did not take, still wait for a person.
   const shared = command === "fmc_revit_file" && ["sync", "relinquish"].includes(String(params?.action));
-  const auto = !approval && !shared && ai.mode === "testing" && ai.auto_approve === true;
+  // send_code_to_revit never takes testing auto-approve (SC-2, 28 Nov): only a person's approval of the exact call.
+  const auto = !approval && !shared && command !== "send_code_to_revit" && ai.mode === "testing" && ai.auto_approve === true;
   const v = aiVerdict({ command, doc: active, elements, approved: !!approval || auto }, cfg, book, ai, loadState(env));
   if (!v.ok) {
     let reason = `AI-assisted modeller: ${v.reasons[0]}.`;

@@ -23,6 +23,22 @@ test("CODE no reason, or tool_error without the failing tool: refused before any
   assert.equal(codeGate(base({ call: { ...call, reason: "because" } })).ok, false);
 });
 
+test("CODE SC-3: the default mode is the read_only preview, and a write mode is a different call needing its own approval", () => {
+  const preview = boundParams({ code: call.code, reason: "no_tool" });
+  assert.equal(preview.transactionMode, "read_only");
+  assert.match(codeDetails({ code: call.code, reason: "no_tool" }, doc)[0], /preview, rolled back/);
+  assert.match(codeDetails(call, doc)[0], /WRITES the model/);
+  const r = codeGate(base({ queued: approved("USER", preview) }));
+  assert.equal(r.ok, false);
+});
+
+test("CODE SC-1/SC-2: the batch lock message is honest about send_code, and testing auto-approve never covers it", () => {
+  const src = (f: string) => fs.readFileSync(new URL("../../src/fmc/" + f, import.meta.url), "utf8");
+  assert.doesNotMatch(src("batchline.ts"), /Reads are still allowed\./);
+  assert.match(src("batchline.ts"), /send_code_to_revit needs batch_lease in every mode/);
+  assert.match(src("aigate.ts"), /command !== "send_code_to_revit" && ai\.mode === "testing"/);
+});
+
 test("CODE Stop AI and the admin's code switch refuse", () => {
   assert.equal((codeGate(base({ ai: ai({ stop: true }) })) as { code: string }).code, CODE_GATE.STOPPED);
   assert.equal((codeGate(base({ ai: ai({ allow_code: false }) })) as { code: string }).code, CODE_GATE.SWITCH);

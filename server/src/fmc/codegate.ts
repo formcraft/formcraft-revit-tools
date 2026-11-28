@@ -50,7 +50,7 @@ export interface CodeCall {
 /** What the approval is bound to. The document is bound by the queue key. */
 export function boundParams(c: CodeCall): Record<string, unknown> {
   return {
-    code: c.code, parameters: c.parameters ?? [], usings: c.usings ?? [], transactionMode: c.transactionMode ?? "auto",
+    code: c.code, parameters: c.parameters ?? [], usings: c.usings ?? [], transactionMode: c.transactionMode ?? "read_only",
     allow_full_scan: c.allow_full_scan === true, reason: c.reason ?? "", failing_tool: (c.failing_tool ?? "").trim(),
   };
 }
@@ -94,7 +94,7 @@ export function codeAlternatives(c: CodeCall): string[] {
   const failing = (c.failing_tool ?? "").trim();
   if (c.reason === "tool_error" && failing) out.push(`${failing} again with corrected arguments (the error text says what it needs), and report the tool error with fmc_issue`);
   for (const [re, tool] of HINTS) if (re.test(c.code ?? "") && !out.includes(tool)) out.push(tool);
-  if ((c.transactionMode ?? "auto") === "read_only" && !out.some((x) => x.includes("reads"))) out.push("get_current_view_elements, ai_element_filter, fmc_find or model_check (reads)");
+  if ((c.transactionMode ?? "read_only") === "read_only" && !out.some((x) => x.includes("reads"))) out.push("get_current_view_elements, ai_element_filter, fmc_find or model_check (reads)");
   out.push("fmc_scripts addon_list: a saved add-on may already do this");
   return out.slice(0, 6);
 }
@@ -157,7 +157,7 @@ export function codeGate(g: GateInput): GateResult {
 export function codeDetails(c: CodeCall, document: string): string[] {
   const lines = (c.code ?? "").split(/\r?\n/);
   return [
-    `Run C# code in Revit on ${document} (send_code_to_revit, mode ${c.transactionMode ?? "auto"}).`,
+    `Run C# code in Revit on ${document} (send_code_to_revit, mode ${c.transactionMode ?? "read_only"}${(c.transactionMode ?? "read_only") === "read_only" ? ": preview, rolled back" : ": WRITES the model"}).`,
     c.reason === "tool_error" ? `Why: ${c.failing_tool} failed${c.failing_error ? `: ${c.failing_error.slice(0, 200)}` : ""}.` : "Why: no tool does this.",
     `Code: ${lines.length} lines, SHA-256 ${codeSha(c.code ?? "").slice(0, 12)}. The full code is in this approval's params.`,
     ...lines.slice(0, 8).map((l) => `  ${l.slice(0, 160)}`),

@@ -19,12 +19,14 @@ const USING = /^(using\s+)?(static\s+)?([A-Za-z_]\w*\s*=\s*)?[A-Za-z_]\w*(\.[A-Z
 
 const transactionModeSchema = z
   .enum(["auto", "none", "read_only"])
-  .default("auto")
+  .default("read_only")
   .describe(
-    "'auto' (default) wraps the script in one transaction with the default failures handling: Revit warnings are " +
-      "deleted and listed in the result, an error rolls everything back and is reported. 'none' when the script opens " +
-      "its own transactions (use FmcScript.Run(document, name, () => {...}) for the same handling). 'read_only' (owner 26 Oct) " +
-      "runs it in a transaction that is always rolled back: the model can't change, so it needs no approval; use it to read."
+    "'read_only' (the default, a preview; SC-3 28 Nov) runs the script in a transaction that is always rolled back, so the " +
+      "model is not changed (code can still touch files, so it needs the person's approval like every mode). To change the " +
+      "model pick a write mode explicitly: 'auto' wraps the script in one transaction with the default failures handling " +
+      "(Revit warnings are deleted and listed in the result, an error rolls everything back and is reported); 'none' when " +
+      "the script opens its own transactions (FmcScript.Run(document, name, () => {...}) for the same handling). The mode " +
+      "is part of what the person approves: a preview's approval does not cover a write."
   );
 
 export const SEND_CODE_DESCRIPTION =
@@ -32,7 +34,8 @@ export const SEND_CODE_DESCRIPTION =
     "failing_tool, the tool that failed), this session's batch_lease on the document, and a person's approval of this exact code " +
     "in the Formcraft pane. The first call queues it and answers FMC-CODE-APPROVAL-NEEDED with an id and tools to try instead: " +
     "call fmc_ai wait with that id, and when it says approved send the same call again; it runs once. Access full and testing " +
-    "auto-approve do not skip this; read_only mode needs it too (code can write files). " +
+    "auto-approve do not skip this; read_only mode needs it too (code can write files). transactionMode defaults to " +
+    "read_only (a preview that is rolled back); a write needs transactionMode auto or none, named explicitly, and its own approval. " +
     "Send C# code to Revit. The code is the body of `object Execute(Document document, object[] parameters)`. " +
     "`document` and `doc` are the call's resolved document, not whichever model is active. End it " +
     "with `return <value>;` (`return null;` when there is nothing to return). Namespaces always in scope: System, " +
@@ -194,13 +197,17 @@ export async function runSendCode(args: SendCodeArgs) {
     code: args.code,
     parameters: args.parameters || [],
     usings: args.usings || [],
-    transactionMode: args.transactionMode ?? "auto",
+    transactionMode: args.transactionMode ?? "read_only",
     ...(args.allow_full_scan ? { allow_full_scan: true } : {}),
   };
   try {
     const response = await codeApproval.run({ id: gate.approvalId, by: gate.by }, () =>
       withRevitConnection(async (revitClient) => revitClient.sendCommand("send_code_to_revit", params)));
-    const { text, isError, output_json } = formatCodeResult(response);
+    const formatted = formatCodeResult(response);
+    const { isError, output_json } = formatted;
+    const text = params.transactionMode === "read_only" && !isError
+      ? formatted.text + "\nPreview (transactionMode read_only): every model change was rolled back. To apply it, send the same code with transactionMode auto (or none): that is a new call and needs its own approval."
+      : formatted.text;
     return { content: [{ type: "text" as const, text }], isError, ...(output_json === undefined ? {} : { output_json }) };
   } catch (error) {
     if (error instanceof JobStillRunning) {
