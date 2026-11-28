@@ -56,6 +56,25 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         public string GetName() => "FMC issue";
 
+        /// <summary>
+        /// Revision.RevisionNumber throws when revisions are numbered per sheet (Tool Research P-fmc_issue-01: the whole
+        /// check was lost on architectural_USER). The project-wide number is then empty; a sheet reads its own number.
+        /// </summary>
+        internal static string SafeRevisionNumber(Revision r)
+        {
+            if (r == null) return "";
+            try { return r.RevisionNumber ?? ""; }
+            catch (System.Exception) { return ""; }
+        }
+
+        /// <summary>The revision's number as this sheet shows it (per-sheet numbering), else the project-wide number.</summary>
+        internal static string SheetRevisionNumber(ViewSheet sheet, Revision r)
+        {
+            if (sheet == null || r == null) return "";
+            try { return sheet.GetRevisionNumberOnSheet(r.Id) ?? ""; }
+            catch (System.Exception) { return SafeRevisionNumber(r); }
+        }
+
         private static JObject Facts(Document doc)
         {
             var revisions = new JArray();
@@ -64,7 +83,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (!(doc.GetElement(id) is Revision r)) continue;
                 revisions.Add(new JObject
                 {
-                    ["id"] = r.Id.Value, ["sequence"] = r.SequenceNumber, ["number"] = r.RevisionNumber ?? "", ["description"] = r.Description ?? "",
+                    ["id"] = r.Id.Value, ["sequence"] = r.SequenceNumber, ["number"] = SafeRevisionNumber(r), ["description"] = r.Description ?? "",
                     ["date"] = r.RevisionDate ?? "", ["issued"] = r.Issued,
                 });
             }
@@ -73,7 +92,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             {
                 if (s.IsPlaceholder) continue;
                 string current = "";
-                if (doc.GetElement(s.GetCurrentRevision()) is Revision r) current = r.RevisionNumber ?? "";
+                if (doc.GetElement(s.GetCurrentRevision()) is Revision r) current = SheetRevisionNumber(s, r);
                 sheets.Add(new JObject { ["id"] = s.Id.Value, ["number"] = s.SheetNumber, ["current_revision"] = current });
             }
             return new JObject { ["model"] = doc.Title, ["revisions"] = revisions, ["sheets"] = sheets };

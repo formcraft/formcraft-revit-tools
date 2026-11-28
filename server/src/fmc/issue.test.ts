@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { IssueException, IssueInput, IssueSheet, inForce, manifest, readiness, revisionOk, revitRevision, sheetFileName, statusOk } from "./issue.js";
+import { IssueException, IssueInput, IssueSheet, inForce, manifest, readiness, revisionOk, revitRevision, sheetFileName, statusOk, unfilled } from "./issue.js";
+import { resolveRegister } from "../tools/fmc_issue.js";
 import { RuleResult } from "./rules.js";
 import { RegisterSheet } from "./sheets.js";
 
@@ -82,4 +83,40 @@ test("the manifest names PDFs by container name and adds the register, transmitt
   assert.deepEqual(files.map((f) => f.name), [
     "F26001-FMC-ZZ-ZZ-DR-Z-0001.pdf", "F26001-FMC-ZZ-ZZ-DR-A-1001.pdf", "F26001-FMC-ZZ-ZZ-DR-A-2001.pdf", "F26001-FMC-ZZ-ZZ-DR-M-1001.pdf",
     "F26001_Drawing_Register_C02.csv", "F26001_Readiness_C02.md"]);
+});
+test("no planned sheet in the model is N/A, never 183 of 183; a missing sheet is counted apart", () => {
+  const none = readiness(input, plan, [], [], [], revs, []);
+  const by = Object.fromEntries(none.checklist.map((c) => [c.check, c]));
+  assert.equal(by["Approvals recorded"].state, "N/A");
+  assert.equal(by["Title blocks filled"].state, "N/A");
+  assert.equal(by["Sheet status codes valid"].state, "N/A");
+  assert.equal(none.result, "Blocked");
+  const some = readiness(input, plan, model.slice(0, 2).map((m) => ({ ...m, fields: { ...full } })), [], [], revs, []);
+  const s = Object.fromEntries(some.checklist.map((c) => [c.check, c]));
+  assert.equal(s["Approvals recorded"].detail, "2 of 2 (2 not in the model)");
+});
+
+test("Revit's placeholder title block text is not a filled field", () => {
+  assert.equal(unfilled("Approver"), "placeholder");
+  assert.equal(unfilled(" "), "empty");
+  assert.equal(unfilled("EF"), null);
+  const stock = model.map((m) => ({ ...m, fields: { ...full, "Approved By": "Approver", "Drawn By": "Author" } }));
+  const r = readiness(input, plan, stock, [], [], revs, []);
+  assert.equal(r.result, "Blocked");
+  assert.match(r.sheets[0].reasons.join(" "), /Approved By "Approver" is Revit's placeholder/);
+  assert.match(r.sheets[0].reasons.join(" "), /Drawn By "Author"/);
+  assert.equal(r.checklist.find((c) => c.check === "Approvals recorded")!.detail, "0 of 4");
+});
+
+test("the register defaults to the project's 00_Info, then the kit's, and says which", () => {
+  const cfg = { specs_path: "Z:\\Kit\\03_Master_Data\\FMC_Family_Specs.json" };
+  const have = new Set(["D:\\P\\F1\\00_Info\\FMC_Sheet_Register.csv", "Z:\\Kit\\03_Master_Data\\FMC_Sheet_Register.csv"]);
+  const exists = (p: string) => have.has(p);
+  assert.deepEqual(resolveRegister("C:\\x.csv", "D:\\P\\F1", cfg, exists).source, "argument");
+  const project = resolveRegister(undefined, "D:\\P\\F1", cfg, exists);
+  assert.equal(project.source, "project");
+  assert.equal(project.file, "D:\\P\\F1\\00_Info\\FMC_Sheet_Register.csv");
+  const kit = resolveRegister("", "", cfg, exists);
+  assert.equal(kit.source, "kit");
+  assert.equal(resolveRegister("", "D:\\Q", { specs_path: "" }, exists).source, "none");
 });

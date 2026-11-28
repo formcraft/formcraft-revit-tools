@@ -43,6 +43,32 @@ export function readExceptions(file: string): IssueException[] {
     .filter((e) => e.sheet && e.item);
 }
 
+/**
+ * The sheet register a check reads (Tool Research P-fmc_issue-02): the register argument, else the project's
+ * 00_Info\FMC_Sheet_Register.xlsx or .csv, else the kit's (beside specs_path, 03_Master_Data). source names which.
+ */
+export function resolveRegister(explicit: string | undefined, projectFolder: string, cfg: { specs_path?: string }, exists: (p: string) => boolean = fs.existsSync):
+  { file: string; source: "argument" | "project" | "kit" | "none"; tried: string[] } {
+  const tried: string[] = [];
+  const given = (explicit ?? "").trim();
+  if (given) return { file: given, source: "argument", tried: [given] };
+  const project = projectFolder.trim();
+  if (project) {
+    for (const ext of ["xlsx", "csv"]) {
+      const file = win.join(project, "00_Info", `FMC_Sheet_Register.${ext}`);
+      tried.push(file);
+      if (exists(file)) return { file, source: "project", tried };
+    }
+  }
+  const specs = String(cfg.specs_path ?? "").trim();
+  if (specs) {
+    const file = win.join(win.dirname(expandEnv(specs)), "FMC_Sheet_Register.csv");
+    tried.push(file);
+    if (exists(file)) return { file, source: "kit", tried };
+  }
+  return { file: "", source: "none", tried };
+}
+
 export const FMC_ISSUE_DESCRIPTION =
   "Formcraft Ready to issue. check (read-only) checks every sheet the register plans for an issue set and disciplines: " +
     "number, title block fields, approval, sheet status code, the Must rules (shared_to_published gate), links, and the " +
@@ -50,11 +76,14 @@ export const FMC_ISSUE_DESCRIPTION =
     "or Blocked. except records an approved exception (sheet, item, why, approved by, until). report saves the readiness " +
     "report. issue writes PDFs per sheet named by container name, the drawing register (CSV), a transmittal and the report " +
     "into <project>\\01_WIP\\_Issue\\<date>_<revision>; it is a dry run unless dry_run is false and is refused when Blocked. " +
-    "A person moves the issue to 03_Published after authorisation; the plugin never writes there.";
+    "A person moves the issue to 03_Published after authorisation; the plugin never writes there. " +
+    "register defaults to <project_folder>\\00_Info\\FMC_Sheet_Register.xlsx or .csv, then the kit's 03_Master_Data\\FMC_Sheet_Register.csv; " +
+    "the reply's register and register_source say which was read. A planned sheet not in the model makes its title block, status and " +
+    "approval lines N/A or counts it apart, never a pass; Revit's placeholder text (Author, Checker, Approver) counts as not filled.";
 
 export const FMC_ISSUE_SHAPE = {
   action: z.enum(["check", "except", "report", "issue"]),
-  register: z.string().optional().describe("Absolute path of the project's sheet register (.xlsx or .csv)"),
+  register: z.string().optional().describe("Absolute path of the project's sheet register (.xlsx or .csv). Default: the project's 00_Info register, then the kit's."),
   project_folder: z.string().optional().default(""),
   project_code: z.string().optional().default("PROJ"),
   originator: z.string().optional().default("FMC"),
@@ -75,8 +104,13 @@ export const FMC_ISSUE_SHAPE = {
 export type FmcIssueArgs = z.infer<z.ZodObject<typeof FMC_ISSUE_SHAPE>>;
 
 async function check(args: FmcIssueArgs, cfg: GuardConfig) {
-  if (!args.register || !fs.existsSync(args.register)) return { refused: [`Sheet register not found: ${args.register ?? "(none)"}`] };
-  const reg = parseRegister(readRegisterFile(args.register));
+  const found = resolveRegister(args.register, args.project_folder, cfg as { specs_path?: string });
+  if (!found.file || !fs.existsSync(found.file)) {
+    return { refused: [found.tried.length
+      ? `Sheet register not found. Looked for: ${found.tried.join("; ")}. Pass register, or set project_folder.`
+      : "Sheet register not found: pass register (the project's FMC_Sheet_Register.xlsx or .csv) or project_folder."] };
+  }
+  const reg = parseRegister(readRegisterFile(found.file));
   if (!reg.sheets.length) return { refused: reg.problems.length ? reg.problems : ["The register lists no sheets"] };
   const plan = planned(reg.sheets, args.issue_set, args.disciplines);
   const input: IssueInput = {
@@ -88,14 +122,21 @@ async function check(args: FmcIssueArgs, cfg: GuardConfig) {
   const need = neededParameters(books.rules);
   need.sheet = [...new Set([...need.sheet, ...input.fields, input.approval_field, input.status_field])];
   const facts = qaFacts(await withRevitConnection((c) => c.sendRaw("fmc_qa_facts", need, 300000)));
-  const issueFacts = await withRevitConnection((c) => c.sendRaw("fmc_issue_facts", {}, 60000));
+  // P-fmc_issue-04: one throw here (revisions numbered per sheet on an older add-in) must not lose the QA part.
+  let issueFacts: any = null;
+  let factsProblem = "";
+  try { issueFacts = await withRevitConnection((c) => c.sendRaw("fmc_issue_facts", {}, 60000)); }
+  catch (error) { factsProblem = `Revision facts could not be read (${error instanceof Error ? error.message : String(error)}): the revision check is incomplete.`; }
   const current = new Map<number, string>(((issueFacts?.sheets ?? []) as Array<{ id: number; current_revision: string }>).map((s) => [s.id, s.current_revision]));
   const model: IssueSheet[] = facts.sheets.map((s) => ({ id: s.id, number: s.number, name: s.name, views: 0, fields: s.parameters, current_revision: current.get(s.id) ?? "" }));
   const qa = runQa(books, facts, "shared_to_published", input.today);
   const exFile = exceptionsFile(cfg, args.project_folder);
   const r = readiness(input, plan, model, qa.results, facts.links, (issueFacts?.revisions ?? []) as Revision[], readExceptions(exFile));
   const rulebooks = books.books.map((b) => `${b.name} v${b.version}`).join(", ") || "no rulebooks";
-  return { input, plan, model, readiness: r, facts, rulebooks, exceptions_file: exFile, problems: [...reg.problems, ...books.problems] };
+  if (factsProblem) r.checklist.push({ check: "Revision facts read", state: "Warn", detail: factsProblem });
+  const sourceNote = found.source === "kit" ? ["The kit's sheet register was used (no project register in 00_Info): it plans the kit's sheets, not this project's."] : [];
+  return { input, plan, model, readiness: r, facts, rulebooks, exceptions_file: exFile, register: found.file, register_source: found.source,
+    problems: [...reg.problems, ...books.problems, ...(factsProblem ? [factsProblem] : []), ...sourceNote] };
 }
 
 export async function runFmcIssue(args: FmcIssueArgs) {
@@ -122,7 +163,7 @@ export async function runFmcIssue(args: FmcIssueArgs) {
 
     if (args.action === "check")
       return reply({ model: c.facts.model, issue_set: c.input.issue_set, purpose: c.input.purpose, company_revision: c.input.company_revision,
-        checked_against: c.rulebooks, exceptions_file: c.exceptions_file, ...r, problems: c.problems });
+        checked_against: c.rulebooks, register: c.register, register_source: c.register_source, exceptions_file: c.exceptions_file, ...r, problems: c.problems });
 
     const report = readinessReport(code, c.input, r, c.rulebooks, new Date());
     if (args.action === "report") {

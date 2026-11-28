@@ -62,6 +62,19 @@ export function inForce(e: IssueException, revision: string, today: string): boo
   return true;
 }
 
+/**
+ * Revit's stock title block values (Author, Checker, Designer, Approver): a sheet that still shows one was never filled
+ * (Tool Research P-fmc_issue-05: "Approvals recorded 183 of 183" on a model with the stock text).
+ */
+export const PLACEHOLDER_VALUES = /^(author|checker|designer|approver|drawn by|checked by|approved by)$/i;
+
+/** Empty, or Revit's placeholder text. */
+export function unfilled(value: string | undefined): "empty" | "placeholder" | null {
+  const v = (value ?? "").trim();
+  if (!v) return "empty";
+  return PLACEHOLDER_VALUES.test(v) ? "placeholder" : null;
+}
+
 function covers(e: IssueException, sheet: string, item: string) {
   return e.sheet.trim().toUpperCase() === sheet.toUpperCase() && (e.item.trim() === "*" || e.item.trim().toLowerCase() === item.toLowerCase());
 }
@@ -89,9 +102,13 @@ export function readiness(
     if (!numberOk(p.number)) found.push(["number", `${p.number} doesn't follow [Role]-[Series][Number]`, []]);
     if (!m) found.push(["missing", "not in the model", []]);
     else {
-      const empty = input.fields.filter((f) => !(m.fields[f] ?? "").trim());
-      if (empty.length) found.push(["title block", `${empty.join(", ")} empty`, [m.id]]);
-      if (!(m.fields[input.approval_field] ?? "").trim()) found.push(["approval", `${input.approval_field} empty`, [m.id]]);
+      const empty = input.fields.filter((f) => unfilled(m.fields[f]) === "empty");
+      const stock = input.fields.filter((f) => unfilled(m.fields[f]) === "placeholder");
+      if (empty.length || stock.length) {
+        found.push(["title block", [empty.length ? `${empty.join(", ")} empty` : "", stock.length ? `${stock.map((f) => `${f} "${m.fields[f]}"`).join(", ")} is Revit's placeholder` : ""].filter(Boolean).join("; "), [m.id]]);
+      }
+      const approval = unfilled(m.fields[input.approval_field]);
+      if (approval) found.push(["approval", approval === "empty" ? `${input.approval_field} empty` : `${input.approval_field} "${m.fields[input.approval_field]}" is Revit's placeholder`, [m.id]]);
       const st = (m.fields[input.status_field] ?? "").trim();
       if (!statusOk(st)) found.push(["status", st ? `${input.status_field} "${st}" isn't a status code` : `${input.status_field} empty`, [m.id]]);
       for (const r of failing) if (r.element_ids.includes(m.id)) found.push([`rule ${r.id}`, r.rule, [m.id]]);
@@ -118,6 +135,15 @@ export function readiness(
     const bad = count((s) => test(s, has)), ex = count((s) => test(s, exc));
     return { check, state: bad ? "Fail" : ex ? "Warn" : "Pass", detail: okDetail(bad) + (ex ? `, ${ex} excepted` : "") };
   };
+  // Title block, status and approval lines count only the planned sheets that are in the model: a missing sheet is
+  // not a pass (Tool Research: 183 of 183 approvals "recorded" with no sheets in the model).
+  const present = sheets.filter((s) => s.id != null).length;
+  const absent = n - present;
+  const onSheets = (check: string, item: string, detail: (bad: number, of: number) => string): ChecklistLine => {
+    if (present === 0) return { check, state: "N/A", detail: n ? `No planned sheet is in the model (${n} missing)` : "No sheets planned" };
+    const l = line(check, item, (bad) => detail(bad, present));
+    return absent ? { ...l, detail: `${l.detail} (${absent} not in the model)` } : l;
+  };
   const unpinned = links.filter((l) => !l.pinned);
   const latest = [...revisions].sort((a, b) => a.sequence - b.sequence).pop();
   const codes: string[] = [];
@@ -129,15 +155,15 @@ export function readiness(
 
   const checklist: ChecklistLine[] = [
     line("Sheets exist with valid numbers", (s, f) => f(s, "missing") || f(s, "number"), (bad) => `${n - bad} / ${n}`),
-    line("Title blocks filled", "title block", (bad) => `${n - bad} / ${n}`),
+    onSheets("Title blocks filled", "title block", (bad, of) => `${of - bad} / ${of}`),
     { check: "Mandatory rules pass", state: ruleFails ? (modelBlockers.length || count((s) => s.reasons.some((r) => r.startsWith("rule "))) ? "Fail" : "Warn") : mustUnchecked ? "Warn" : "Pass",
       detail: [ruleFails ? `${ruleFails} fail` : "", mustUnchecked ? `${mustUnchecked} not checked (a person reviews them)` : ""].filter(Boolean).join(", ") || "OK" },
     { check: "Open reviews on these sheets", state: "N/A", detail: "Review items arrive with Team › Review" },
     { check: "Links checked", state: unpinned.length ? "Warn" : "Pass", detail: links.length ? (unpinned.length ? `${unpinned.length} unpinned` : `${links.length} pinned`) : "No links" },
-    line("Sheet status codes valid", "status", (bad) => bad ? `${bad} not valid` : "OK"),
+    onSheets("Sheet status codes valid", "status", (bad) => bad ? `${bad} not valid` : "OK"),
     { check: "Revision and purpose valid", state: codes.length ? "Fail" : latest && latest.issued ? "Warn" : "Pass",
       detail: codes.length ? codes.join("; ") : latest ? (latest.issued ? "The latest Revit revision is already issued: add one for this issue" : "OK") : "No Revit revision yet" },
-    line("Approvals recorded", "approval", (bad) => `${n - bad} of ${n}`),
+    onSheets("Approvals recorded", "approval", (bad, of) => `${of - bad} of ${of}`),
   ];
 
   const blocked = sheets.filter((s) => s.status === "Blocked");
