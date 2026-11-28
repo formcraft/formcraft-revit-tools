@@ -10,10 +10,10 @@ import { documentRequired } from "../fmc/fairqueue.js";
 import type { OpenDocRef } from "../fmc/docresolve.js";
 import { isMat4 } from "../fmc/coordmath.js";
 import {
-  CheckReport, ControlPoint, CoordRecord, Snapshot, Tolerances, Xform,
-  alignModelTarget, alignObjectTargets, appendCoordLedger, checkModels, checkSnapshot, checkSnapshots,
+  CheckItem, CheckReport, ControlPoint, CoordRecord, Snapshot, Tolerances, Xform,
+  alignModelTarget, alignObjectTargets, appRecordPath, appendCoordLedger, checkModels, checkSnapshot, checkSnapshots,
   coordExportDir, docKey, emptyRecord, exportFiles, findModel, idsOf, mergePoints, mergeSnapshot,
-  parseImport, planRecordWrite, poseFromTransform, poseOf, projectWriteBlock, readRecord, tolerancesFrom,
+  parseImport, planRecordWrite, poseFromTransform, poseOf, projectRecordPath, projectWriteBlock, readRecord, tolerancesFrom,
   writeExport, writeRecordFiles,
 } from "../fmc/coordrecord.js";
 
@@ -40,7 +40,10 @@ export const FMC_COORD_DESCRIPTION =
   "dry_run is false. document is required whenever a model is read or changed: a missing or ambiguous document is " +
   "an FMC-DOC-* error, and the active document is not used. Tolerances come from FMC_Standards_Building.json keys " +
   "coord.*. A provisional tolerance never PASS. draft or approved can PASS only with a clause. A null status is UNKNOWN. " +
-  "Pinned elements and elements another person owns are reported and not moved. No images.";
+  "Pinned elements and elements another person owns are reported and not moved. read with no record is not an error: " +
+  "it returns exists false, where it looked (record_files), how the project key was found (project_key_from) and next " +
+  "publish. check replies start with verdict counts and each FAIL item has an explain line. align lists moved_ids and " +
+  "place lists created_ids when Revit returns them. No images.";
 
 const pointShape = z.object({
   name: z.string(),
@@ -111,6 +114,57 @@ function projectKeyOf(project: string, folder: string, document: string): string
     return base.replace(/\.(rvt|rfa|rte|rft)$/i, "");
   }
   return "";
+}
+
+export type ProjectKeyFrom = "project" | "project_folder" | "document" | "none";
+
+export function projectKeyFrom(project: string, folder: string, document: string): ProjectKeyFrom {
+  if (project.trim()) return "project";
+  if (folder.trim()) return "project_folder";
+  if (document.trim()) return "document";
+  return "none";
+}
+
+/** Where read looks for the record, in order, and a hint when the key is a guess (P-fmc_coord-01). */
+export function recordLookup(folder: string, project: string, from: ProjectKeyFrom, env: NodeJS.ProcessEnv) {
+  const record_files = [...(folder.trim() ? [projectRecordPath(folder)] : []), appRecordPath(project, env)];
+  const out: { project_key_from: ProjectKeyFrom; record_files: string[]; folder_has_01_wip?: boolean; key_warning?: string } = { project_key_from: from, record_files };
+  if (folder.trim()) out.folder_has_01_wip = fs.existsSync(win.join(folder, "01_WIP"));
+  if (from !== "project") {
+    out.key_warning = `The project key "${project}" was taken from the ${from === "project_folder" ? "project folder name" : "document name"}. ` +
+      "Name project to be sure this is the record you mean.";
+  }
+  return out;
+}
+
+/** One plain line per FAIL item, from the numbers already in the item. */
+export function explainItem(item: CheckItem): string {
+  const parts: string[] = [];
+  if (item.position === "FAIL") {
+    const [dx, dy, dz] = item.dxyz_mm ?? [0, 0, 0];
+    parts.push(`position off by ${item.delta_mm} mm (dx ${dx}, dy ${dy}, dz ${dz} mm)`);
+  }
+  if (item.angle === "FAIL") parts.push(`angle off by ${item.delta_deg} degrees`);
+  if (!parts.length) parts.push(`status ${item.status}`);
+  return `${item.kind} ${item.name || item.stable_id || item.id}: ${parts.join("; ")}`;
+}
+
+export function withExplain(report: CheckReport) {
+  const s = report.summary;
+  return {
+    verdict: { pass: s.pass, fail: s.fail, unknown: s.unknown, provisional: s.provisional, count: s.count },
+    ...report,
+    items: report.items.map((item) => item.status === "FAIL" ? { ...item, explain: explainItem(item) } : item),
+  };
+}
+
+/** Ids from Revit result rows such as applied[] or placed[]; empty when none carry an id. */
+export function rowIds(rows: unknown): string[] {
+  if (!Array.isArray(rows)) return [];
+  return rows
+    .map((row) => (row && typeof row === "object" ? (row as Record<string, unknown>).id : undefined))
+    .filter((id) => id !== undefined && id !== null && String(id) !== "")
+    .map(String);
 }
 
 function bag(json: unknown): Record<string, unknown> | null {
@@ -208,8 +262,15 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
 
     if (args.action === "read") {
       const found = readRecord(folder, project, env);
-      if (!found.record) return finish({ error: "[FMC-COORD-EMPTY] No coordination record for this project. Publish one first.", project }, true);
-      return finish({ project, file: found.file, version: found.record.version, record: found.record, summary: summaryOf(found.record) }, false, "read");
+      const lookup = recordLookup(folder, project, projectKeyFrom(args.project ?? "", folder, args.document ?? ""), env);
+      if (!found.record) {
+        return finish({
+          exists: false, project, ...lookup,
+          message: "[FMC-COORD-EMPTY] No coordination record for this project yet.",
+          next: { tool: "fmc_coord", args: { action: "publish", document: "<open document>", project, ...(folder ? { project_folder: folder } : {}), dry_run: true } },
+        }, false, "read empty");
+      }
+      return finish({ exists: true, project, project_key_from: lookup.project_key_from, file: found.file, version: found.record.version, record: found.record, summary: summaryOf(found.record) }, false, "read");
     }
 
     if (args.action === "import") {
@@ -242,7 +303,7 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
       const found = readRecord(folder, project, env);
       if (!found.record) return finish({ error: "[FMC-COORD-EMPTY] No coordination record to compare.", project }, true);
       const report = checkModels(found.record, args.left, args.right, tols, args.name || undefined, args.stable_id || undefined);
-      return finish({ project, server_only: true, tolerances: tols, ...report }, false, `${report.summary.count} items`);
+      return finish({ project, server_only: true, tolerances: tols, ...withExplain(report) }, false, `${report.summary.count} items`);
     }
 
     const needsModel = args.action === "publish" || args.action === "align" || args.action === "place" || args.action === "check";
@@ -301,7 +362,7 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
       }
       return finish({
         project, tolerances: tols, resolved_document: snap.resolved_document ?? { title: docKey(snap), path: snap.document?.path ?? "" },
-        ...report,
+        ...withExplain(report),
       }, false, `${report.summary.count} items`);
     }
 
@@ -328,7 +389,8 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
       }
       const result = await revit(params, !dry);
       if (result.error || result.code) return finish({ error: result.error || result.code, code: result.code, skipped: result.skipped, resolved_document: result.resolved_document }, true);
-      return finish({ dry_run: dry, project, level, target: args.target, ...result }, false, dry ? "align dry run" : "align");
+      const moved = rowIds((result as Record<string, unknown>).applied);
+      return finish({ dry_run: dry, project, level, target: args.target, ...result, ...(dry ? {} : { moved_ids: moved }) }, false, dry ? "align dry run" : "align");
     }
 
     // place
@@ -345,7 +407,8 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
       storey: args.on_level ?? "", name: args.name || pose.name || "",
     }, !dry);
     if (result.error || result.code) return finish({ error: result.error || result.code, code: result.code, resolved_document: result.resolved_document }, true);
-    return finish({ dry_run: dry, project, ...result }, false, dry ? "place dry run" : "place");
+    const created = rowIds((result as Record<string, unknown>).placed);
+    return finish({ dry_run: dry, project, ...result, ...(dry ? {} : { created_ids: created }) }, false, dry ? "place dry run" : "place");
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     return finish({ error: message }, true, "error");

@@ -14,7 +14,7 @@ import {
   mergeSnapshot, parseCsvPoints, parseImport, planRecordWrite, poseOf, projectWriteBlock, readRecord, tolerancesFrom,
   writeExport, writeRecordFiles, type ControlPoint, type Snapshot,
 } from "./coordrecord.js";
-import { FMC_COORD_SHAPE, runFmcCoord, type FmcCoordArgs } from "../tools/fmc_coord.js";
+import { FMC_COORD_SHAPE, explainItem, projectKeyFrom, rowIds, runFmcCoord, withExplain, type FmcCoordArgs } from "../tools/fmc_coord.js";
 
 const approved = {
   "coord.tol_mm": { value: 5, unit: "mm", status: "approved", clause: "STD 8.5" },
@@ -303,4 +303,74 @@ test("fmc_coord: document errors, dry run, one Revit call, and no live appdata",
 test("a control point kind survives import", () => {
   const points: ControlPoint[] = parseImport(JSON.stringify({ control_points: [{ name: "BM1", kind: "survey", xyz_mm: [1, 2, 3], angle_deg: 0 }] }), "p.json");
   assert.equal(points[0].kind, "survey");
+});
+
+test("fmc_coord read: an empty record is not an error and says where it looked (P-01, P-02)", async () => {
+  const dir = tmp();
+  const env = envOf(dir);
+  const base = { env, guard: guard(), standards: approved, now: () => "2026-11-28T09:00:00Z" };
+  const folder = path.join(dir, "Jobs", "Ogala");
+  const empty = await runFmcCoord(args({ action: "read", project_folder: folder }), base);
+  assert.equal(empty.isError, false);
+  const b = body(empty);
+  assert.equal(b.exists, false);
+  assert.equal(b.project, "Ogala");
+  assert.equal(b.project_key_from, "project_folder");
+  assert.deepEqual(b.record_files, [path.join(folder, "FMC_Coord.json"), path.join(dir, "app", "Ogala.json")]);
+  assert.equal(b.folder_has_01_wip, false);
+  assert.match(String(b.key_warning), /project folder name/);
+  assert.match(String(b.message), /FMC-COORD-EMPTY/);
+  assert.equal((b.next as { args: { action: string; dry_run: boolean } }).args.action, "publish");
+  assert.equal((b.next as { args: { action: string; dry_run: boolean } }).args.dry_run, true);
+  assert.equal(b.error, undefined);
+
+  const named = body(await runFmcCoord(args({ action: "read", project: "Ogala" }), base));
+  assert.equal(named.project_key_from, "project");
+  assert.equal(named.key_warning, undefined);
+  assert.deepEqual(named.record_files, [path.join(dir, "app", "Ogala.json")]);
+
+  const none = await runFmcCoord(args({ action: "read" }), base);
+  assert.equal(none.isError, true);
+  assert.match(String(body(none).error), /FMC-COORD-PROJECT/);
+  assert.equal(projectKeyFrom("", "", "D:\\x\\A.rvt"), "document");
+  assert.equal(projectKeyFrom("", "", ""), "none");
+});
+
+test("fmc_coord check explain, verdict, and moved/created ids", async () => {
+  const fail = {
+    kind: "object" as const, name: "door", id: "42", stable_id: "uid-1|D1", delta_mm: 12.5, delta_deg: 0,
+    dxyz_mm: [12.5, 0, 0] as [number, number, number], position: "FAIL" as const, angle: "PASS" as const, status: "FAIL" as const,
+  };
+  assert.equal(explainItem(fail), "object door: position off by 12.5 mm (dx 12.5, dy 0, dz 0 mm)");
+  assert.match(explainItem({ ...fail, position: "PASS", angle: "FAIL", delta_deg: 0.5 }), /angle off by 0.5 degrees/);
+  const pass = { ...fail, id: "43", position: "PASS" as const, status: "PASS" as const };
+  const out = withExplain({ items: [fail, pass], summary: { count: 2, pass: 1, fail: 1, provisional: 0, unknown: 0, ids: ["42", "43"] } });
+  assert.deepEqual(out.verdict, { pass: 1, fail: 1, unknown: 0, provisional: 0, count: 2 });
+  assert.match(String((out.items[0] as { explain?: string }).explain), /position off/);
+  assert.equal((out.items[1] as { explain?: string }).explain, undefined);
+  assert.equal(Object.keys(out)[0], "verdict");
+
+  assert.deepEqual(rowIds([{ id: 7 }, { id: "" }, { name: "x" }, null, { id: "9" }]), ["7", "9"]);
+  assert.deepEqual(rowIds(undefined), []);
+
+  const dir = tmp();
+  const env = envOf(dir);
+  const base = { env, guard: guard(), standards: approved, now: () => "2026-11-28T09:00:00Z" };
+  const folder = path.join(dir, "proj");
+  const revit = async (_command: string, params: Record<string, unknown>) => {
+    if (params.action === "align") return { ok: true, would: [], skipped: [], applied: [{ id: 42, model: true }] };
+    if (params.action === "place") return { ok: true, placed: [{ id: 501, unique_id: "u-501", reference_point: true }] };
+    return snap("A-0001", 1000, 12, { name: "A/1", x: 5000 });
+  };
+  await runFmcCoord(args({ action: "publish", document: "A-0001", project: "Ogala", project_folder: folder, level: "all", dry_run: false }), { ...base, revit });
+  const found = body(await runFmcCoord(args({ action: "read", project: "Ogala", project_folder: folder }), { ...base, revit }));
+  assert.equal(found.exists, true);
+  const models = body(await runFmcCoord(args({ action: "check", project: "Ogala", project_folder: folder, left: "A-0001", right: "A-0001" }), { ...base, revit }));
+  assert.equal((models.verdict as { pass: number }).pass, 1);
+  const aligned = body(await runFmcCoord(args({ action: "align", document: "A-0001", project: "Ogala", project_folder: folder, dry_run: false }), { ...base, revit }));
+  assert.deepEqual(aligned.moved_ids, ["42"]);
+  const alignDry = body(await runFmcCoord(args({ action: "align", document: "A-0001", project: "Ogala", project_folder: folder }), { ...base, revit }));
+  assert.equal(alignDry.moved_ids, undefined);
+  const placed = body(await runFmcCoord(args({ action: "place", document: "A-0001", project: "Ogala", project_folder: folder, name: "A/1", reference_point: true, dry_run: false }), { ...base, revit }));
+  assert.deepEqual(placed.created_ids, ["501"]);
 });
