@@ -26,6 +26,10 @@ import {
   screenLibrarySource, shapeDiff, withResolved, worksharedUnsafe, type ModelDiff, type ScriptManifest,
 } from "./scriptlib.js";
 import type { ScriptJob } from "./scriptjobs.js";
+import { buildPlan, type GraphPlan } from "./graph/plan.js";
+import { graphRunGate } from "./graph/rungate.js";
+import { appendGraphRunLog, claimGraphApproval } from "./graph/approvals.js";
+import { sha256File, sha256Text, stableJson, inputsHash } from "./graph/hash.js";
 
 export interface RunContext {
   env?: NodeJS.ProcessEnv;
@@ -197,6 +201,8 @@ export async function executeDynamo(args: {
   jobId?: string;
   cfg: GuardConfig;
   kit: string;
+  /** A person's approval for this exact plan (fmc_graph_guard request_approval). Needed for apply, offline and any Python graph. */
+  approvalId?: string;
 }, ctx: RunContext = {}): Promise<Record<string, unknown>> {
   const doc = callDocument("fmc_dynamo", ctx.env);
   if (!doc.ok) return withResolved({ refused: true, code: doc.code, message: doc.message }, null);
@@ -209,15 +215,50 @@ export async function executeDynamo(args: {
   if (limit) return withResolved({ refused: true, code: "FMC-SCRIPT-LIMIT", message: limit }, doc.document);
   const parsed = readDyn(args.file);
   if (!parsed.ok) return withResolved({ refused: true, code: "FMC-DYNAMO-PARSE", message: parsed.message }, doc.document);
-  if (args.mode === "offline") return withResolved(await runOffline(args.file, parsed.inspect, ctx.env), doc.document);
+  // R-1, R-7, X-05: bind inputs by name (refuse unknown names), scan, package check, lock, jail, then plan_hash.
+  const planned = buildPlan({
+    file: args.file, inputs: (args.inputs ?? {}) as Record<string, unknown>, mode: args.mode,
+    document: doc.document ? { title: doc.document.title ?? "", path: doc.document.path ?? "" } : null,
+    kit: args.kit, cfg: args.cfg, env: ctx.env,
+  });
+  if (!planned.ok) return withResolved({ refused: true, code: planned.code, message: planned.message, reasons: planned.reasons }, doc.document);
+  const plan = planned.plan;
+  if (args.mode === "offline") {
+    // R-3, DT-60: DynamoCLI never reaches sendCommand, so it goes through the graph gate here (a person's approval).
+    const offline = offlineDecision(parsed.inspect);
+    if (!offline.ok) return withResolved({ refused: true, code: offline.code, message: offline.message, inspect: parsed.inspect }, doc.document);
+    const gate = graphRunGate(plan, args.approvalId, ctx.env, new Date(), "fmc_dynamo offline");
+    if (!gate.ok) return withResolved({ refused: true, code: gate.code, message: gate.message, needs_approval: gate.needs_approval, plan: planSummary(plan) }, doc.document);
+    return withResolved({ ...(await runOffline(args.file, parsed.inspect, ctx.env)), plan: planSummary(plan), approval_id: gate.approval?.id ?? null }, doc.document);
+  }
   const lease = leaseProblem(args.mode, doc.document?.title || doc.document?.path || namedDocument());
   if (lease) return withResolved({ refused: true, code: "FMC-BATCH-LOCKED", message: lease }, doc.document);
+  const gate = graphRunGate(plan, args.approvalId, ctx.env);
+  if (!gate.ok) return withResolved({ refused: true, code: gate.code, message: gate.message, needs_approval: gate.needs_approval, plan: planSummary(plan) }, doc.document);
   const preview = args.mode === "preview";
   const response = await sendWhenIdle("fmc_dynamo", {
-    action: "run", path: args.file, inputs: args.inputs ?? {}, mode: args.mode,
+    action: "run", path: args.file, inputs: plan.inputs_by_id, mode: args.mode,
+    // R-1: the add-in sets inputs by node id and refuses a key it cannot set. R-2: it refuses when Dynamo's document
+    // is not this target. DT-66: it checks the kit root as path segments and the file's SHA-256.
+    input_names: plan.input_binding, graph_sha256: plan.graph_sha256, kit_root: args.kit,
+    target_document: doc.document?.path || doc.document?.title || namedDocument(),
+    plan_hash: plan.plan_hash, approval_id: gate.approval?.id ?? "",
     dry_run: preview, report_diff: true, fmc_caller: "fmc_dynamo", script_job: args.jobId ?? "",
   }, ctx) as Record<string, unknown>;
-  return stampRun(response, doc.document, args.mode, parsed.inspect);
+  return { ...stampRun(response, doc.document, args.mode, parsed.inspect), plan: planSummary(plan), approval_id: gate.approval?.id ?? null };
+}
+
+/** The plan fields a caller needs, without the package folder list. */
+export function planSummary(plan: GraphPlan): Record<string, unknown> {
+  return {
+    graph: { id: plan.graph_id, path: plan.graph, sha256: plan.graph_sha256 },
+    inputs_by_id: plan.inputs_by_id,
+    input_meta: plan.input_meta,
+    plan_hash: plan.plan_hash, graph_sha256: plan.graph_sha256, inputs_hash: plan.inputs_hash, input_binding: plan.input_binding,
+    mode: plan.mode, document: plan.document, scan_hash: plan.scan_hash, allowlist_version: plan.allowlist_version, lock: plan.lock,
+    python: plan.python, findings: plan.findings, needs_approval: plan.needs_approval, approval_why: plan.approval_why,
+    approval_kind: plan.approval_kind, packages: { ok: plan.packages.ok, missing: plan.packages.missing, older: plan.packages.older, not_allowed: plan.packages.not_allowed },
+  };
 }
 
 async function runOffline(file: string, inspect: DynInspect, env?: NodeJS.ProcessEnv): Promise<Record<string, unknown>> {
@@ -278,6 +319,8 @@ export async function executeScript(args: {
   cfg: GuardConfig;
   kit: string;
   allowFullScan?: unknown;
+  /** A person's approval (fmc_graph_guard request_approval kind script_python) for the python runner, or a graph's approval for the dynamo runner. */
+  approvalId?: string;
 }, ctx: RunContext = {}): Promise<Record<string, unknown>> {
   const doc = callDocument("fmc_script_run", ctx.env);
   if (!doc.ok) return withResolved({ refused: true, code: doc.code, message: doc.message }, null);
@@ -289,7 +332,7 @@ export async function executeScript(args: {
   if (!prepared.ok) return withResolved(prepared.body, doc.document);
   const { manifest, file, source } = prepared;
   if (manifest.runner === "dynamo") {
-    return executeDynamo({ file, mode: args.mode === "offline" ? "offline" : args.mode, inputs: args.inputs, jobId: args.jobId, cfg: args.cfg, kit: args.kit }, ctx);
+    return executeDynamo({ file, mode: args.mode === "offline" ? "offline" : args.mode, inputs: args.inputs, jobId: args.jobId, cfg: args.cfg, kit: args.kit, approvalId: args.approvalId }, ctx);
   }
   if (manifest.runner === "pyrevit" || manifest.runner === "unavailable") {
     return withResolved({
@@ -307,6 +350,13 @@ export async function executeScript(args: {
         message: "[FMC-PYTHON-UNAVAILABLE] Plain Python is supported when FMC_PYTHON names the interpreter. This entry does not use the Revit API. Nothing was started.",
       }, doc.document);
     }
+    // R-3, DT-60: the python runner is a child process outside sendCommand. A person approves this exact file and inputs.
+    const scriptPlan = scriptPythonPlan(file, args.inputs, doc.document);
+    const claim = args.approvalId?.trim()
+      ? claimGraphApproval(args.approvalId.trim(), scriptPlan.plan_hash, ctx.env)
+      : { ok: false as const, code: "FMC-GRAPH-APPROVAL-NEEDED", message: `[FMC-GRAPH-APPROVAL-NEEDED] A library python script runs outside Revit's gate: a person approves every run. Call fmc_graph_guard request_approval with script_id ${manifest.id}, then run again with approval_id. Plan ${scriptPlan.plan_hash}.` };
+    if (!claim.ok) return withResolved({ refused: true, code: claim.code, message: `${claim.message} Nothing was started.`, needs_approval: true, plan_hash: scriptPlan.plan_hash }, doc.document);
+    appendGraphRunLog({ caller: "fmc_script_run python", graph: file, graph_sha256: scriptPlan.graph_sha256, plan_hash: scriptPlan.plan_hash, mode: args.mode, approval: claim.approval.id, approver: claim.approval.decided_by }, ctx.env);
     const ran = await spawnCli(cli.trim(), [file]);
     return withResolved({ ok: ran.code === 0, exit_code: ran.code, stdout: ran.stdout.slice(0, 4000), stderr: ran.stderr.slice(0, 4000), diff: emptyDiff() }, doc.document);
   }
@@ -356,6 +406,19 @@ function emptyDiff(): ModelDiff {
   return shapeDiff({});
 }
 
+/** The plan of a library python script run: file hash, inputs hash and document. Bound to a script_python approval. */
+export function scriptPythonPlan(file: string, inputs: unknown, document: ResolvedDocument | null): {
+  plan_hash: string; graph: string; graph_sha256: string; inputs_hash: string; scan_hash: string; allowlist_version: string;
+  mode: string; document: { title: string; path: string; state: string }; python: boolean;
+} {
+  let sha = "";
+  try { sha = sha256File(file); } catch { sha = ""; }
+  const ih = inputsHash(inputs ?? {});
+  const docRow = { title: document?.title ?? "", path: document?.path ?? "", state: "" };
+  const plan_hash = sha256Text(stableJson({ v: 1, kind: "script_python", sha, ih, doc: docRow.path.toLowerCase() || docRow.title }));
+  return { plan_hash, graph: file, graph_sha256: sha, inputs_hash: ih, scan_hash: "", allowlist_version: "", mode: "offline", document: docRow, python: true };
+}
+
 export function kitNow(given = "", env: NodeJS.ProcessEnv = process.env): { kit: string; cfg: GuardConfig } {
   const { config } = loadConfig();
   return { kit: kitRootFrom(config, env, given), cfg: config };
@@ -368,9 +431,9 @@ export async function executeQueued(job: ScriptJob, ctx: RunContext): Promise<Re
     cancelled: () => ctx.cancelled?.() === true || false,
   };
   if (job.kind === "dynamo") {
-    return executeDynamo({ file: job.graph, mode: job.mode, inputs: job.inputs, jobId: job.job_id, cfg, kit }, context);
+    return executeDynamo({ file: job.graph, mode: job.mode, inputs: job.inputs, jobId: job.job_id, cfg, kit, approvalId: job.approval_id }, context);
   }
-  return executeScript({ id: job.script_id, mode: job.mode, inputs: job.inputs, jobId: job.job_id, cfg, kit }, context);
+  return executeScript({ id: job.script_id, mode: job.mode, inputs: job.inputs, jobId: job.job_id, cfg, kit, approvalId: job.approval_id }, context);
 }
 
 export function runnerKey(): string {

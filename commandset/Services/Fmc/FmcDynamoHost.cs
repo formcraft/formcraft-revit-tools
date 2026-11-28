@@ -9,6 +9,12 @@ using Newtonsoft.Json.Linq;
 
 namespace RevitMCPCommandSet.Services.Fmc
 {
+    /// <summary>An input the graph cannot take: the run is refused before Dynamo runs.</summary>
+    public class FmcDynamoInputException : Exception
+    {
+        public FmcDynamoInputException(string message) : base(message) { }
+    }
+
     /// <summary>
     /// Dynamo for Revit, called by reflection. This project does not reference DynamoRevitDS or DynamoCore,
     /// so the add-in still builds where those assemblies are not installed. If they are not loaded at run time
@@ -84,8 +90,19 @@ namespace RevitMCPCommandSet.Services.Fmc
                     refused["hint"] = "Open Dynamo once in this Revit session.";
                     return refused;
                 }
+                // R-2 / DT-63: Dynamo works on its own current document. Refuse unless that is the target, so a preview's
+                // rollback covers everything the graph writes.
+                string wrongDoc = WrongDocument(app, doc);
+                if (wrongDoc != null)
+                {
+                    return new JObject
+                    {
+                        ["ran"] = false, ["loaded"] = true, ["model_started"] = true, ["code"] = "FMC-DYNAMO-WRONG-DOCUMENT",
+                        ["message"] = "[FMC-DYNAMO-WRONG-DOCUMENT] " + wrongDoc + " Make the target model the active document, then run again. Nothing ran.",
+                    };
+                }
                 InvokeOpen(model, file);
-                SetInputs(model, inputs);
+                JArray set = SetInputs(model, inputs);
                 InvokeRun(model);
                 return new JObject
                 {
@@ -94,7 +111,16 @@ namespace RevitMCPCommandSet.Services.Fmc
                     ["model_started"] = true,
                     ["version"] = session["version"],
                     ["outputs"] = ReadWatches(model),
+                    ["inputs_set"] = set,
                     ["binding"] = "reflection",
+                };
+            }
+            catch (FmcDynamoInputException ex)
+            {
+                return new JObject
+                {
+                    ["ran"] = false, ["loaded"] = true, ["model_started"] = true, ["code"] = "FMC-DYNAMO-INPUT",
+                    ["message"] = "[FMC-DYNAMO-INPUT] " + ex.Message + " The graph was not run.",
                 };
             }
             catch (Exception ex)
@@ -105,11 +131,62 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
         }
 
-        public static bool Approved(string path)
+        /// <summary>
+        /// DT-66 / R-5: the graph must sit under &lt;kit&gt;\05_Scripts\library or &lt;kit&gt;\05_Scripts\Dynamo, compared as full
+        /// path segments after normalising (no substring test, no "..", no link that leaves the folder), and its SHA-256
+        /// must equal the hash the server planned with. Returns null when approved, else the reason.
+        /// </summary>
+        public static string ApprovedReason(string path, string kitRoot, string sha256)
         {
-            if (string.IsNullOrWhiteSpace(path)) return false;
-            string normal = path.Replace('/', '\\').ToLowerInvariant();
-            return normal.Contains("\\05_scripts\\library\\") || normal.Contains("\\05_scripts\\dynamo\\");
+            if (string.IsNullOrWhiteSpace(path)) return "No graph path.";
+            if (string.IsNullOrWhiteSpace(kitRoot)) return "No kit root from the server.";
+            if (string.IsNullOrWhiteSpace(sha256)) return "No graph hash from the server.";
+            if (path.Contains("..")) return path + " uses '..'.";
+            string full, kit;
+            try { full = Path.GetFullPath(path); kit = Path.GetFullPath(kitRoot).TrimEnd('\\', '/'); }
+            catch (Exception ex) { return "Bad path: " + ex.Message; }
+            bool inside = false;
+            foreach (string place in new[] { "library", "Dynamo" })
+            {
+                string root = Path.Combine(kit, "05_Scripts", place) + Path.DirectorySeparatorChar;
+                if (full.StartsWith(root, StringComparison.OrdinalIgnoreCase) && full.Length > root.Length) inside = true;
+            }
+            if (!inside) return full + " is outside " + kit + "\\05_Scripts\\library or \\Dynamo.";
+            try
+            {
+                for (var dir = new DirectoryInfo(Path.GetDirectoryName(full) ?? ""); dir != null && dir.FullName.Length > kit.Length; dir = dir.Parent)
+                    if ((dir.Attributes & FileAttributes.ReparsePoint) != 0) return dir.FullName + " is a link or junction.";
+                if ((File.GetAttributes(full) & FileAttributes.ReparsePoint) != 0) return full + " is a link.";
+            }
+            catch (Exception ex) { return "Can't read " + full + ": " + ex.Message; }
+            string actual;
+            try
+            {
+                using var stream = File.OpenRead(full);
+                using var sha = System.Security.Cryptography.SHA256.Create();
+                actual = BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
+            }
+            catch (Exception ex) { return "Can't hash " + full + ": " + ex.Message; }
+            if (!string.Equals(actual, sha256.Trim(), StringComparison.OrdinalIgnoreCase))
+                return full + " changed after the server planned it (SHA-256 " + actual.Substring(0, 12) + "..., planned " + sha256.Trim().Substring(0, Math.Min(12, sha256.Trim().Length)) + "...).";
+            return null;
+        }
+
+        /// <summary>Null when Dynamo's current document is the target (or Dynamo cannot say and the target is active).</summary>
+        private static string WrongDocument(UIApplication app, Document target)
+        {
+            Document current = null;
+            try
+            {
+                Type manager = FindType("RevitServices.Persistence.DocumentManager") ?? FindType("DocumentManager");
+                object instance = manager?.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
+                current = instance?.GetType().GetProperty("CurrentDBDocument")?.GetValue(instance) as Document;
+            }
+            catch { current = null; }
+            if (current == null) current = app?.ActiveUIDocument?.Document;
+            if (current == null) return "Dynamo has no current document.";
+            if (current.Equals(target)) return null;
+            return "Dynamo's document is " + current.Title + ", not the target " + target.Title + ".";
         }
 
         private static JObject Unavailable(string why, bool modelStarted)
@@ -245,21 +322,42 @@ namespace RevitMCPCommandSet.Services.Fmc
             else open.Invoke(model, new object[] { file });
         }
 
-        private static void SetInputs(object model, JObject inputs)
+        /// <summary>
+        /// R-1 / DT-62: inputs arrive keyed by node GUID (the server binds names with inspect). Each one is set with
+        /// UpdateModelValueCommand(Guid, "Value", value). A key that is not a GUID, or a set that throws, refuses the run;
+        /// nothing is dropped without a word.
+        /// </summary>
+        private static JArray SetInputs(object model, JObject inputs)
         {
-            if (inputs == null || !inputs.Properties().Any()) return;
+            var set = new JArray();
+            if (inputs == null || !inputs.Properties().Any()) return set;
             Type commandType = FindType("UpdateModelValueCommand");
             MethodInfo execute = model.GetType().GetMethods().FirstOrDefault(m => m.Name == "ExecuteCommand" && m.GetParameters().Length == 1);
-            if (commandType == null || execute == null) return;
+            if (commandType == null || execute == null) throw new FmcDynamoInputException("This Dynamo has no UpdateModelValueCommand, so inputs can't be set.");
+            ConstructorInfo byGuid = commandType.GetConstructors().FirstOrDefault(c =>
+            {
+                var p = c.GetParameters();
+                return p.Length == 3 && p[0].ParameterType == typeof(Guid) && p[1].ParameterType == typeof(string) && p[2].ParameterType == typeof(string);
+            });
             foreach (JProperty property in inputs.Properties())
             {
+                if (!Guid.TryParse(property.Name, out Guid id))
+                    throw new FmcDynamoInputException("Input key " + property.Name + " is not a node id. Inputs are bound by name on the server.");
+                string value = property.Value?.Type == JTokenType.String ? property.Value.ToString() : property.Value?.ToString(Newtonsoft.Json.Formatting.None) ?? "";
                 try
                 {
-                    object command = Activator.CreateInstance(commandType, property.Name, "Value", property.Value?.ToString() ?? "");
-                    if (command != null) execute.Invoke(model, new[] { command });
+                    object command = byGuid != null
+                        ? byGuid.Invoke(new object[] { id, "Value", value })
+                        : Activator.CreateInstance(commandType, id.ToString(), "Value", value);
+                    execute.Invoke(model, new[] { command });
+                    set.Add(new JObject { ["id"] = id.ToString(), ["value"] = value });
                 }
-                catch { /* a graph with no matching input keeps its saved value */ }
+                catch (Exception ex)
+                {
+                    throw new FmcDynamoInputException("Input " + id + " could not be set: " + Unwrap(ex).Message);
+                }
             }
+            return set;
         }
 
         private static void InvokeRun(object model)

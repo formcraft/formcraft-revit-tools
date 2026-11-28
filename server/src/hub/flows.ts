@@ -26,6 +26,21 @@ export type Flow = z.infer<typeof FLOW>;
 /** Tools a flow may not run: itself (no loops), and the pane-only acts that are always a person's. */
 export const NOT_IN_FLOWS = new Set(["fmc_flow"]);
 
+/**
+ * R-8 / DT-51: a flow may hold a graph only as a read (inspect, plan, status, list, log) or a preview, and a run that
+ * changes the model, runs offline, or runs Python needs its approval_id in the step (the run gate checks it again).
+ */
+export function graphStepProblem(tool: string, args: Record<string, unknown>): string | null {
+  if (tool !== "fmc_dynamo" && tool !== "fmc_script_run" && !(tool === "fmc_scripts" && args.action === "graph_run")) return null;
+  const action = String((tool === "fmc_scripts" ? args.dynamo_action : args.action) ?? "run");
+  if (["inspect", "plan", "status", "list", "log", "cancel", "author"].includes(action)) return null;
+  const mode = typeof args.mode === "string" ? args.mode : args.dry_run === false ? "apply" : "preview";
+  const approval = typeof args.approval_id === "string" && args.approval_id.trim() ? args.approval_id.trim() : "";
+  if (tool === "fmc_script_run" && !approval) return `${tool} in a flow needs approval_id from a person`;
+  if ((mode === "apply" || mode === "offline") && !approval) return `${tool} ${mode} in a flow needs approval_id from a person`;
+  return null;
+}
+
 export type StepCall = (tool: string, args: Record<string, unknown>) => Promise<{ ok: boolean; body: any }>;
 
 export interface StepResult { name: string; tool: string; ok: boolean; skipped?: string; body?: any; error?: string; ms: number }
@@ -80,6 +95,11 @@ export async function runFlow(flow: Flow, opts: { dryRun: boolean; vars?: Record
       run.ok = false; run.stopped_at = step.name; break;
     }
     if (opts.acceptsDryRun(step.tool)) args = { ...args, dry_run: opts.dryRun };
+    const graphProblem = graphStepProblem(step.tool, args);
+    if (graphProblem) {
+      run.steps.push({ name: step.name, tool: step.tool, ok: false, error: graphProblem, ms: 0 });
+      run.ok = false; run.stopped_at = step.name; break;
+    }
     try {
       const r = await opts.call(step.tool, args);
       done[step.name] = r.body;

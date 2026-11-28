@@ -7,6 +7,11 @@ import { loadConfig } from "../fmc/policy.js";
 import { documentTarget, batchLease } from "../fmc/target.js";
 import { callDocument, executeDynamo, executeQueued, namedDocument, protectedInputPaths, runnerClient, runnerKey } from "../fmc/scriptexec.js";
 import { scheduleJobs, scriptJobs, type ScriptJob } from "../fmc/scriptjobs.js";
+import { buildPlan } from "../fmc/graph/plan.js";
+import { graphDecisions } from "../fmc/graph/decisions.js";
+import { projectRootOf } from "../fmc/graph/jail.js";
+import { authorDraft } from "./fmc_graph.js";
+import { planSummary } from "../fmc/scriptexec.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
@@ -19,12 +24,17 @@ export const FMC_DYNAMO_DESCRIPTION =
   "run and submit take mode preview (rolled back, never saved), apply (kept, needs batch_lease, does not save itself) or offline (DynamoCLI, only when inspect shows no Revit nodes; otherwise FMC-DYNAMO-NEEDS-REVIT). " +
   "If Dynamo for Revit is not loaded, the answer is FMC-DYNAMO-UNAVAILABLE. document is an exact title or path. dry_run defaults to true (preview). " +
   "submit returns {job_id, state:\"queued\", position} and does not block. One job runs at a time per Revit, and only when Revit is idle (FMC-REVIT-NOT-IDLE waits). " +
-  "Results are under %LOCALAPPDATA%\\Formcraft\\jobs\\<job_id>\\ (result.json and log.txt). A server restart marks a running job interrupted and does not start it again.";
+  "Results are under %LOCALAPPDATA%\\Formcraft\\jobs\\<job_id>\\ (result.json and log.txt). A server restart marks a running job interrupted and does not start it again. " +
+  "Inputs are bound by name to the graph's marked inputs; an unknown or ambiguous name refuses the run (FMC-DYNAMO-INPUT), nothing is dropped. " +
+  "plan is the dry run on paper: binds inputs, scans for Python, checks packages, the kit lock and the project jail, and returns plan_hash. " +
+  "apply, offline, and every run of a graph with Python need a person's approval for that plan_hash: fmc_graph_guard request_approval, the person decides in the pane, " +
+  "then run with approval_id (single use, 30 minutes). dry_run false alone is not a yes. Python graphs always need the person, whatever the access level. " +
+  "author writes a new draft graph from a template or a JSON spec into the target model's project drafts folder (same as fmc_graph scaffold/generate); it never runs it.";
 
 const MODE = z.enum(["preview", "apply", "offline"]);
 
 export const FMC_DYNAMO_SHAPE = {
-  action: z.enum(["inspect", "status", "run", "submit", "list", "log", "cancel"]),
+  action: z.enum(["inspect", "status", "run", "submit", "list", "log", "cancel", "plan", "author"]),
   path: z.string().optional().default("").describe("inspect, run, submit: the .dyn file under 05_Scripts/library or 05_Scripts/Dynamo"),
   inputs: z.record(z.unknown()).optional().describe("Graph inputs by name. At most 50."),
   mode: MODE.optional().describe("preview rolls back. apply keeps changes and needs batch_lease. offline is DynamoCLI with no Revit nodes."),
@@ -36,6 +46,10 @@ export const FMC_DYNAMO_SHAPE = {
   label: z.string().optional().default("").describe("submit: a short name for the job"),
   kit_folder: z.string().optional().default("").describe("Kit root. Default: the folder above the guard's specs_path, or FMC_KIT."),
   batch_lease: z.string().optional().describe("Required for apply. The lease id from fmc_batch request."),
+  approval_id: z.string().optional().describe("run, submit: a person's approval for this plan (fmc_graph_guard request_approval). Needed for apply, offline and any graph with Python."),
+  template: z.string().optional().describe("author: a template (read_only_report, family_edit, mep_check, sweep_ready)"),
+  name: z.string().optional().describe("author: the draft name"),
+  spec: z.record(z.unknown()).optional().describe("author: a JSON graph spec (see fmc_graph)"),
 };
 
 export type FmcDynamoArgs = z.infer<z.ZodObject<typeof FMC_DYNAMO_SHAPE>>;
@@ -73,6 +87,28 @@ export async function runFmcDynamo(args: FmcDynamoArgs) {
       const parsed = readDyn(args.path);
       if (!parsed.ok) return reply(withResolved({ refused: true, code: "FMC-DYNAMO-PARSE", message: parsed.message }, doc.document), true);
       return reply(withResolved({ ...parsed.inspect, action: "inspect" }, doc.document));
+    }
+    if (args.action === "author") {
+      const doc = callDocument("fmc_dynamo");
+      if (!doc.ok) return reply(withResolved({ refused: true, code: doc.code, message: doc.message }, null), true);
+      const out = authorDraft({ template: args.template, name: args.name, spec: args.spec }, projectRootOf(doc.document?.path ?? ""), graphDecisions(config).drafts_folder);
+      return reply(withResolved({ action: "author", ...out.body }, doc.document), !out.ok);
+    }
+    if (args.action === "plan") {
+      const doc = callDocument("fmc_dynamo");
+      if (!doc.ok) return reply(withResolved({ refused: true, code: doc.code, message: doc.message }, null), true);
+      if (!approvedScriptPath(args.path, kit)) return reply(withResolved({ refused: true, code: "FMC-SCRIPT-ROOT", message: outsideRootMessage(args.path, kit) }, doc.document), true);
+      const planned = buildPlan({
+        file: args.path, inputs: (args.inputs ?? {}) as Record<string, unknown>, mode: modeOf(args),
+        document: doc.document ? { title: doc.document.title ?? "", path: doc.document.path ?? "" } : null, kit, cfg: config,
+      });
+      if (!planned.ok) return reply(withResolved({ refused: true, code: planned.code, message: planned.message, reasons: planned.reasons }, doc.document), true);
+      return reply(withResolved({
+        action: "plan", ...planSummary(planned.plan),
+        next: planned.plan.needs_approval
+          ? "Needs a person: fmc_graph_guard request_approval with the same path, inputs and mode, then run with approval_id."
+          : "No approval needed for this preview: run it.",
+      }, doc.document));
     }
     if (args.action === "list") {
       const found = queueOrError();
@@ -129,13 +165,13 @@ export async function runFmcDynamo(args: FmcDynamoArgs) {
       const made = found.queue.submit({
         kind: "dynamo", document: doc.document?.path || doc.document?.title || named,
         mode, priority: args.priority, label: args.label, batch_lease: (args.batch_lease ?? batchLease.getStore() ?? "").trim(),
-        client: runnerClient(), revit_key: runnerKey(), graph: args.path, inputs,
+        client: runnerClient(), revit_key: runnerKey(), graph: args.path, inputs, approval_id: args.approval_id,
       });
       if (!made.ok) return reply(withResolved({ refused: true, code: made.code, message: made.message }, doc.document), true);
       scheduleJobs(found.queue, runnerKey(), runBackground);
       return reply(withResolved({ job_id: made.job_id, state: made.state, position: made.position, result_ref: found.queue.status(made.job_id)?.result_ref }, doc.document));
     }
-    const result = await executeDynamo({ file: args.path, mode, inputs, cfg: config, kit }, {});
+    const result = await executeDynamo({ file: args.path, mode, inputs, cfg: config, kit, approvalId: args.approval_id }, {});
     return reply(result, result.refused === true || result.success === false);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
