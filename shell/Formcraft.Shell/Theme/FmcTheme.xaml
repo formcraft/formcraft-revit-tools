@@ -376,6 +376,7 @@
     <Setter Property="MinHeight" Value="28"/>
     <Setter Property="Padding" Value="6,0"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <!-- No separate ring: the IsKeyboardFocused trigger below draws a 2 px accent border instead (F02, FocusRingTests). -->
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="Template">
       <Setter.Value>
@@ -436,6 +437,7 @@
     <Setter Property="MinHeight" Value="28"/>
     <Setter Property="Padding" Value="6,0"/>
     <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <!-- No separate ring: the IsKeyboardFocused trigger below draws a 2 px accent border instead (F02, FocusRingTests). -->
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="Template">
       <Setter.Value>
@@ -485,6 +487,7 @@
 
   <Style x:Key="FmcTable.Cell" TargetType="DataGridCell">
     <Setter Property="Padding" Value="10,6"/>
+    <!-- No separate ring: the IsKeyboardFocusWithin trigger below draws an accent border instead (F02, FocusRingTests). -->
     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     <Setter Property="Template">
       <Setter.Value>
@@ -1110,6 +1113,7 @@
 
   <!-- Scroll bars: slim, themed (implicit for everything inside the pane) -->
   <Style x:Key="Fmc.ScrollThumb" TargetType="Thumb">
+    <Setter Property="Focusable" Value="False"/>
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="Thumb">

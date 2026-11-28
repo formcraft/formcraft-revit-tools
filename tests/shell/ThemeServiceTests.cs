@@ -129,6 +129,62 @@ namespace Formcraft.Shell.Tests
             await Assert.That(themeName).IsEqualTo("Dark");
         }
 
+        [Test]
+        public async Task A_view_whose_thread_has_ended_never_blocks_a_theme_switch()
+        {
+            // F02: the old code used a blocking Dispatcher.Invoke for a view on another thread; with that thread
+            // gone the call never returned, and in Revit it would hang ThemeChanged.
+            var themes = new ThemeService(PaneTheme.Light);
+            Sta.Run(() => { themes.Attach(new Border()); return 0; });
+            var changes = 0;
+            themes.Changed += (_, _) => changes++;
+
+            var switched = Task.Run(() => themes.SetHostTheme(PaneTheme.Dark)).Wait(System.TimeSpan.FromSeconds(5));
+
+            await Assert.That(switched).IsTrue();
+            await Assert.That(changes).IsEqualTo(1);
+        }
+
+        [Test]
+        public async Task A_view_whose_dispatcher_shut_down_is_skipped_and_dropped()
+        {
+            var themes = new ThemeService(PaneTheme.Light);
+            var attached = Sta.Run(() =>
+            {
+                themes.Attach(new Border());
+                var n = themes.AttachedCount;
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeShutdown();
+                return n;
+            });
+            System.Exception? failure = null;
+            try { themes.SetHostTheme(PaneTheme.Dark); }
+            catch (System.Exception ex) { failure = ex; }
+
+            await Assert.That(attached).IsEqualTo(1);
+            await Assert.That(failure).IsNull();
+            await Assert.That(themes.AttachedCount).IsEqualTo(0);
+        }
+
+        [Test]
+        public async Task Detach_stops_a_view_being_repainted()
+        {
+            var (before, after, name) = Sta.Run(() =>
+            {
+                var themes = new ThemeService(PaneTheme.Light);
+                var root = new Border();
+                themes.Attach(root);
+                var b = themes.AttachedCount;
+                themes.Detach(root);
+                themes.Detach(root);
+                themes.SetHostTheme(PaneTheme.Dark);
+                return (b, themes.AttachedCount, (string)root.FindResource("Fmc.ThemeName"));
+            });
+
+            await Assert.That(before).IsEqualTo(1);
+            await Assert.That(after).IsEqualTo(0);
+            await Assert.That(name).IsEqualTo("Light");
+        }
+
         private static string Colour(object brush) => ((SolidColorBrush)brush).Color.ToString();
     }
 }

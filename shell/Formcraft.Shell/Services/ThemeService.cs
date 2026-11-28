@@ -66,6 +66,29 @@ namespace Formcraft.Shell.Services
                 _roots.RemoveAll(r => !r.TryGetTarget(out _));
                 _roots.Add(new WeakReference<FrameworkElement>(root));
             }
+            // A closed window is never repainted again: drop it at once rather than waiting for the GC (F02).
+            if (root is Window window) window.Closed += (_, _) => Detach(window);
+        }
+
+        /// <summary>Stops keeping a view current (a window that closed). Safe to call twice.</summary>
+        public void Detach(FrameworkElement root)
+        {
+            if (root == null) return;
+            lock (_roots)
+                _roots.RemoveAll(r => !r.TryGetTarget(out var t) || ReferenceEquals(t, root));
+        }
+
+        /// <summary>How many views are kept current (for tests).</summary>
+        public int AttachedCount
+        {
+            get
+            {
+                lock (_roots)
+                {
+                    _roots.RemoveAll(r => !r.TryGetTarget(out _));
+                    return _roots.Count;
+                }
+            }
         }
 
         /// <summary>Puts the colours for a theme into a resource dictionary, replacing any colours already there.</summary>
@@ -123,19 +146,41 @@ namespace Formcraft.Shell.Services
             change();
             if (Effective == before) return;
 
+            var effective = Effective;
             List<FrameworkElement> live = new List<FrameworkElement>();
             lock (_roots)
             {
-                _roots.RemoveAll(r => !r.TryGetTarget(out _));
+                _roots.RemoveAll(r => !r.TryGetTarget(out var t) || IsShutDown(t));
                 foreach (var r in _roots)
                     if (r.TryGetTarget(out var root)) live.Add(root);
             }
+            // F02: this runs inside Revit's ThemeChanged. A view whose dispatcher is closing (or whose thread has
+            // ended) must never throw or block here, so a view on another thread is repainted with BeginInvoke
+            // (never a blocking Invoke) and a failure on one view does not stop the others.
             foreach (var root in live)
             {
-                if (root.Dispatcher.CheckAccess()) Apply(root.Resources, Effective);
-                else root.Dispatcher.Invoke(() => Apply(root.Resources, Effective));
+                try
+                {
+                    var dispatcher = root.Dispatcher;
+                    if (dispatcher.CheckAccess()) Apply(root.Resources, effective);
+                    else dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        try { Apply(root.Resources, effective); }
+                        catch (Exception) { /* the view closed while the repaint was queued */ }
+                    }));
+                }
+                catch (Exception)
+                {
+                    Detach(root);
+                }
             }
             Changed?.Invoke(this, EventArgs.Empty);
+        }
+
+        private static bool IsShutDown(FrameworkElement root)
+        {
+            var d = root.Dispatcher;
+            return d == null || d.HasShutdownStarted || d.HasShutdownFinished;
         }
     }
 }
