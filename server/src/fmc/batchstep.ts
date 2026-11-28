@@ -45,6 +45,20 @@ function fillReferences(args: Record<string, unknown>, manifest: ScriptManifest)
   };
 }
 
+/**
+ * fmc_library run: the top-level dry_run wins. Anything but dry_run:false is a preview, whatever arguments.mode says.
+ * A preview that also asks arguments.mode "apply" is a conflict and is refused (rather than silently previewed), so the
+ * caller learns that the apply did not happen and how to ask for it.
+ */
+export function libraryRunPreview(dryRun: unknown, args: Record<string, unknown> | undefined): { previewOnly: boolean; conflict: string | null } {
+  const previewOnly = dryRun !== false;
+  const asked = args && typeof args.mode === "string" ? args.mode.trim().toLowerCase() : "";
+  const conflict = previewOnly && asked === "apply"
+    ? "[FMC-LIBRARY-DRY-RUN] dry_run is true (the default) but arguments.mode is \"apply\". The top-level dry_run wins. Pass dry_run:false to apply, or drop arguments.mode for a preview. Nothing was run."
+    : null;
+  return { previewOnly, conflict };
+}
+
 /** Build the fmc_library call. previewOnly forces a dry run. Apply is refused when the manifest checks fail. */
 export function prepareLibraryStep(step: LibraryStep, manifest: ScriptManifest, opts: PrepareOptions = {}): PreparedLibraryStep {
   const args = fillReferences({ ...(step.arguments ?? {}) }, manifest);
