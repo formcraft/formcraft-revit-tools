@@ -7,6 +7,7 @@ import { decodeKeynoteFile, keynoteTableWarnings } from "../fmc/library.js";
 import { executePropertyLineBatch } from "../fmc/propertyline.js";
 import { documentTarget } from "../fmc/target.js";
 import { touchedIds, viewImage } from "./see_view.js";
+import { typeBatchRefusal, wireParams } from "../fmc/systypes.js";
 
 function reply(body: unknown, isError = false) {
   return { content: [{ type: "text" as const, text: typeof body === "string" ? body : JSON.stringify(body, null, 2) }], isError };
@@ -33,7 +34,7 @@ function attachKeynoteFileWarnings(ops: Array<{ op?: string; path?: unknown }>, 
   result.warnings = [...prev, ...notes];
 }
 
-export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "switch_join", "cut", "uncut", "pin", "unpin", "delete", "move", "set_param", "change_type", "attach", "duplicate_type", "create_roof",
+export const MODEL_EDIT_OPS = ["copy", "rotate", "mirror", "join", "unjoin", "switch_join", "cut", "uncut", "pin", "unpin", "delete", "move", "set_param", "change_type", "attach", "duplicate_type", "edit_type", "delete_type", "create_roof",
   "create_railing", "create_stair", "room_separation", "opening", "shaft",
   "create_view", "duplicate_view", "set_view", "override", "hide", "unhide", "create_filter", "create_template", "apply_template",
   "create_sheet", "place_view", "open_view",
@@ -76,8 +77,24 @@ export const MODIFY_MODEL_DESCRIPTION =
   "e.g. Top Constraint \"Level 2\"; on_type changes the type, so every element of it) · " +
   "change_type {ids, type_name | type_id} · " +
   "attach {ids (walls), target (roof, floor or ceiling id), side top|base} · " +
-  "duplicate_type {type (source type id), new_name, layers?: [{function: Structure|Substrate|Insulation|Finish1|Finish2|Membrane, " +
-  "material, width_mm}], params?: {name: value}} · " +
+  "System-type editor (one engine; every edit answers a row in items, a failed row rolls the batch back unless partial true): " +
+  "duplicate_type {type (source type id) | type_name + kind, new_name (a name already used is refused, FMC-TYPE-NAME-TAKEN), EDITS} · " +
+  "edit_type {type | type_name + kind (wall|floor|roof|ceiling|stair|stair_run|stair_landing|pipe|duct|cable_tray), EDITS} (edits the " +
+  "existing type in place: every element of it changes) · delete_type {type} (never run: deleting a type needs a person, " +
+  "FMC-NEEDS-PERSON; with plan_only it lists what uses the type). EDITS: layers [{function: Structure|Substrate|Insulation|Finish1|" +
+  "Finish2|Membrane|StructuralDeck, material, width_mm, wraps?}] (replace all) · layer_edits [{index (0 = exterior/top), width_mm?, " +
+  "function?, material?, wraps?} | {insert_at, function, width_mm, material?} | {index, remove: true}] · core {exterior_shell_layers, " +
+  "interior_shell_layers} · structural_layer (index) · wrapping {openings, ends} (walls) — walls, floors, roofs and compound ceilings · " +
+  "params {name: value} · stair {max_riser_mm, min_tread_mm, min_run_width_mm, run_type, landing_type, left_support, right_support, " +
+  "middle_support, middle_supports_number} · stair_run {riser_thickness_mm, tread_thickness_mm, nosing_length_mm, structural_depth_mm, " +
+  "material} · stair_landing {thickness_mm} · routing {add: [{group: segments|elbows|junctions|crosses|transitions|unions|" +
+  "mechanical_joints|caps|transitions_rect_round|transitions_rect_oval|transitions_oval_round, part (\"Family : Type\", segment name " +
+  "or id), min_mm?, max_mm?, index?}], remove: [{group, index}], preferred_junction: tee|tap} (pipe and duct types) · segment_sizes " +
+  "{segment?, add: [{nominal_mm, id_mm, od_mm}], remove: [nominal_mm]} (pipe types; the segment is shared) · fittings {elbow, tee, cross, " +
+  "transition, union} and fitting_params {\"Type Properties name\": \"Family : Type\"} (cable tray types). Type definitions only: " +
+  "no run is sized, routed or changed. Conduit types: fmc_conduit apply. plan_only true (the batch flag, type ops only) reads and " +
+  "answers before, after, instances and would_borrow with no transaction: nothing changes and nothing is borrowed on a workshared " +
+  "local; use it, not dry_run, to preview type edits. · " +
   "create_roof {outline_mm (closed loop), level, type_name?, slope_deg? (every edge) or slopes_deg: [deg or null per edge, " +
   "edge i runs from point i to i+1], overhang_mm?, offset_mm?} (gable: slope on the long edges, null on the gable ends; hip: every edge) · " +
   "create_railing {path_mm, level, type_name?, host? (floor id, or a stair id to rail its treads)} · " +
@@ -301,6 +318,7 @@ export function registerModifyModelTool(server: McpServer) {
     {
       ops: z.array(z.object({ op: z.enum(MODEL_EDIT_OPS) }).passthrough()).min(1).describe("The edits, run in order"),
       dry_run: z.boolean().optional().default(false).describe("Run and roll back: what would change, nothing changed"),
+      plan_only: z.boolean().optional().default(false).describe("Type ops only (edit_type, duplicate_type, delete_type, set_param on_type): read and plan with no transaction. Nothing changes and nothing is borrowed on a workshared local."),
       why: z.string().max(1000).optional().describe("A sentence or two (up to 1000 characters) for the person approving: what this batch is for"),
       picture: z.boolean().optional().default(false).describe("Take a picture of the changed elements and return it with the answer. Default false. A picture is for a failed check or a founder's sign-off, not after every batch."),
       snapshot: z.boolean().optional().describe("Same switch as picture. Default off. Nothing is pictured unless picture or snapshot is true."),
@@ -313,7 +331,9 @@ export function registerModifyModelTool(server: McpServer) {
         const propertyLine = await executePropertyLineBatch(args.ops, args.dry_run, documentTarget.getStore(),
           (command, params) => withRevitConnection((c) => c.sendCommand(command, params)));
         if (propertyLine) return reply(propertyLine.body, propertyLine.isError);
-        const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", { ops: args.ops, dry_run: args.dry_run, ...(args.why ? { why: args.why } : {}) }));
+        const refusal = typeBatchRefusal(args.ops as any[], args.plan_only === true);
+        if (refusal) return reply({ applied: false, refused: true, code: refusal.code, ops: refusal.ops, reason: refusal.reason }, true);
+        const r = await withRevitConnection((c) => c.sendCommand("fmc_model_edit", wireParams(args.ops as any[], args.dry_run, args.plan_only === true, args.why)));
         attachKeynoteFileWarnings(args.ops, r);
         const out = reply(r, r?.applied === false && !r?.dry_run) as { content: any[]; isError: boolean };
         // Owner 26 Oct: the AI sees what it did, so it can check its own work like a person glancing at the screen
