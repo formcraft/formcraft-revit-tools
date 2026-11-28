@@ -50,6 +50,17 @@ test("SEE-1: see_view keeps one PNG (moves the auto-named export) and refuses sa
   assert.match(fn, /save_to_note/);
 });
 
+test("SEE-2: the see_view reply reports the active window before and after the restore", () => {
+  const src = fs.readFileSync(path.join(root, "commandset", "Services", "Fmc", "FmcVision.cs"), "utf8");
+  const handler = src.slice(src.indexOf("class FmcViewImageHandler"), src.indexOf("class FmcModelCheckHandler"));
+  const putBack = handler.indexOf("FmcImageExport.PutBack(app, prior)");
+  const report = handler.indexOf("FmcImageExport.RestoreReport(app, prior)");
+  assert.ok(putBack >= 0 && report > putBack, "the report is read after PutBack");
+  assert.match(handler, /reply\["active_window"\]/);
+  const exporter = fs.readFileSync(path.join(root, "commandset", "Services", "Fmc", "FmcImageExport.cs"), "utf8");
+  for (const k of ["before_document", "before_view_id", "after_document", "after_view_id", "restored"]) assert.ok(exporter.includes(`["${k}"]`), k);
+});
+
 test("see_view exports a named view from the named document and is a read during a batch", () => {
   assert.ok(READ_VIA_SEND_COMMAND.has("fmc_view_image"));
   assert.ok(!WRITE_COMMANDS.has("fmc_view_image"));

@@ -36,6 +36,9 @@ namespace RevitMCPCommandSet.Services.Fmc
         /// <summary>Put the captured document and view back. Safe only when no transaction phase is open.</summary>
         internal static void PutBack(UIApplication app, Shot prior) => prior?.Restore(app);
 
+        /// <summary>SEE-2: before/after active document and view, read after PutBack.</summary>
+        internal static Newtonsoft.Json.Linq.JObject RestoreReport(UIApplication app, Shot prior) => prior?.Report(app);
+
         internal static void Export(UIApplication app, Document doc, ImageExportOptions options)
         {
             Shot prior = Shot.Take(app);
@@ -74,6 +77,29 @@ namespace RevitMCPCommandSet.Services.Fmc
                 ElementId view = null;
                 try { view = ui?.ActiveView?.Id; } catch (Exception) { view = null; }
                 return new Shot(doc, doc?.PathName ?? "", view);
+            }
+
+            /// <summary>SEE-2: what was active before the picture and what is active now, so a caller can confirm the restore.</summary>
+            internal Newtonsoft.Json.Linq.JObject Report(UIApplication app)
+            {
+                var r = new Newtonsoft.Json.Linq.JObject
+                {
+                    ["before_document"] = _doc?.Title,
+                    ["before_view_id"] = _view == null ? null : (Newtonsoft.Json.Linq.JToken)_view.Value,
+                };
+                try
+                {
+                    UIDocument now = app?.ActiveUIDocument;
+                    ElementId nowView = null;
+                    try { nowView = now?.ActiveView?.Id; } catch (Exception) { nowView = null; }
+                    r["after_document"] = now?.Document?.Title;
+                    r["after_view_id"] = nowView == null ? null : (Newtonsoft.Json.Linq.JToken)nowView.Value;
+                    bool sameDoc = _doc == null || (now?.Document != null && _doc.Equals(now.Document));
+                    bool sameView = _view == null || (nowView != null && nowView.Equals(_view));
+                    r["restored"] = sameDoc && sameView;
+                }
+                catch (Exception ex) { r["restored"] = false; r["error"] = ex.GetType().Name; }
+                return r;
             }
 
             internal void Restore(UIApplication app)
