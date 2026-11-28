@@ -245,6 +245,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_memory_apply",
   // Sun and shadow study views: 3D views with sun settings. One transaction. Never changes the site location.
   "fmc_sun_apply",
+  // Analysis display: the display style and the view's style setting in one transaction, then transient AVF results.
+  "fmc_avf_apply",
 ]);
 
 /**
@@ -299,6 +301,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_keynote_legend",
   // Site location, 3D views and existing sun studies. No transaction.
   "fmc_sun",
+  // Graphical views, their analysis results and the analysis display styles. No transaction.
+  "fmc_avf",
 ]);
 
 /**

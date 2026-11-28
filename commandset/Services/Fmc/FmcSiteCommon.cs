@@ -64,6 +64,45 @@ namespace RevitMCPCommandSet.Services.Fmc
             };
         }
 
+        /// <summary>Internal to shared, millimetres, row-major 4x4 with translation in the last column. The same matrix fmc_coord publishes.</summary>
+        protected static JArray InternalToSharedMm(Document doc)
+        {
+            Transform t = Transform.Identity;
+            try
+            {
+                ProjectLocation loc = doc.ActiveProjectLocation;
+                ProjectPosition o = loc.GetProjectPosition(XYZ.Zero);
+                ProjectPosition x = loc.GetProjectPosition(new XYZ(1, 0, 0));
+                ProjectPosition y = loc.GetProjectPosition(new XYZ(0, 1, 0));
+                ProjectPosition z = loc.GetProjectPosition(new XYZ(0, 0, 1));
+                t.BasisX = new XYZ(x.EastWest - o.EastWest, x.NorthSouth - o.NorthSouth, x.Elevation - o.Elevation);
+                t.BasisY = new XYZ(y.EastWest - o.EastWest, y.NorthSouth - o.NorthSouth, y.Elevation - o.Elevation);
+                t.BasisZ = new XYZ(z.EastWest - o.EastWest, z.NorthSouth - o.NorthSouth, z.Elevation - o.Elevation);
+                t.Origin = new XYZ(o.EastWest, o.NorthSouth, o.Elevation);
+            }
+            catch (Exception) { t = Transform.Identity; }
+            Func<double, double> r9 = v => Math.Round(v, 9);
+            return new JArray
+            {
+                new JArray { r9(t.BasisX.X), r9(t.BasisY.X), r9(t.BasisZ.X), Mm(t.Origin.X) },
+                new JArray { r9(t.BasisX.Y), r9(t.BasisY.Y), r9(t.BasisZ.Y), Mm(t.Origin.Y) },
+                new JArray { r9(t.BasisX.Z), r9(t.BasisY.Z), r9(t.BasisZ.Z), Mm(t.Origin.Z) },
+                new JArray { 0d, 0d, 0d, 1d },
+            };
+        }
+
+        /// <summary>Points sent by the server as [x_mm, y_mm, z_mm] in internal coordinates, in feet.</summary>
+        protected static List<XYZ> PointsFeet(JToken token)
+        {
+            var list = new List<XYZ>();
+            foreach (JToken row in token as JArray ?? new JArray())
+            {
+                if (row is JArray a && a.Count >= 3)
+                    list.Add(new XYZ(Ft(a[0].Value<double>()), Ft(a[1].Value<double>()), Ft(a[2].Value<double>())));
+            }
+            return list;
+        }
+
         protected static double Mm(double feet) => Math.Round(feet * 304.8, 3);
         protected static double Ft(double mm) => mm / 304.8;
         protected static double Deg(double rad) => rad * 180.0 / Math.PI;

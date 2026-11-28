@@ -34,4 +34,16 @@ namespace RevitMCPCommandSet.Commands.Fmc
         public FmcSunApplyCommand(UIApplication uiApp) : base(new FmcSunApplyHandler(), uiApp) { }
         public override string CommandName => "fmc_sun_apply";
     }
+
+    public class FmcAvfCommand : FmcSiteCommandBase
+    {
+        public FmcAvfCommand(UIApplication uiApp) : base(new FmcAvfHandler(), uiApp) { }
+        public override string CommandName => "fmc_avf";
+    }
+
+    public class FmcAvfApplyCommand : FmcSiteCommandBase
+    {
+        public FmcAvfApplyCommand(UIApplication uiApp) : base(new FmcAvfApplyHandler(), uiApp) { }
+        public override string CommandName => "fmc_avf_apply";
+    }
 }
