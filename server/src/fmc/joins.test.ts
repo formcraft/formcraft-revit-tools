@@ -456,3 +456,27 @@ test("a DirectShape in a collected category stays on the joins snapshot", () => 
   assert.equal(snapshot.skipped_non_family?.items[0]?.category, "Plumbing Fixtures");
   assert.equal(snapshot.hosts.some((row) => row.id === "1822136"), false);
 });
+
+test("research 51: 0 elements is NOT_CHECKED, a pair listed both ways counts once, reads carry no bank_shapes", async () => {
+  const { env, reportDir } = tempEnv();
+  const empty = textOf(await runFmcJoins(args({ action: "audit", document: "A-0001", level: "Level 1" }), {
+    env, reportDir, bank: approved, readSnapshot: async () => model({ element_count: 0 }),
+  }));
+  assert.equal(empty.verdict, "NOT_CHECKED");
+  assert.equal(empty.pass, false);
+  assert.match(String(empty.verdict_reason), /0 elements/);
+  assert.equal("bank_shapes" in empty, false);
+  const both = [
+    { relation: "wall_wall", a: "315001", b: "315002", end: 0, gap_mm: 0, overlap_mm: 100, xyz: { x: 1, y: 2, z: 0 } },
+    { relation: "wall_wall", a: "315002", b: "315001", end: 0, gap_mm: 0, overlap_mm: 100, xyz: { x: 1, y: 2, z: 0 } },
+  ];
+  const body = textOf(await runFmcJoins(args({ action: "audit", document: "A-0001", level: "Level 1" }), {
+    env, reportDir, bank: approved, readSnapshot: async () => model({ element_count: 2, pairs: both }),
+  }));
+  const overlap = (body.findings as Array<{ code: string; count: number }>).find((item) => item.code === "JOIN-OVERLAP");
+  assert.equal(overlap?.count, 1);
+  assert.deepEqual(body.pairs, { listed: 2, unique: 1, duplicates_dropped: 1 });
+  assert.notEqual(body.verdict, "NOT_CHECKED");
+  const limitsReply = textOf(await runFmcJoins(args({ action: "limits" }), { bank: approved }));
+  assert.ok(limitsReply.bank_shapes, "limits still shows the bank shapes");
+});

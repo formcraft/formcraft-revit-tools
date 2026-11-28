@@ -533,8 +533,31 @@ export function classifyPair(pair: PairRow, limits: JoinsValues, cited: Record<s
   return sizeBand(pair, gap, limits, cited, large);
 }
 
+/**
+ * Research 51 (fmc_joins doc, gap "likely double-counted overlaps"): the add-in can list one joint as a-b and b-a.
+ * A pair is the same joint when the relation, the two ids (in any order), the end and the point (10 mm) match.
+ */
+export function dedupePairs(pairs: PairRow[]): { pairs: PairRow[]; duplicates: number } {
+  const seen = new Set<string>();
+  const out: PairRow[] = [];
+  for (const pair of pairs) {
+    const ids = [pair.a, pair.b].sort().join("|");
+    const at = pair.xyz ? Object.values(pair.xyz as unknown as Record<string, number>).map((v) => Math.round(Number(v) * 100)).join(",") : "";
+    const key = `${pair.relation}|${ids}|${pair.end ?? ""}|${at}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(pair);
+  }
+  return { pairs: out, duplicates: pairs.length - out.length };
+}
+
 export function auditFindings(snapshot: JoinsSnapshot, limits: ResolvedLimits): JoinsFinding[] {
-  return snapshot.pairs.map((pair) => classifyPair(pair, limits.values, limits.cited)).filter((item): item is JoinsFinding => item != null);
+  return dedupePairs(snapshot.pairs).pairs.map((pair) => classifyPair(pair, limits.values, limits.cited)).filter((item): item is JoinsFinding => item != null);
+}
+
+/** Research 51: a read that looked at no element is not a verdict. */
+export function notChecked(snapshot: JoinsSnapshot): boolean {
+  return snapshot.element_count === 0;
 }
 
 function categoryWanted(want: string, host: HostRow): boolean {
