@@ -205,6 +205,34 @@ namespace RevitMCPCommandSet.Services.Fmc
                         catch (Exception ex) { notes.Add("System " + system.Id.Value + " not read: " + ex.Message); }
                     }
 
+                    // ---- plumbing fixtures for fmc_calc's facts_file (CA-P-01 water demand, CA-P-02 drainage) ----
+                    var fixtures = new JArray();
+                    if (piping)
+                    {
+                        foreach (FamilyInstance fixture in new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_PlumbingFixtures).WhereElementIsNotElementType().OfType<FamilyInstance>())
+                        {
+                            if (fixtures.Count >= SystemCap) { notes.Add("plumbing fixtures capped at " + SystemCap); break; }
+                            try
+                            {
+                                string fixtureLevel = LevelName(doc, fixture);
+                                if (levelFilter.Count > 0 && !levelFilter.Contains(fixtureLevel.ToLowerInvariant())) continue;
+                                string pipeSystem = FixturePipeSystem(fixture, out long? pipeSystemId);
+                                if (systemFilter.Count > 0 && !Matches(systemFilter, pipeSystemId, pipeSystem)) continue;
+                                fixtures.Add(new JObject
+                                {
+                                    ["id"] = fixture.Id.Value,
+                                    ["family"] = fixture.Symbol?.FamilyName ?? "",
+                                    ["type"] = fixture.Symbol?.Name ?? fixture.Name ?? "",
+                                    ["level"] = fixtureLevel,
+                                    ["room"] = FixtureRoom(doc, fixture),
+                                    ["du"] = DischargeUnits(fixture),
+                                    ["pipe_system"] = pipeSystem,
+                                });
+                            }
+                            catch (Exception) { skipped.Add(fixture); }
+                        }
+                    }
+
                     notes.Add("CriticalPathCollector (Autodesk.Revit.DB.Analysis) needs an MEPNetworkSegmentId from the systems-analysis model and is not used; the critical path is MEPSystem.PressureLossOfCriticalPath, GetCriticalPathSectionNumbers and MEPSystem.GetSectionByNumber (MEPSection TotalPressureLoss, Flow, TotalCurveLength).");
                     notes.Add("Flow, static pressure and fixture units come from Revit's own system calculation (GetFlow, GetStaticPressure, GetFixtureUnits); they are only valid when the system is well connected.");
 
@@ -214,6 +242,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     Result["open_connectors"] = open;
                     Result["plumbing_only_open"] = plumbingOnly;
                     Result["systems"] = systems;
+                    Result["plumbing_fixtures"] = fixtures;
                     Result["scanned"] = new JObject { ["elements"] = elements, ["connectors"] = connectorsSeen, ["systems"] = systemsSeen };
                     Result["truncated"] = new JObject { ["connectors"] = connectorsTruncated, ["systems"] = systemsTruncated };
                     Result["skipped_non_family"] = skipped.Report();
@@ -387,6 +416,51 @@ namespace RevitMCPCommandSet.Services.Fmc
                 }
             }
             catch (Exception) { /* size unreadable: fmc_mep_size asks the engineer */ }
+        }
+
+        /// <summary>FMC_Discharge_Units, the same parameter fmc_mep_facts reads; null when the fixture has none.</summary>
+        private static JToken DischargeUnits(FamilyInstance fixture)
+        {
+            Parameter p = fixture.LookupParameter("FMC_Discharge_Units") ?? fixture.Symbol?.LookupParameter("FMC_Discharge_Units");
+            if (p == null || !p.HasValue) return null;
+            if (p.StorageType == StorageType.Double) return Math.Round(p.AsDouble(), 3);
+            if (p.StorageType == StorageType.Integer) return p.AsInteger();
+            if (p.StorageType == StorageType.String && double.TryParse(p.AsString(), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double v)) return v;
+            return null;
+        }
+
+        private static string FixturePipeSystem(FamilyInstance fixture, out long? systemId)
+        {
+            systemId = null;
+            try
+            {
+                ConnectorManager manager = fixture.MEPModel?.ConnectorManager;
+                if (manager == null) return "";
+                foreach (Connector connector in manager.Connectors)
+                {
+                    if (connector.Domain != Domain.DomainPiping) continue;
+                    MEPSystem system = null;
+                    try { system = connector.MEPSystem; } catch (Exception) { system = null; }
+                    if (system == null) continue;
+                    systemId = system.Id.Value;
+                    return system.Name ?? "";
+                }
+            }
+            catch (Exception) { /* no piping connector */ }
+            return "";
+        }
+
+        private static string FixtureRoom(Document doc, FamilyInstance fixture)
+        {
+            try
+            {
+                Autodesk.Revit.DB.Architecture.Room room = fixture.Room;
+                if (room == null) return "";
+                string number = room.Number ?? "";
+                string name = room.get_Parameter(BuiltInParameter.ROOM_NAME)?.AsString() ?? room.Name ?? "";
+                return (number + " " + name).Trim();
+            }
+            catch (Exception) { return ""; }
         }
 
         private static bool IsPipingNetwork(Element element)

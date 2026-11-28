@@ -15,6 +15,8 @@
  * Conduit and cable tray are NOT audited here (fmc_conduit and fmc_trace). Any conduit/tray row the add-in sends is dropped.
  */
 
+import type { BoardFact, FixtureFact, MepFacts } from "./calc/types.js";
+
 export const MEP_AUDIT_SCHEMA = "fmc_mep_audit/1";
 
 export type MepDomain = "piping" | "duct";
@@ -173,6 +175,8 @@ export interface MepAuditSnapshot {
   open_connectors?: OpenConnectorRow[];
   plumbing_only_open?: PlumbingOnlyOpenRow[];
   systems?: SystemRow[];
+  /** Plumbing fixtures with FMC_Discharge_Units, in fmc_calc's FixtureFact shape. */
+  plumbing_fixtures?: FixtureFact[];
   scanned?: { elements?: number; connectors?: number; systems?: number };
   truncated?: { connectors?: boolean; systems?: boolean };
   skipped_non_family?: { count?: number; ids?: number[] };
@@ -424,6 +428,34 @@ export function systemFact(row: SystemRow & { domain: MepDomain }) {
   };
 }
 
+/**
+ * fmc_calc facts_file ({ mep, boards }) for CA-P-01 (water demand) and CA-P-02 (drainage, Qww = K sqrt(sum DU)).
+ * mep uses fmc_calc's MepFacts field names. boards is empty: fmc_mep_audit reads no electrical boards. Rooms, tanks,
+ * fire devices and circuits are not read here; merge fmc_mep_facts' sections in for the calcs that need them.
+ */
+export function factsFile(model: string, systems: Array<ReturnType<typeof systemFact>>, fixtures: FixtureFact[]): { mep: MepFacts; boards: BoardFact[] } {
+  const piping = systems.filter((s) => s.domain === "piping");
+  return {
+    mep: {
+      model,
+      plumbing_fixtures: fixtures.map((f) => ({ id: f.id, family: f.family ?? "", type: f.type ?? "", level: f.level ?? "", room: f.room ?? "", du: f.du ?? null, pipe_system: f.pipe_system ?? "" })),
+      pipe_systems: piping.map((s) => ({ id: s.id, name: s.name, classification: s.classification })),
+      counts: {
+        plumbing_fixtures: fixtures.length,
+        fixtures_without_du: fixtures.filter((f) => f.du == null).length,
+        pipe_systems: piping.length,
+        duct_systems: systems.length - piping.length,
+      },
+    },
+    boards: [],
+  };
+}
+
+export function filterFixtures(rows: FixtureFact[], filters: MepAuditFilters): FixtureFact[] {
+  if (!domainOk("piping", filters.domain)) return [];
+  return (rows ?? []).filter((f) => systemMatches(filters, null, f.pipe_system) && levelMatches(filters, f.level ? [f.level] : []));
+}
+
 export interface MepAuditOptions extends MepAuditFilters {
   mode: "summary" | "detail";
   max_results: number;
@@ -440,6 +472,7 @@ export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions)
   const issues = sortIssues([...connectors.map(connectorIssue), ...crossCheckIssues(connectors, plumbingOnly), ...systems.flatMap(systemIssues)]);
   const cap = Math.max(1, Math.min(5000, Math.floor(opts.max_results || 200)));
   const facts = systems.map(systemFact);
+  const fixtures = filterFixtures(snapshot.plumbing_fixtures ?? [], filters);
   const segmentParts = systems.map(segmentsFor);
   const segments = segmentParts.flatMap((p) => p.segments);
   const segmentChecks = segmentParts.flatMap((p) => p.checks);
@@ -508,6 +541,8 @@ export function shapeMepAudit(snapshot: MepAuditSnapshot, opts: MepAuditOptions)
     segment_checks: segmentChecks.slice(0, segmentCap),
     segments_truncated: segments.length > segmentCap,
     segment_notes: segmentParts.flatMap((p) => p.notes).slice(0, 100),
+    /** fmc_calc facts_file: save as JSON and pass as facts_file to fmc_calc run|sheet (CA-P-01, CA-P-02). Not capped. */
+    facts_file: factsFile(snapshot.model ?? snapshot.resolved_document?.title ?? "", facts, fixtures),
     scanned: snapshot.scanned ?? {},
     source_truncated: { connectors: !!snapshot.truncated?.connectors, systems: !!snapshot.truncated?.systems },
     dropped_out_of_scope: dropped,

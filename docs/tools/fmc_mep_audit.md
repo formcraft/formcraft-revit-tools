@@ -10,7 +10,7 @@ Read-only MEP connectivity and system audit. It opens **no transaction**, takes 
 2. **IsWellConnected** per piping and mechanical system (`MEP-SYS-NOT-WELL-CONNECTED`).
 3. **Systems with no BaseEquipment**, as a count plus ids (`summary.systems.no_base_equipment` and `no_base_equipment_ids`, code `MEP-SYS-NO-BASE-EQUIPMENT`). The wording is "no BaseEquipment set", never "no source".
 4. **Static pressure, PressureLossOfCriticalPath and the critical-path sections.** `GetCriticalPathSectionNumbers()` gives the sections in flow order. Each one is read with `MEPSystem.GetSectionByNumber`: `MEPSection.TotalPressureLoss`, `Flow`, `TotalCurveLength`, `Velocity`, `Roughness`, `TotalCoefficient`, `FixtureUnit`, its element ids, and the size of its first pipe or duct.
-5. **Fixture units** per piping system (`PipingSystem.GetFixtureUnits()`).
+5. **Fixture units** per piping system (`PipingSystem.GetFixtureUnits()`), and the plumbing fixtures' DU for `fmc_calc` (`facts_file`).
 
 `MEP-SYS-EMPTY`, `MEP-SYS-INVALID` and `MEP-SYS-CALC-UNAVAILABLE` explain why a system has no valid values.
 
@@ -56,6 +56,7 @@ Read-only MEP connectivity and system audit. It opens **no transaction**, takes 
   `{ id: "<system_id>:<section>", kind: "pipe"|"duct", flow_l_s, length_m?, shape?, size_mm? | w_mm?/h_mm?, roughness_mm?, k?: [TotalCoefficient], upstream?, source: "model:<system_id>#section:<n>" }`.
   Sections are in flow order: each section's `upstream` is the previous one, and the first has none. A section without flow is skipped and listed in `segment_notes`.
 - `segment_checks[]`: Revit's own values beside each segment, `{ id, system_id, section, revit_pressure_loss_pa, velocity_ms, fixture_units, element_ids }`, so `fmc_mep_size` can compare its loss with Revit's. `segments_truncated` is set when there are more than `max(max_results, 1000)`.
+- `facts_file`: **fmc_calc's `{ mep, boards }`** for CA-P-01 (water demand and storage) and CA-P-02 (drainage). `mep` uses fmc_calc's `MepFacts` names: `model`; `plumbing_fixtures[{ id, family, type, level, room, du, pipe_system }]`, where `du` is `FMC_Discharge_Units` (the parameter `fmc_mep_facts` reads) and is `null` when missing; `pipe_systems[{ id, name, classification }]`; and `counts { plumbing_fixtures, fixtures_without_du, pipe_systems, duct_systems }`. `boards` is `[]`. Save it as JSON and pass it as `facts_file` to `fmc_calc run` or `sheet`. Rooms (population), tanks, fire devices and circuits are not read here, so merge `fmc_mep_facts`' sections in when a calc needs them. Not capped. Fixtures follow the `domain`, `levels` and `systems` filters.
 - `scanned`, `source_truncated`, `dropped_out_of_scope`, `skipped_non_family`, `excludes`, `api_notes`.
 
 Units: flow is in L/s, pressure in Pa, length in m, velocity in m/s and sizes in mm. Fixture units have no unit and are `null` on duct systems. Only rows with `calc_valid: true` (well connected) carry trustworthy values.

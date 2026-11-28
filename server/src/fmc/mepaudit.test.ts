@@ -236,3 +236,25 @@ test("segments: the critical path as Builder 8's MepSegment, upstream in flow or
   assert.deepEqual(rect.segments, [{ id: "910:1", kind: "duct", flow_l_s: 400, source: "model:910#section:1", length_m: 5, shape: "rect", w_mm: 400, h_mm: 300 }]);
   assert.match(rect.notes[0], /section 2: no flow/);
 });
+
+test("facts_file: fmc_calc's { mep, boards } shape for CA-P-01 and CA-P-02", async () => {
+  const fixtures = [
+    { id: 41, family: "WC", type: "Close coupled", level: "L01", room: "1.01 WC", du: 2, pipe_system: "SAN 1" },
+    { id: 42, family: "Basin", type: "500", level: "L02", room: "", du: null, pipe_system: "DCW 1" },
+  ];
+  const reply = shapeMepAudit({ ...snapshot, plumbing_fixtures: fixtures }, opts({ mode: "detail" }));
+  const ff = reply.facts_file;
+  assert.deepEqual(Object.keys(ff).sort(), ["boards", "mep"]);
+  assert.deepEqual(ff.boards, []);
+  assert.equal(ff.mep.model, "P-0001_USER");
+  assert.deepEqual(ff.mep.plumbing_fixtures, fixtures);
+  assert.deepEqual(ff.mep.pipe_systems?.[0], { id: 900, name: "S900", classification: "DomesticColdWater" });
+  assert.deepEqual(ff.mep.counts, { plumbing_fixtures: 2, fixtures_without_du: 1, pipe_systems: 4, duct_systems: 1 });
+  assert.deepEqual(shapeMepAudit({ ...snapshot, plumbing_fixtures: fixtures }, opts({ levels: ["L02"] })).facts_file.mep.plumbing_fixtures?.map((f) => f.id), [42]);
+  assert.deepEqual(shapeMepAudit({ ...snapshot, plumbing_fixtures: fixtures }, opts({ domain: "duct" })).facts_file.mep.plumbing_fixtures, []);
+  // fmc_calc reads it: the drainage calc sees the fixture's DU from this file, not from Revit
+  const { runCalcs } = await import("./calc/index.js");
+  assert.equal(typeof runCalcs, "function");
+  const roundTrip = JSON.parse(JSON.stringify(ff));
+  assert.ok(Array.isArray(roundTrip.mep.plumbing_fixtures) && Array.isArray(roundTrip.boards));
+});
