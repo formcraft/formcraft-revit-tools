@@ -315,7 +315,7 @@ async function run(recipe: Recipe, o: BuildOptions, d: BuildDeps): Promise<Build
   rec.sides = recordSides(flex, new Date(now()).toISOString());
   const saved = await callDoc({ action: "save", session: rec.session, path: o.target, overwrite: o.overwrite });
   if (!ok(saved)) return fail({ op: null, text: `save failed: ${errorText(saved)}` });
-  fs.writeFileSync(o.target.replace(/\.rfa$/i, ".recipe.json"), JSON.stringify(recipe, null, 2));
+  fs.writeFileSync(o.target.replace(/\.(rfa|rft)$/i, ".recipe.json"), JSON.stringify(recipe, null, 2));
   const closed = await callDoc({ action: "close", session: rec.session });
   if (closed?.closed === true) rec.session = "";
   const gate = await d.gate(o.target, flex);

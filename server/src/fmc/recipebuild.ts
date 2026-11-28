@@ -177,6 +177,10 @@ export const TEMPLATE_PLANES: Record<string, string[]> = {
   "metric profile.rft": ["Center (Left/Right)", "Center (Front/Back)"],
   // the plant recipes (docs/RECIPES.md, Planting forms); a build's own read of the template takes over
   "metric planting.rft": ["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"],
+  // B3 FMC templates keep the source metric template's planes
+  "fmc_door.rft": ["Center (Left/Right)", "Center (Front/Back)", "Left", "Right", "Exterior", "Interior", "Head", "Ref. Level"],
+  "fmc_window.rft": ["Center (Left/Right)", "Center (Front/Back)", "Left", "Right", "Exterior", "Interior", "Head", "Sill", "Ref. Level"],
+  "fmc_genericmodel.rft": ["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"],
 };
 const ALWAYS = ["Center (Left/Right)", "Center (Front/Back)", "Ref. Level"];
 

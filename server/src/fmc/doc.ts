@@ -9,6 +9,7 @@ import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { GuardConfig, checkTemplatePath, checkWritePath, isInside } from "./policy.js";
+import { isFamilyTemplateSavePath } from "./familytemplates.js";
 
 const win = path.win32;
 
@@ -28,7 +29,14 @@ export function openProblems(q: { template?: string; file?: string }, cfg: Guard
 export function saveProblems(target: string, cfg: GuardConfig): string[] {
   const t = target.trim();
   if (!t) return ["save needs a target path"];
-  if (win.extname(t).toLowerCase() !== ".rfa") return ["A family is saved as .rfa"];
+  const ext = win.extname(t).toLowerCase();
+  if (ext === ".rft") {
+    if (!isFamilyTemplateSavePath(t)) {
+      return ["A family template is saved as .rft only under _FamilyTemplates inside the family staging root, named FMC_<Name>.rft"];
+    }
+    return checkWritePath(t, cfg, { checkName: false }).reasons;
+  }
+  if (ext !== ".rfa") return ["A family is saved as .rfa"];
   return checkWritePath(t, cfg).reasons;
 }
 
