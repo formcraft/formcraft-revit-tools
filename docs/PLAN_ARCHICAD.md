@@ -24,6 +24,11 @@ Talk to ArchiCAD through its JSON API (port 19723+) plus the free Tapir add-on; 
 - `selftest` lines for ArchiCAD.
 Gates as for Revit: dry run first, staging only, no saving of live projects.
 
+Progress (28 Nov): the generator is in the hub. `fmc_archicad map` / `export` (`server/src/hub/archicad.ts`,
+`docs/tools/fmc_archicad.md`) turn a recipe or an `fmc_doc` report into the GDL XML, the scripts, the parameter list
+and a mapping report, offline. LP_XMLConverter is not run yet (`converter_path` only writes `build_gsm.cmd`);
+`status`, `build`, `library_reload`, `check`, `place`, `capture` and `selftest` are still to come.
+
 ## AC2 · Kit for ArchiCAD (Chat, then Code)
 - FMC ArchiCAD template (.tpl): FMC surfaces and building materials, pen set, line types, fills, layers.
 - FMC properties: the shared parameter file mapped to the Property Manager (XML import) and to GDL parameter names.
