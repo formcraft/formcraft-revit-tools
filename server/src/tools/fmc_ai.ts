@@ -9,6 +9,7 @@ import { GuardConfig, configPath, loadConfig } from "../fmc/policy.js";
 import { imageDir } from "../fmc/images.js";
 import { COMMAND_GROUPS, LEVELS, Level, NEVER, USER_LINE, aiVerdict, generalState, modelParts, projectCode, projectKey } from "../fmc/aiuse.js";
 import { planEnableCopy } from "../fmc/opencopy.js";
+import { CEILING_APPROVAL } from "../fmc/ceiling/guard.js";
 import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueue, setResult, setStatus } from "../fmc/aiuse_io.js";
 import { failures, readUsage, summariseUsage } from "../fmc/usage.js";
 import { readSyncAutoLog, syncAutoInEffect } from "../fmc/syncauto.js";
@@ -288,6 +289,11 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       // Owner 26 Oct: Approve runs the batch now, through the same gate (approval, limits, Stop AI); no AI needed.
       const item = readItem(id);
       if (!setStatus(id, "approved", by) || !item) return { error: `No batch ${id} in the queue` };
+      // fmc_ceiling's approvals are a person's yes only: nothing is sent to Revit here; the AI repeats its call and the tool claims this once
+      if (item.command === CEILING_APPROVAL) {
+        setResult(id, "done", `Approved by ${by}: ${item.summary}. Nothing ran yet: the AI sends the same fmc_ceiling call again`);
+        return { approved: true, ran: false, result: "done", message: `Approved: ${item.summary}. Tell the AI to send the same fmc_ceiling call again; it runs once.` };
+      }
       try {
         // The long-job route (owner 26 Oct): a batch Revit is still placing is waited for on its heartbeats, not 10 s.
         // Owner 26 Oct: with two Revits open the batch runs in the Revit that has its model (the pane names none)
