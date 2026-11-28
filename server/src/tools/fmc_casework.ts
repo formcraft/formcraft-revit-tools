@@ -14,18 +14,12 @@ import {
 import { workshopPackPdf } from "../fmc/casework_pdf.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { csvRow } from "./fmc_sheets.js";
+import { writeFileLog } from "../fmc/filelog.js";
 
 /** Native paths: on the pilot PC that is win32, and tests on other systems write real files. */
 function log(cfg: GuardConfig, dryRun: boolean, target: string, result: string, detail: string, action = "casework_pack") {
-  try {
-    const dir = expandEnv(cfg.reports_dir);
-    fs.mkdirSync(dir, { recursive: true });
-    const file = path.join(dir, "FMC_MCP_FileLog.csv");
-    if (!fs.existsSync(file)) fs.writeFileSync(file, csvLine(["timestamp", "action", "dry_run", "target", "result", "detail"]));
-    fs.appendFileSync(file, csvLine([new Date().toISOString(), action, dryRun, target, result, detail]));
-  } catch {
-    // logging must never block the work
-  }
+  // F10: one shared writer (fmc/filelog.ts): adds the source column, reports a failed write
+  writeFileLog(cfg, action, dryRun, target, result, detail);
 }
 
 /** The kit's master data folder (03_Master_Data, beside the family specs). */

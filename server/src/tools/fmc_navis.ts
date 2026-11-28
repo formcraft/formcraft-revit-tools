@@ -10,6 +10,7 @@ import { NOT_A_PERSON, NavisClashRow, cloudPlan, newestTest, resolveClashItems, 
 import { exchangeRoot, loadIdentity, saveIdentity, writePackage } from "../hub/exchange.js";
 import { FMC_REVIEW_SHAPE, clashesIntoRegister, loadRegister, runFmcReview, saveRegister } from "./fmc_review.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
+import { writeFileLog } from "../fmc/filelog.js";
 
 const win = path.win32;
 
@@ -18,15 +19,8 @@ function reply(body: object, isError = false) {
 }
 
 function log(cfg: GuardConfig, action: string, dry: boolean, target: string, result: string, detail: string) {
-  try {
-    const dir = expandEnv(cfg.reports_dir);
-    fs.mkdirSync(dir, { recursive: true });
-    const file = win.join(dir, "FMC_MCP_FileLog.csv");
-    if (!fs.existsSync(file)) fs.writeFileSync(file, csvLine(["timestamp", "action", "dry_run", "target", "result", "detail"]));
-    fs.appendFileSync(file, csvLine([new Date().toISOString(), action, dry, target, result, detail]));
-  } catch {
-    // logging must never block the work
-  }
+  // F10: one shared writer (fmc/filelog.ts): adds the source column, reports a failed write
+  writeFileLog(cfg, action, dry, target, result, detail);
 }
 
 export const FMC_NAVIS_DESCRIPTION =

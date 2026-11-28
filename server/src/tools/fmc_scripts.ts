@@ -21,6 +21,7 @@ import { FMC_REVIEW_SHAPE, runFmcReview } from "./fmc_review.js";
 import { FMC_REPORT_SHAPE, runFmcReport } from "./fmc_report.js";
 import { recorded, startedByFrom } from "../fmc/ledger.js";
 import { FMC_TABLES_SHAPE, runFmcTables } from "./fmc_tables.js";
+import { writeFileLog } from "../fmc/filelog.js";
 
 const win = path.win32;
 
@@ -28,15 +29,8 @@ const win = path.win32;
 const ADDON_TIMEOUT_MS = 30 * 60 * 1000;
 
 function log(cfg: GuardConfig, action: string, target: string, result: string, detail: string, dryRun = false) {
-  try {
-    const dir = expandEnv(cfg.reports_dir);
-    fs.mkdirSync(dir, { recursive: true });
-    const file = win.join(dir, "FMC_MCP_FileLog.csv");
-    if (!fs.existsSync(file)) fs.writeFileSync(file, csvLine(["timestamp", "action", "dry_run", "target", "result", "detail"]));
-    fs.appendFileSync(file, csvLine([new Date().toISOString(), action, dryRun, target, result, detail]));
-  } catch {
-    // logging must never block the work
-  }
+  // F10: one shared writer (fmc/filelog.ts): adds the source column, reports a failed write
+  writeFileLog(cfg, action, dryRun, target, result, detail);
 }
 
 function reply(body: object, isError = false) {

@@ -15,17 +15,13 @@ import { addVariant, chooseVariant, compareOptions, optionSheet, planSvg, withAc
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
 import { navisCall, processAlive, readState } from "../fmc/navis.js";
 import { FMC_ROOM_SHAPE, roomEdits, runFmcRoom } from "./fmc_room.js";
+import { writeFileLog } from "../fmc/filelog.js";
 
 const win = path.win32;
 
 function log(cfg: GuardConfig, action: string, dryRun: boolean, target: string, result: string, detail: string) {
-  try {
-    const dir = expandEnv(cfg.reports_dir);
-    fs.mkdirSync(dir, { recursive: true });
-    const file = win.join(dir, "FMC_MCP_FileLog.csv");
-    if (!fs.existsSync(file)) fs.writeFileSync(file, csvLine(["timestamp", "action", "dry_run", "target", "result", "detail"]));
-    fs.appendFileSync(file, csvLine([new Date().toISOString(), action, dryRun, target, result, detail]));
-  } catch { /* logging never blocks the work */ }
+  // F10: one shared writer (fmc/filelog.ts): adds the source column, reports a failed write
+  writeFileLog(cfg, action, dryRun, target, result, detail);
 }
 
 function reply(body: object, isError = false) {

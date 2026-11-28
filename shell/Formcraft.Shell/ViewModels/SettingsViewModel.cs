@@ -287,9 +287,10 @@ namespace Formcraft.Shell.ViewModels
             groups.Add(new SettingsGroup("Help and support",
                 new ButtonsSetting("", new[]
                 {
-                    new SettingButton("Guide", new RelayCommand(() => _status("Guide: opens the Formcraft guide at this section."))),
+                    // F10 / F03: these two said they opened or made something they don't; they now say what is true.
+                    new SettingButton("Guide", new RelayCommand(() => _status("The guide isn't in the pane yet: nothing was opened."))),
                     new SettingButton("Replay the tour", new RelayCommand(() => { _store.Set("general.tour", "true"); _status("The 2-minute tour plays next time the pane opens."); })),
-                    new SettingButton("Send a support report", new RelayCommand(() => _status("Support report made: versions and log rows, no model content (Manual 7.7)."))),
+                    new SettingButton("Send a support report", new RelayCommand(() => _status("Support reports aren't built yet: nothing was made or sent. Open the log file to copy rows for support."))),
                     new SettingButton("Open the log file", new RelayCommand(_openLog)),
                 }, "A support report holds versions and log rows, never model content.")));
             groups.Add(new SettingsGroup("Legal",

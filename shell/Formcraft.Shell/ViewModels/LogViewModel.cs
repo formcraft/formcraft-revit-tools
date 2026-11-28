@@ -93,7 +93,9 @@ namespace Formcraft.Shell.ViewModels
             rows = _filter switch
             {
                 "Pane clicks" => rows.Where(r => r.From == "Pane"),
-                "AI" => rows.Where(r => r.From == "AI" || r.From == "Claude" || r.From == "Ask"),
+                // F10: the shared writer puts the MCP client's own name in source (e.g. "claude-ai"), so AI is every
+                // named source that is not the pane or the updater; rows that don't say stay out of both filters.
+                "AI" => rows.Where(r => r.From != "Pane" && r.From != "Updater" && r.From != "Unknown" && r.From != "—"),
                 "Refused" => rows.Where(r => r.Refused),
                 _ => rows,
             };
