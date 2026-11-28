@@ -243,6 +243,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // GAP-18 fmc_print_sets: creates or replaces view and sheet sets from the register. One transaction; never deletes a set.
+  "fmc_print_sets_apply",
 ]);
 
 /**
@@ -295,6 +297,10 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // GAP-18 fmc_print_sets: sheets and the view and sheet sets in the model. No transaction.
+  "fmc_print_sets_read",
+  // GAP-26 fmc_groups: types and instances (unused, nesting, text, mirrored facts). No transaction.
+  "fmc_groups_audit",
 ]);
 
 /**
