@@ -59,6 +59,23 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
 
     #region Public Methods
 
+    /// <summary>B3: the view a dimension goes in, or an error. Never a silent fall back to the active view.</summary>
+    private View ResolveDimensionView(DimensionCreationInfo dimInfo)
+    {
+        if (dimInfo.ViewId > 0)
+        {
+            var named = Doc.GetElement(new ElementId(dimInfo.ViewId)) as View;
+            if (named == null)
+                throw new System.InvalidOperationException($"FMC-DIM-VIEW: view {dimInfo.ViewId} was not found in this document; nothing was created.");
+            return named;
+        }
+        var active = Doc.ActiveView;
+        if (!(active is ViewPlan))
+            throw new System.InvalidOperationException(
+                $"FMC-DIM-VIEW: no viewId given and the active view ({active?.Name ?? "none"}, {active?.ViewType.ToString() ?? "unknown"}) is not a plan view; name the view. Nothing was created.");
+        return active;
+    }
+
     /// <summary>
     ///     Sets parameters for dimension creation
     /// </summary>
@@ -82,21 +99,17 @@ public class CreateDimensionEventHandler : IExternalEventHandler, IWaitableExter
         {
             var createdDimensionIds = new List<long>();
 
+            // B3 (round 2): resolve every view before any dimension is created, so a bad view changes nothing.
+            // A named view that is missing is an error (no silent fall back to the active view); viewId <= 0 means the
+            // active view only when it is a plan view.
+            var views = new List<View>();
+            foreach (var info in DimensionsToCreate) views.Add(ResolveDimensionView(info));
+
             // Process each dimension in the list
+            var viewIndex = 0;
             foreach (var dimInfo in DimensionsToCreate)
             {
-                // Get active view or specified view
-                View view = null;
-                if (dimInfo.ViewId > 0)
-                {
-                    var element = Doc.GetElement(new ElementId(dimInfo.ViewId));
-                    view = element as View;
-                }
-
-                if (view == null)
-                {
-                    view = Doc.ActiveView;
-                }
+                View view = views[viewIndex++];
 
                 using (var transaction = new Transaction(Doc, "Create Dimension"))
                 {
