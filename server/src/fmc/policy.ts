@@ -243,6 +243,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // Door, window, room, sheet, view and grid numbers by rule. One transaction, all or nothing. The read stays on fmc_numbering.
+  "fmc_numbering_apply",
 ]);
 
 /**
@@ -295,6 +297,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_tags",
   // Sheets, title-block legend zone and an existing keynote legend. No transaction.
   "fmc_keynote_legend",
+  // Doors, windows, rooms, sheets, viewports and grids with their current numbers. No transaction.
+  "fmc_numbering",
 ]);
 
 /**
