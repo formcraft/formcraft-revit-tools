@@ -25,6 +25,7 @@ import { dropOwnedEdits, PHASE2_DEFAULTS, planFixes, refuseTraceWrite, type Trac
 import { copyTraceFile, flattenFindings, handoffDir, latestTraceFile, pageFindings } from "../fmc/tracereport.js";
 import { onDriveD } from "../fmc/clashscan.js";
 import { countSystems, editsForRecommendations, recommend, summariseCounts, summariseRecommendations } from "../fmc/trace_phase3.js";
+import { routePreview, type RouteRequest } from "../fmc/route.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
@@ -71,12 +72,42 @@ export const FMC_TRACE_DESCRIPTION =
   "HEBERT HOSTELS, a central model, and protected_paths are refused. " +
   "Not run yet: duct_airflow, fitting_corner, earthing, tray_fill. " +
   "report: page a saved findings file. No Revit call. offset, limit and codes filter the findings. copy_to copies the file under %LOCALAPPDATA%\\Formcraft or the HANDOFF folder, never D:. " +
+  "route: a constraint-aware route preview for a pipe, duct or conduit run. No Revit call and never a write. Give route.start, route.goal, " +
+  "route.bounds and the obstacles (boxes in mm, for example beams, soffits and finished ceilings), flow gravity (every horizontal piece falls at " +
+  "slope.min, regraded up to slope.max, and never rises) or pressure, and max_length_mm, max_bends, z_min_mm and z_max_mm. The search backs up on a " +
+  "violation instead of failing. The reply is the run polylines, each piece's slope, and the fitting points (corner, tee, joint, open_end), or " +
+  "FMC-ROUTE-NONE with the constraint that rules every route out. " +
   "Example: action leak, document F26901-FMC-ZZ-ZZ-M3-P-0001_USER. Example: action continuity, document F26901-FMC-ZZ-ZZ-M3-E-0001_USER.";
+
+const vec3 = z.tuple([z.number(), z.number(), z.number()]);
+const slopeValue = z.union([z.number(), z.string()]);
+
+export const ROUTE_SHAPE = z.object({
+  start: vec3.describe("The upstream end (gravity) or the source end."),
+  goal: vec3.describe("The downstream end (gravity) or the end the run serves."),
+  branches: z.array(vec3).optional().describe("Further ends that join the network at a tee, each flowing into it."),
+  bounds: z.object({ min: vec3, max: vec3 }).describe("The box the route stays inside."),
+  grid_mm: z.number().positive().optional().describe("Grid spacing, default 100."),
+  size_mm: z.number().min(0).optional().describe("Outside diameter or width; half of it is kept clear of every obstacle."),
+  clearance_mm: z.number().min(0).optional().describe("Extra clear distance from every obstacle (insulation, access, code minimum)."),
+  obstacles: z.array(z.object({ id: z.string().optional(), kind: z.string().optional(), min: vec3, max: vec3 })).optional(),
+  flow: z.enum(["gravity", "pressure"]).optional().describe("gravity falls on every horizontal piece and never rises; pressure is level with vertical rises and drops. Default pressure."),
+  slope: z.object({ min: slopeValue, max: slopeValue.optional() }).optional().describe("Rise over run: 0.025, 1:40 or 2.5%. max defaults to min (a required slope)."),
+  max_length_mm: z.number().positive().optional(),
+  max_bends: z.number().int().min(0).optional(),
+  z_min_mm: z.number().optional(),
+  z_max_mm: z.number().optional(),
+  allow_vertical: z.boolean().optional().describe("Vertical pieces (risers, drops). Default true."),
+  bend_penalty_mm: z.number().min(0).optional().describe("How much longer a route may be to save one bend. Default two grid steps."),
+  stock_length_mm: z.number().min(0).optional().describe("A joint every this far along a straight piece. Default 6000; 0 places none."),
+  tolerance_mm: z.number().min(0).optional(),
+  max_states: z.number().int().min(100).max(2000000).optional().describe("Search cap, default 200000."),
+});
 
 const limit = (key: string) => z.number().optional().describe(`${key} override. PROVISIONAL when omitted.`);
 
 export const FMC_TRACE_SHAPE = {
-  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "counts", "recommend", "fix", "report"]),
+  action: z.enum(["checks", "limits", "leak", "continuity", "run", "missing", "standards", "counts", "recommend", "fix", "report", "route"]),
   document: z.string().optional().default("").describe("Exact title or full path when more than one document is open."),
   checks: z.array(z.string()).optional().describe("run: check ids. Default leak and continuity. Phase 2 ids are skipped."),
   system: z.string().optional().default("").describe("leak: piping or duct system name, classification or element id. Empty checks every system."),
@@ -102,6 +133,7 @@ export const FMC_TRACE_SHAPE = {
   limit: z.number().int().min(1).max(500).optional().default(50),
   codes: z.array(z.string()).optional().default([]).describe("report: keep these finding codes only."),
   copy_to: z.string().optional().default("").describe("report: copy the file under %LOCALAPPDATA%\\Formcraft or HANDOFF. handoff uses the HANDOFF folder. Never D:."),
+  route: ROUTE_SHAPE.optional().describe("route: the run to plan. Millimetres, host coordinates; z is the centreline."),
 };
 
 export type FmcTraceArgs = z.infer<z.ZodObject<typeof FMC_TRACE_SHAPE>>;
@@ -158,8 +190,18 @@ function reportSaved(args: FmcTraceArgs) {
   return reply({ tool: "fmc_trace", read_only: true, action: "report", file, ...page, ...(copy ? { copy } : {}) });
 }
 
+/** route: the constraint-aware routing preview. Pure: no Revit call, no file, no write. */
+function routeAction(args: FmcTraceArgs) {
+  if (!args.route) return reply({ tool: "fmc_trace", action: "route", read_only: true, error: "route needs route.start, route.goal and route.bounds." }, true);
+  const result = routePreview(args.route as RouteRequest);
+  return reply({ tool: "fmc_trace", action: "route", ...result,
+    next: result.ok ? "A preview only: nothing was written. The fitting points are for the connector tool; a person approves before any run is modelled." : undefined,
+  }, !result.ok && result.code === "FMC-ROUTE-INPUT");
+}
+
 export async function runFmcTrace(args: FmcTraceArgs) {
   if (args.action === "report") return reportSaved(args);
+  if (args.action === "route") return routeAction(args);
   const bank = traceBank();
   const resolved = resolveTraceLimits(overrides(args), bank);
   if (!resolved.ok) return reply({ refused: true, read_only: true, reasons: [resolved.message] }, true);
