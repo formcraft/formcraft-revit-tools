@@ -109,3 +109,21 @@ test("RV-6: an existing path is also matched by its real path", { skip: process.
   fs.symlinkSync(target, link, "junction");
   assert.equal(forbiddenProject(link, empty), "HEBERT HOSTELS");
 });
+test("RV-6 regression: an F26901-...-M3-A-0001 role-field model name is still writable, savable and syncable", () => {
+  clearRememberedProtected();
+  const title = "F26901-FMC-ZZ-ZZ-M3-A-0001";
+  const file = "D:\\Fomcraft\\FMC_PROJECTS_27\\THE OGALA RESIDENCE\\01_WIP\\A\\F26901-FMC-ZZ-ZZ-M3-A-0001.rvt";
+  for (const cfg of [empty, missing, { ...empty, forbidden_projects: ["OTHER JOB"] }]) {
+    assert.equal(forbiddenProject(title, cfg), null);
+    assert.equal(forbiddenProject(file, cfg), null);
+    for (const params of [{ dry_run: false }, { action: "save" }, { action: "sync" }]) {
+      const w = writeGuard(doc(title, file), params.dry_run === false ? "fmc_model_edit" : "fmc_revit_file", params, cfg);
+      assert.equal(w.ok, true, w.reasons.join(" | "));
+    }
+    assert.equal(saveSkipReason({ title, path: file }, cfg), null);
+    assert.equal(saveBlocked({ title, path: file }, cfg), null);
+    assert.equal(excludedFromSync({ title, path: file }, cfg), false);
+  }
+  // while the A-0001 project itself stays refused
+  assert.equal(writeGuard(doc("A-0001", "D:\\Fomcraft\\FMC_PROJECTS_27\\A-0001\\01_WIP\\A-0001.rvt"), "fmc_model_edit", {}, empty).ok, false);
+});
