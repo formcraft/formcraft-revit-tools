@@ -6,7 +6,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { GuardConfig, checkWritePath, csvLine, expandEnv, loadConfig } from "../fmc/policy.js";
 import { processAlive } from "../fmc/navis.js";
 import { exchangeRoot, writePackage } from "../hub/exchange.js";
-import { PartFacts, RHINO_PART, RHINO_RULEBOOK_FILE, RhinoRulebook, familyNameProblem, isError, loadRhinoRulebook, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
+import { PartFacts, RHINO_PART, RHINO_RULEBOOK_FILE, RhinoRulebook, familyNameProblem, isError, rhinoPreChecks, rulebookStatus, loadRhinoRulebook, partProblems, partSize, readRhinoState, rhinoCall, rhinoPaths, rhinoStateFile } from "../hub/rhino.js";
 import { envelopeVerdict, materialCheck, openOnlySolids, recipeTwins, withTwins } from "../hub/recipe2rhino.js";
 import { OP } from "../fmc/ops.js";
 
@@ -69,18 +69,20 @@ export async function runFmcRhino(args: FmcRhinoArgs) {
   const book = rules.book;
   const state = readRhinoState();
   const up = state !== null && processAlive(state.pid);
+  const rulebook = rulebookStatus(rules);
   if (args.action === "status") {
-    if (!state) return reply({ rhino: "not found", detail: `No ${rhinoStateFile()}: Rhino isn't open, or the Formcraft bridge isn't loaded in it (fmc_apps list)` });
-    if (!up) return reply({ rhino: "closed", detail: `Rhino (pid ${state.pid}) has closed` });
+    if (!state) return reply({ rhino: "not found", rulebook, detail: `No ${rhinoStateFile()}: Rhino isn't open, or the Formcraft bridge isn't loaded in it (fmc_apps list)` });
+    if (!up) return reply({ rhino: "closed", rulebook, detail: `Rhino (pid ${state.pid}) has closed` });
     try {
-      return reply({ rhino: "running", port: state.port, pid: state.pid, rulebook: book ? `${rules.file} v${book.version}` : rules.problems.join("; "), ...(await rhinoCall(state.port, "rhino_status", {}, 15000)) });
+      return reply({ rhino: "running", port: state.port, pid: state.pid, rulebook, ...(await rhinoCall(state.port, "rhino_status", {}, 15000)) });
     } catch (e) {
-      return reply({ rhino: "running", port: state.port, pid: state.pid, bridge: e instanceof Error ? e.message : String(e) }, true);
+      return reply({ rhino: "running", port: state.port, pid: state.pid, rulebook, bridge: e instanceof Error ? e.message : String(e) }, true);
     }
   }
-  if (!up) return reply({ refused: true, reasons: ["Rhino with the Formcraft bridge isn't open (fmc_rhino status)"] }, true);
-  const nameProblem = familyNameProblem(args.family);
-  if (nameProblem) return reply({ refused: true, reasons: [nameProblem] }, true);
+  // RH-11: the caller's own errors first; they need no Rhino.
+  const pre = rhinoPreChecks(args.action, args.family, args.parts ?? []);
+  if (pre.length) return reply({ refused: true, reasons: pre, rulebook }, true);
+  if (!up) return reply({ refused: true, reasons: ["Rhino with the Formcraft bridge isn't open (fmc_rhino status)"], rulebook }, true);
 
   const staging = expandEnv(config.family_staging_root);
   const where = rhinoPaths(staging, args.family, args.camera ? "camera" : args.view);
