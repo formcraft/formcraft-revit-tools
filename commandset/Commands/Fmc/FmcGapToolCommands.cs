@@ -86,3 +86,42 @@ namespace RevitMCPCommandSet.Commands.Fmc
         }
     }
 }
+
+namespace RevitMCPCommandSet.Commands.Fmc
+{
+    public class FmcViewAuditReadCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcViewAuditReadHandler H => (FmcViewAuditReadHandler)Handler;
+        public FmcViewAuditReadCommand(UIApplication uiApp) : base(new FmcViewAuditReadHandler(), uiApp) { }
+        public override string CommandName => "fmc_view_audit_read";
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                H.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(600000)) throw new TimeoutException("fmc_view_audit_read timed out");
+                if (!string.IsNullOrEmpty(H.Error)) throw new Exception("fmc_view_audit_read: " + H.Error);
+                return H.Result;
+            }
+        }
+    }
+
+    public class FmcViewAuditApplyCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcViewAuditApplyHandler H => (FmcViewAuditApplyHandler)Handler;
+        public FmcViewAuditApplyCommand(UIApplication uiApp) : base(new FmcViewAuditApplyHandler(), uiApp) { }
+        public override string CommandName => "fmc_view_audit_apply";
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                H.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(600000)) throw new TimeoutException("fmc_view_audit_apply timed out");
+                if (!string.IsNullOrEmpty(H.Error)) throw new Exception("fmc_view_audit_apply: " + H.Error);
+                return H.Result;
+            }
+        }
+    }
+}

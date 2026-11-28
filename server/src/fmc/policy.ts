@@ -245,6 +245,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_memory_apply",
   // GAP-13: copy templates, filters, legends, revisions or sheets into the target. One transaction, target only.
   "fmc_transfer_apply",
+  // View audit fixes: templates, controlled parameters, detail level, discipline, crop, scope box. One transaction; nothing deleted.
+  "fmc_view_audit_apply",
 ]);
 
 /**
@@ -303,6 +305,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_cad_audit",
   // GAP-24: material volumes and areas by material, category and type. No transaction.
   "fmc_carbon",
+  // Views, templates (non-controlled parameters), filters, sheets, view range, crop, scope box and link overrides. No transaction.
+  "fmc_view_audit_read",
 ]);
 
 /**
