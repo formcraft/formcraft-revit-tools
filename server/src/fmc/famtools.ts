@@ -167,6 +167,20 @@ export function auditTemplate(template: string, cfg: GuardConfig, io: Pick<FamIo
   return { template: t, ok: problems.length === 0, problems, notes };
 }
 
+/** Read-only: open the template in a background session, report it, close it without saving (close runs even on failure). */
+export async function inspectTemplate(template: string, io: Pick<FamIo, "doc">): Promise<Record<string, unknown>> {
+  const o = await io.doc({ action: "open", template });
+  if (o.isError || !o.body?.session) return { refused: true, reasons: [`fmc_doc open failed: ${JSON.stringify(o.body)}`] };
+  const session = String(o.body.session);
+  try {
+    const r = await io.doc({ action: "report", session });
+    if (r.isError) return { refused: true, reasons: [r.body?.error ?? "fmc_doc report failed"], session };
+    return { session_closed: session, report: r.body?.document ?? r.body };
+  } finally {
+    await io.doc({ action: "close", session });
+  }
+}
+
 export const SIZE = z.object({ param: z.string().min(1), mm: z.number().positive() });
 export interface TemplateCreate { category?: string; width?: { param: string; mm: number }; depth?: { param: string; mm: number }; height?: { param: string; mm: number };
   mounting?: { param: string; mm: number }; shared_params?: string[]; instance_params?: string[] }

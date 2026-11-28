@@ -3,6 +3,7 @@
 Family templates (`.rft`). Project templates (`.rte`) stay with fmc_template.
 
 - `list`: read-only list of the `.rft` files in `template_roots` and `family_template_dir`, with `formcraft: true` for the kit's own (named `FMC_*`).
+- `inspect`: read-only. Opens the template in a background fmc_doc session, returns its report (category, parameters, types, reference planes) and closes it without saving.
 - `audit`: read-only check of one template (in the template roots, exists, `.rft`, named `FMC_*`).
 - `create`: opens a new family from `template` and applies `set_category`, `skeleton` (Width/Depth/Height planes with labelled dimensions, optional mounting) and kit shared parameters by name.
 

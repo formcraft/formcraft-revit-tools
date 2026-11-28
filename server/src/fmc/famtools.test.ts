@@ -280,3 +280,18 @@ test("each family tool module registers exactly one tool", async () => {
     assert.deepEqual(seen, [m]);
   }
 });
+
+test("fmc_fam_template inspect opens, reports and always closes, never saves or applies", async () => {
+  const rft = "D:\\Kit\\06_Templates\\FMC_Furniture.rft";
+  const { io, calls } = fakeIo([rft]);
+  const r = body(await runFmcFamTemplate({ action: "inspect", session: "", template: rft, dry_run: true, save_path: "", overwrite: false }, io));
+  assert.equal(r.isError, false);
+  assert.equal(r.session_closed, "S1");
+  assert.deepEqual(calls.map((c) => c.action), ["open", "report", "close"]);
+  const failing = fakeIo([rft], { doc: async (a) => { calls.push(a); if (a.action === "open") return { body: { session: "S2" }, isError: false }; if (a.action === "report") throw new Error("no answer"); return { body: {}, isError: false }; } });
+  calls.length = 0;
+  await assert.rejects(runFmcFamTemplate({ action: "inspect", session: "", template: rft, dry_run: true, save_path: "", overwrite: false }, failing.io));
+  assert.deepEqual(calls.map((c) => c.action), ["open", "report", "close"], "closed even when report fails");
+  const out = body(await runFmcFamTemplate({ action: "inspect", session: "", template: "C:\\Temp\\X.rft", dry_run: true, save_path: "", overwrite: false }, io));
+  assert.equal(out.isError, true);
+});
