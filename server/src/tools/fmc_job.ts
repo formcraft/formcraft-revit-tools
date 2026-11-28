@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { JOB_ID, collectJobs, findJob, jobEnded, jobFiles, jobResult, requestCancel, type JobState } from "../fmc/jobs.js";
+import { JOB_ID, collectJobs, findJob, jobDocumentMatches, jobEnded, jobFiles, jobResult, requestCancel, type JobState } from "../fmc/jobs.js";
 
 function reply(body: object, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
@@ -14,7 +14,8 @@ export const FMC_JOB_DESCRIPTION =
     "check (before it starts, at a cancel check, or instead of send_code's commit, which rolls back); shows what will " +
     "happen first, and sends the request with confirm: true. Cancel never closes or interrupts Revit. Read-only " +
     "otherwise: nothing in the model changes. " +
-    "list filters: state (one or more), command (part of the name), since (ISO time); each job shows ended, duration_s, port and pid. " +
+    "list filters: state (one or more), command (part of the name), since (ISO time), document (the injected model, or pass one); the list is machine-wide when document is empty. " +
+    "Each job shows ended, duration_s, port, pid and document when recorded. status honours document: it says when the job ran on a different model, or recorded none. " +
     "expired: the job's record ends at a dialog that no longer holds Revit (it came between jobs, the same Revit ended later work, " +
     "or 30 min passed with no heartbeat); check the model before running it again. result with wait_s waits up to 45 s for the answer.";
 
@@ -27,6 +28,7 @@ export const FMC_JOB_SHAPE = {
   state: z.union([z.enum(STATES), z.array(z.enum(STATES))]).optional().describe("list: only jobs in this state (or these states)"),
   command: z.string().optional().default("").describe("list: only jobs whose command contains this text"),
   since: z.string().optional().default("").describe("list: only jobs started at or after this ISO time"),
+  document: z.string().optional().default("").describe("list and status: only jobs for this model (title or path). Empty means the whole machine."),
   wait_s: z.number().int().min(0).max(45).optional().default(0).describe("result: wait up to this many seconds for the answer while the job runs"),
   confirm: z.boolean().optional().default(false).describe("cancel: true sends the cancel request after the dry run"),
 };
@@ -42,14 +44,18 @@ export async function runFmcJob(args: FmcJobArgs, env: NodeJS.ProcessEnv = proce
       const states = args.state == null ? null : new Set<JobState>(Array.isArray(args.state) ? args.state : [args.state]);
       const needle = (args.command ?? "").trim().toLowerCase();
       const since = (args.since ?? "").trim() ? Date.parse(args.since!.trim()) : NaN;
+      const document = (args.document ?? "").trim();
       if ((args.since ?? "").trim() && !Number.isFinite(since)) {
         return reply({ refused: true, reasons: [`since must be an ISO time, for example 2026-11-28T06:00:00Z (got "${args.since}")`] }, true);
       }
       const jobs = all.filter((j) => (!states || states.has(j.state))
         && (!needle || j.command.toLowerCase().includes(needle))
-        && (!Number.isFinite(since) || (Date.parse(j.started) || 0) >= since));
+        && (!Number.isFinite(since) || (Date.parse(j.started) || 0) >= since)
+        && (!document || jobDocumentMatches(j.document, document)));
+      const shown = jobs.slice(0, args.limit);
       return reply({
-        jobs: jobs.slice(0, args.limit).map((j) => {
+        scope: document ? `document ${document}` : "machine-wide",
+        jobs: shown.map((j) => {
           const ended = jobEnded(j);
           const start = Date.parse(j.revit?.running_since || j.started);
           const duration = ended && Number.isFinite(start) ? Math.max(0, Math.round((Date.parse(ended) - start) / 1000)) : undefined;
@@ -59,11 +65,14 @@ export async function runFmcJob(args: FmcJobArgs, env: NodeJS.ProcessEnv = proce
             started: j.started, state: j.state,
             ...(ended ? { ended } : {}), ...(duration != null ? { duration_s: duration } : {}),
             ...(j.port != null ? { port: j.port } : {}), ...(j.pid != null ? { pid: j.pid } : {}),
+            ...(j.document ? { document: j.document } : {}),
             summary: j.summary,
           };
         }),
         total: all.length,
-        ...(jobs.length !== all.length ? { matched: jobs.length } : {}),
+        shown: shown.length,
+        ...(jobs.length !== all.length || shown.length !== jobs.length ? { matched: jobs.length, note: `${shown.length} of ${jobs.length}` } : {}),
+        ...(document ? { unscoped: all.filter((j) => !j.document).length } : {}),
         files: jobFiles(env),
       });
     }
@@ -74,7 +83,14 @@ export async function runFmcJob(args: FmcJobArgs, env: NodeJS.ProcessEnv = proce
 
     if (args.action === "status") {
       if (!job) return reply({ job: id, state: "unknown", summary: "No record of this job: it answered in time (its tool showed the result), or the id is wrong. fmc_job list shows the long ones." });
-      return reply(job);
+      const document = (args.document ?? "").trim();
+      const notes: string[] = [];
+      if (document && job.document && !jobDocumentMatches(job.document, document)) {
+        notes.push(`This job ran on ${job.document}, not ${document}.`);
+      } else if (document && !job.document) {
+        notes.push(`This job did not record a document, so it cannot be confirmed as ${document}. The job list is otherwise machine-wide.`);
+      }
+      return reply({ ...job, ...(notes.length ? { notes } : {}) });
     }
 
     if (args.action === "result") {

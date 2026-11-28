@@ -77,6 +77,8 @@ export interface JobView {
   port?: number;
   /** The Revit process that wrote the job's lines. */
   pid?: number;
+  /** The model this job ran on, when the job record named one. */
+  document?: string;
   started: string;
   state: JobState;
   /** One line a person can read. */
@@ -119,6 +121,7 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now
     if (typeof e?.job !== "string") continue;
     const j = get(e.job, String(e.started ?? e.at ?? ""), e.command);
     if (typeof e.port === "number") j.port = e.port;
+    if (typeof e.document === "string" && e.document.trim()) j.document = e.document.trim();
     if (e.event === "running") j.past_limit = true;
     if (e.event === "cancel_requested") j.cancel_requested = String(e.at ?? "");
     if (e.event === "gave_up") j.gave_up = String(e.at ?? "");
@@ -128,6 +131,7 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now
     const j = get(e.job, String(e.started ?? e.at ?? ""), e.command);
     j.revit ??= {};
     if (typeof e.pid === "number") j.pid = e.pid;
+    if (typeof e.document === "string" && e.document.trim() && !j.document) j.document = e.document.trim();
     if (typeof e.pid === "number" && (e.event === "finished" || (e.event === "running" && e.queued_ms !== undefined))) {
       const list = progress.get(e.pid) ?? [];
       list.push({ job: e.job, at: String(e.at ?? "") });
@@ -148,6 +152,7 @@ export function collectJobs(env: NodeJS.ProcessEnv = process.env, now = Date.now
     j.result = e.result;
     j.result_at = String(e.at ?? "");
     j.has_result = true;
+    if (typeof e.document === "string" && e.document.trim() && !j.document) j.document = e.document.trim();
   }
 
   for (const j of jobs.values()) {
@@ -239,6 +244,13 @@ function view(j: Acc): JobView {
 
 export function findJob(id: string, env: NodeJS.ProcessEnv = process.env, now = Date.now()): JobView | null {
   return collectJobs(env, now).find((j) => j.job === id) ?? null;
+}
+
+/** Compare a job's recorded document to a title or path (the last path segment, without .rvt). */
+export function jobDocumentMatches(jobDocument: string | undefined, asked: string): boolean {
+  const a = (jobDocument ?? "").trim().toLowerCase().replace(/\\/g, "/").split("/").pop()?.replace(/\.rvt$/, "") ?? "";
+  const b = asked.trim().toLowerCase().replace(/\\/g, "/").split("/").pop()?.replace(/\.rvt$/, "") ?? "";
+  return !!a && !!b && a === b;
 }
 
 /** When the job ended (result, Revit's finished line, or the server giving up), or undefined while it runs. */
