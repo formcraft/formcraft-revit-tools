@@ -1143,6 +1143,15 @@
     "note": "Read-only. Shows who owns each workset, and for named element ids whether you can edit them (checked out by another user, not current with central, workset owned by someone else, or free to borrow), and which planned operations someone else's ownership would block, with what a person should do. Sends only fmc_workshare_facts and fmc_elem_currency. Never relinquishes, syncs, saves or checks out, and never grants an editing request. Gaps: elements are checked one id at a time (no model-wide list of borrowed elements), the element workset must be passed in, and Revit 2025 cannot list editing requests. No add-in change. Offline tests only so far; needs a Revit check on a staging model with two users."
   },
   {
+    "id": "F132",
+    "area": "Engine",
+    "group": "Survey",
+    "feature": "Point cloud against model (fmc_pointcloud)",
+    "status": "Built, Revit check due",
+    "ref": "fmc_pointcloud, fmc_pointcloud_read, docs/POINTCLOUD.md",
+    "note": "L011-F25 / plan item 61. Reads E57 (cartesian or spherical, Float/Integer/ScaledInteger, pose applied) and LAS 1.0-1.4 with a built-in reader, no new dependency; LAZ is detected and refused (decompress to LAS first). fmc_pointcloud_read (no transaction) gives element meshes in metres in shared or internal coordinates. Optional offset, then ICP (yaw + translation by default) rejected beyond max_shift_m / max_rotation_deg. Per element: points, signed mean, p95, max, mean shift and WITHIN / OFF / NO-COVERAGE. dry_run defaults true and writes nothing; dry_run false writes a CSV and JSON in an allowed folder, never overwriting. Kit 03_Master_Data/FMC_PointCloud.json; the sample is PROVISIONAL. Needs a Revit check."
+  },
+  {
     "id": "F134",
     "area": "Engine",
     "group": "Families",

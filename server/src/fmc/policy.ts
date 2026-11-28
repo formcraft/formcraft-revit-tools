@@ -321,6 +321,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_assets_read",
   // fmc_exports (GAP-04): exports files, the model is not changed (IFC export is rolled back)
   "fmc_exports_run",
+  // Point cloud against model: element meshes in metres and linked point clouds. No transaction.
+  "fmc_pointcloud_read",
 ]);
 
 /**
