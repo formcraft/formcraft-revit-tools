@@ -19,6 +19,7 @@ namespace RevitMCPCommandSet.Services.Fmc
     ///             Revit session throws [FMC-CENTRAL-BUSY] so the server queues the job (rule 11).
     ///   selftest  read-only checks from the file (BasicFileInfo, workset preview), then a throwaway local with all
     ///             worksets open, one sync with relinquish-all, close without saving, delete the throwaway (rule 13).
+    ///             Recursive delete is only allowed inside %LOCALAPPDATA%\Formcraft\central-temp (canonical, local disk).
     ///   promote   the tested temp central, detached with its worksets, saved as a central at the share path. Never
     ///             overwrites. A central knows its own path, so a plain file move would leave it pointing at temp.
     /// </summary>
@@ -30,6 +31,78 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static List<string> Names(JToken t) => (t as JArray)?.Select(x => x.ToString().Trim()).Where(x => x.Length > 0).ToList() ?? new List<string>();
 
+        /// <summary>The only folder the add-in will build in or recursively delete: %LOCALAPPDATA%\Formcraft\central-temp.</summary>
+        public static string TempRoot()
+        {
+            string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            if (string.IsNullOrEmpty(local)) local = Path.GetTempPath();
+            return Path.GetFullPath(Path.Combine(local, "Formcraft", "central-temp"));
+        }
+
+        public static string Canonical(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return "";
+            try { return Path.GetFullPath(path).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar); }
+            catch (Exception) { return ""; }
+        }
+
+        public static bool IsUnc(string path)
+        {
+            string c = Canonical(path);
+            string raw = (path ?? "").Trim();
+            return c.StartsWith(@"\\", StringComparison.Ordinal) || raw.StartsWith(@"\\", StringComparison.Ordinal);
+        }
+
+        public static bool IsNetwork(string path)
+        {
+            if (IsUnc(path)) return true;
+            string c = Canonical(path);
+            if (c.Length < 2 || c[1] != ':') return false;
+            try { return new DriveInfo(c.Substring(0, 2)).DriveType == DriveType.Network; }
+            catch (Exception) { return true; } // fail closed: an unreadable drive is not a safe temp
+        }
+
+        public static bool IsUnder(string path, string root)
+        {
+            string c = Canonical(path), r = Canonical(root);
+            if (c.Length == 0 || r.Length == 0) return false;
+            return c.Equals(r, StringComparison.OrdinalIgnoreCase)
+                || c.StartsWith(r + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>A build or throwaway path must canonicalise to a local (non-UNC, non-network) folder inside TempRoot().</summary>
+        public static bool IsSafeTempPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path) || IsUnc(path) || IsNetwork(path)) return false;
+            return IsUnder(path, TempRoot());
+        }
+
+        private static void RequireSafeTemp(string path, string name)
+        {
+            if (!IsSafeTempPath(path))
+                throw Err("FMC-CENTRAL-TEMP", name + " must be a local folder inside " + TempRoot() + " (canonical path; not a UNC or a network drive). Got: " + path);
+        }
+
+        /// <summary>Recursive delete only of a folder inside the tool-owned temp root. Never the root itself, never a share.</summary>
+        public static void DeleteOwnTemp(string dir)
+        {
+            RequireSafeTemp(dir, "throwaway_dir");
+            string c = Canonical(dir);
+            if (c.Equals(Canonical(TempRoot()), StringComparison.OrdinalIgnoreCase))
+                throw Err("FMC-CENTRAL-TEMP", "Refusing to delete the temp root itself");
+            if (Directory.Exists(c)) Directory.Delete(c, true);
+        }
+
+        private static void RequireShareTarget(string target)
+        {
+            string c = Canonical(target);
+            if (c.Length == 0) throw Err("FMC-CENTRAL-ARGS", "target_path must be an absolute path");
+            if (IsUnder(c, TempRoot())) throw Err("FMC-CENTRAL-ARGS", "target_path must be on the workshare drive, not the temp folder");
+            if (!IsNetwork(c)) throw Err("FMC-CENTRAL-ARGS", "Rule 4: a central goes only on the shared network drive, never local. " + c);
+            if (c.IndexOf(@"\01_WIP\", StringComparison.OrdinalIgnoreCase) < 0)
+                throw Err("FMC-CENTRAL-ARGS", "target_path must be under an ISO 19650 01_WIP folder");
+        }
+
         public static JObject Build(UIApplication app, JObject p)
         {
             string temp = p.Value<string>("temp_path") ?? "";
@@ -38,8 +111,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             string detach = p.Value<string>("detach") ?? "preserve";
             List<string> worksets = Names(p["worksets"]);
             if (worksets.Count == 0) throw Err("FMC-CENTRAL-ARGS", "No worksets were planned");
-            if (string.IsNullOrWhiteSpace(temp) || !Path.IsPathRooted(temp)) throw Err("FMC-CENTRAL-ARGS", "temp_path must be absolute");
-            if (temp.StartsWith(@"\\")) throw Err("FMC-CENTRAL-ARGS", "The build goes in a local temp folder, never on a share (rule 12)");
+            RequireSafeTemp(temp, "temp_path");
             if (File.Exists(temp)) throw Err("FMC-CENTRAL-TEMP-EXISTS", $"{temp} already exists");
             if (!File.Exists(src)) throw Err("FMC-CENTRAL-ARGS", $"Source not found: {src}");
             Directory.CreateDirectory(Path.GetDirectoryName(temp)!);
@@ -103,9 +175,9 @@ namespace RevitMCPCommandSet.Services.Fmc
             string throwaway = p.Value<string>("throwaway_dir") ?? "";
             List<string> expected = Names(p["worksets"]);
             if (!File.Exists(central)) throw Err("FMC-CENTRAL-ARGS", $"Central not found: {central}");
-            if (string.IsNullOrWhiteSpace(throwaway) || throwaway.StartsWith(@"\\")) throw Err("FMC-CENTRAL-ARGS", "throwaway_dir must be a local folder");
-            if (app.Application.Documents.Cast<Document>().Any(d => FmcTarget.SamePath(d.PathName, central)))
-                throw Err(Busy, $"{central} is open in this Revit session");
+            RequireSafeTemp(throwaway, "throwaway_dir");
+            string held = HeldBy(app, central);
+            if (held != null) throw Err(Busy, held);
 
             var result = new JObject { ["ok"] = false, ["read_only_open"] = false, ["sync_verified"] = false, ["local_discarded"] = false };
             ModelPath mp = ModelPathUtils.ConvertUserVisiblePathToModelPath(central);
@@ -118,7 +190,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             result["worksets_in_file"] = new JArray(preview);
 
             // 2 + 3. a throwaway local, all worksets open, one sync, then discarded
-            if (Directory.Exists(throwaway)) Directory.Delete(throwaway, true);
+            if (Directory.Exists(throwaway)) DeleteOwnTemp(throwaway);
             Directory.CreateDirectory(throwaway);
             string local = Path.Combine(throwaway, Path.GetFileNameWithoutExtension(central) + "_fmc_selftest.rvt");
             var loaded = new List<string>();
@@ -148,7 +220,7 @@ namespace RevitMCPCommandSet.Services.Fmc
             }
             finally
             {
-                try { if (Directory.Exists(throwaway)) Directory.Delete(throwaway, true); } catch (Exception) { /* reported below */ }
+                try { if (Directory.Exists(throwaway)) DeleteOwnTemp(throwaway); } catch (Exception) { /* reported below */ }
                 result["local_discarded"] = !Directory.Exists(throwaway);
             }
             result["worksets_loaded"] = new JArray(loaded);
@@ -164,9 +236,13 @@ namespace RevitMCPCommandSet.Services.Fmc
             string temp = p.Value<string>("temp_path") ?? "";
             string target = p.Value<string>("target_path") ?? "";
             if (!File.Exists(temp)) throw Err("FMC-CENTRAL-ARGS", $"Tested temp central not found: {temp}");
+            RequireSafeTemp(temp, "temp_path");
+            RequireShareTarget(target);
             if (File.Exists(target)) throw Err("FMC-CENTRAL-EXISTS", $"{target} exists; promote never overwrites");
             string dir = Path.GetDirectoryName(target) ?? "";
             if (!Directory.Exists(dir)) throw Err("FMC-CENTRAL-ARGS", $"Folder not found: {dir}");
+            string holder = HeldBy(app, target);
+            if (holder != null) throw Err(Busy, holder);
 
             var options = new OpenOptions { DetachFromCentralOption = DetachFromCentralOption.DetachAndPreserveWorksets, Audit = false };
             options.SetOpenWorksetsConfiguration(new WorksetConfiguration(WorksetConfigurationOption.OpenAllWorksets));
@@ -186,9 +262,10 @@ namespace RevitMCPCommandSet.Services.Fmc
             return new JObject { ["target_path"] = target };
         }
 
-        /// <summary>Who holds the source: this session, or another process with the file locked. Null when it is free.</summary>
+        /// <summary>Who holds the file: this session, or another process with the file locked. Null when it is free or the file does not exist.</summary>
         private static string HeldBy(UIApplication app, string path)
         {
+            if (!File.Exists(path)) return null;
             if (app.Application.Documents.Cast<Document>().Any(d => FmcTarget.SamePath(d.PathName, path)))
                 return $"{path} is open in this Revit session";
             try
@@ -209,8 +286,11 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static bool LooksBusy(Exception ex)
         {
+            if (ex is Autodesk.Revit.Exceptions.CentralModelContentionException) return true;
+            if (ex is IOException) return true;
             string m = (ex.Message ?? "").ToLowerInvariant();
-            return m.Contains("in use") || m.Contains("locked") || m.Contains("being accessed") || m.Contains("another user") || ex is Autodesk.Revit.Exceptions.CentralModelContentionException;
+            return m.Contains("in use") || m.Contains("locked") || m.Contains("being accessed") || m.Contains("another user")
+                || m.Contains("being used") || m.Contains("cannot access") || m.Contains("sharing violation");
         }
     }
 }

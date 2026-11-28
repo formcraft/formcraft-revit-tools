@@ -4,6 +4,7 @@ import { execFileSync } from "node:child_process";
 import { DriveKind, DrivePort, FileReader, JsonStore, LogSink, TxFs, CENTRAL_LOG_HEADER } from "./central.js";
 import { TreeWriter } from "./iso19650.js";
 import { csvLine } from "./policy.js";
+import { defaultCentralTempRoot, deleteOwnTemp } from "./centralguard.js";
 
 const win = path.win32;
 
@@ -27,12 +28,7 @@ export const realTreeWriter: TreeWriter = {
  * Transaction file moves. removeOwnTemp only deletes inside tempRoot (the transaction's own temp builds), so a wrong
  * path can never delete anything on the share.
  */
-export function realTxFs(tempRoot: string): TxFs {
-  const inTemp = (p: string) => {
-    const a = path.resolve(p).toLowerCase();
-    const r = path.resolve(tempRoot).toLowerCase();
-    return a !== r && a.startsWith(r + path.sep);
-  };
+export function realTxFs(tempRoot: string, kind: (root: string) => DriveKind = windowsDriveKind): TxFs {
   return {
     exists: (p) => fs.existsSync(p),
     mkdir: (p) => { fs.mkdirSync(p, { recursive: true }); },
@@ -46,8 +42,7 @@ export function realTxFs(tempRoot: string): TxFs {
       }
     },
     removeOwnTemp: (p) => {
-      if (!inTemp(p)) throw new Error(`Refusing to delete ${p}: not inside the central temp root ${tempRoot}`);
-      fs.rmSync(p, { recursive: true, force: true });
+      deleteOwnTemp(p, tempRoot, (x) => { fs.rmSync(x, { recursive: true, force: true }); }, kind);
     },
   };
 }
@@ -92,4 +87,4 @@ export const realDrive: DrivePort = {
   freeBytes: (p) => { try { const s = fs.statfsSync(p); return Number(s.bavail) * Number(s.bsize); } catch { return null; } },
 };
 
-export const DEFAULT_TEMP_ROOT = () => win.join(process.env.LOCALAPPDATA ?? process.env.TEMP ?? "C:\\Temp", "Formcraft", "central-temp");
+export const DEFAULT_TEMP_ROOT = (env: NodeJS.ProcessEnv = process.env) => defaultCentralTempRoot(env);

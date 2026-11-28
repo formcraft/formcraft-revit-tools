@@ -26,9 +26,18 @@ export const ISO_CONTAINERS = [
 /** Projects no tool may touch (owner's standing rule). Matched on any path segment, case-insensitive. */
 export const FORBIDDEN_PROJECTS = ["A-0001", "HEBERT HOSTELS"];
 
-export function forbiddenProjectIn(p: string): string | null {
-  const segs = win.normalize(expandEnv(p)).toUpperCase().split(/[\\/]+/);
-  for (const f of FORBIDDEN_PROJECTS) if (segs.some((s) => s.includes(f))) return f;
+export function forbiddenProjectIn(p: string, extra: string[] = []): string | null {
+  const texts = [p, ...extra].filter((s) => (s ?? "").trim());
+  for (const raw of texts) {
+    const n = win.normalize(expandEnv(raw)).toUpperCase();
+    const segs = n.split(/[\\/]+/);
+    const compact = n.replace(/[\s\-_]/g, "");
+    for (const f of FORBIDDEN_PROJECTS) {
+      const fu = f.toUpperCase();
+      const fcompact = fu.replace(/[\s\-_]/g, "");
+      if (segs.some((s) => s.includes(fu)) || compact.includes(fcompact)) return f;
+    }
+  }
   return null;
 }
 
@@ -109,7 +118,7 @@ export function planIsoFolders(input: IsoFolderInput, cfg: GuardConfig, fs: Tree
   const robots = input.robots ?? [];
 
   if (!root || !win.isAbsolute(root)) reasons.push("project_folder must be an absolute path");
-  const bad = root ? forbiddenProjectIn(root) : null;
+  const bad = forbiddenProjectIn(root, [code, input.name ?? ""]);
   if (bad) reasons.push(`${bad} is a project no tool may touch`);
   if (root && (cfg.protected_roots ?? []).some((r) => isInside(root, r))) reasons.push(`${root} is inside a protected root (originals are never written)`);
   const gate = root ? cfg.blocked_segments.find((s) => root.toLowerCase().split("\\").includes(s.toLowerCase())) : undefined;

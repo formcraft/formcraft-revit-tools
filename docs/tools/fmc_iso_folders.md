@@ -19,8 +19,8 @@ Owner GO (voice, 28 Nov 2026, relayed by Plugin Bot). Logic: `server/src/fmc/iso
 ## Calls
 
 1. `action=plan`: returns the tree, the file list and a `plan_token`. Show the tree to the person.
-2. `action=create, dry_run=false, plan_token=<from plan>`: builds it. A changed plan (or a folder that filled up) is refused.
+2. `action=create, dry_run=false, plan_token=<from plan>`: builds it after a person's approval in the Formcraft pane (`plan_token` alone is not an approval). A changed plan (or a folder that filled up) is refused. After the pane Approves, the pane or (for this folder-create only) a later tool call with that approval may run it.
 
 ## Refusals
 
-Not absolute; parent missing; folder exists and is not empty (existing projects are never touched); inside `protected_roots`; inside a CDE gate folder (`02_Shared`…); any path segment naming A-0001 or HEBERT HOSTELS; bad project code, role or robot id. Files are written with `wx` (never overwritten).
+Not absolute; parent missing; folder exists and is not empty (existing projects are never touched); inside `protected_roots`; inside a CDE gate folder (`02_Shared`…); A-0001 or HEBERT HOSTELS in a path segment, the project code, or the project name (hyphens and spaces ignored); bad project code, role or robot id. Files are written with `wx` (never overwritten).

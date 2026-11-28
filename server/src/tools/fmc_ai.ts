@@ -13,6 +13,9 @@ import { formcraftDir, loadAiConfig, loadRulebook, loadState, readItem, readQueu
 import { failures, readUsage, summariseUsage } from "../fmc/usage.js";
 import { readSyncAutoLog, syncAutoInEffect } from "../fmc/syncauto.js";
 import { syncSettings } from "../fmc/batchsync.js";
+import { CENTRAL_APPROVAL, ISO_FOLDERS_APPROVAL } from "../fmc/centralguard.js";
+import { runCentralFromPane } from "./fmc_central.js";
+import { runFmcIsoFolders } from "./fmc_iso_folders.js";
 
 const win = path.win32;
 
@@ -289,6 +292,29 @@ export async function paneAi(command: string, input: Record<string, unknown>, by
       const item = readItem(id);
       if (!setStatus(id, "approved", by) || !item) return { error: `No batch ${id} in the queue` };
       try {
+        // Central / ISO-folder approvals: the pane runs the tool as a person. Save-as-central is never sent by the AI,
+        // and sendCommand would go to Revit instead of the MCP tool.
+        const paneEnv = { ...process.env, FMC_CALLER: "pane" };
+        const asText = (answer: { content?: Array<{ text?: string }>; isError?: boolean }) =>
+          answer?.content?.[0]?.text ?? JSON.stringify(answer ?? {});
+        if (item.command === CENTRAL_APPROVAL || item.command === "fmc_central_queue_remove") {
+          const answer = await runCentralFromPane(item.params, { viaMcp: false, env: paneEnv });
+          const text = asText(answer);
+          const failed = !!answer.isError;
+          setResult(id, failed ? "failed" : "done", text);
+          return { approved: true, ran: !failed, result: failed ? "failed" : "done",
+            message: failed ? `Approved, but it didn't run: ${text}` : `Approved and done from the pane: ${item.summary}.` };
+        }
+        if (item.command === ISO_FOLDERS_APPROVAL) {
+          const raw = (item.params && typeof item.params === "object" ? item.params as Record<string, unknown> : {});
+          const args = { ...((raw.args && typeof raw.args === "object" ? raw.args : raw) as any), dry_run: false };
+          const answer = await runFmcIsoFolders(args, { viaMcp: false, env: paneEnv });
+          const text = asText(answer);
+          const failed = !!answer.isError;
+          setResult(id, failed ? "failed" : "done", text);
+          return { approved: true, ran: !failed, result: failed ? "failed" : "done",
+            message: failed ? `Approved, but it didn't run: ${text}` : `Approved and done from the pane: ${item.summary}.` };
+        }
         // The long-job route (owner 26 Oct): a batch Revit is still placing is waited for on its heartbeats, not 10 s.
         // Owner 26 Oct: with two Revits open the batch runs in the Revit that has its model (the pane names none)
         const answer = await revitTarget.run(item.model || undefined, () =>

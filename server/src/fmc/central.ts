@@ -202,7 +202,7 @@ export function planCentral(input: CentralInput, cfg: GuardConfig, files: FileRe
     type: up(input.type), role: up(input.role), number: input.number ?? 1 };
   reasons.push(...centralNameProblems(parts));
   if (!root || !win.isAbsolute(root)) reasons.push("project_folder must be an absolute path");
-  const forbidden = forbiddenProjectIn(root) ?? forbiddenProjectIn(input.source_model ?? "") ?? forbiddenProjectIn(input.template_path ?? "");
+  const forbidden = forbiddenProjectIn(root, [input.project]) ?? forbiddenProjectIn(input.source_model ?? "") ?? forbiddenProjectIn(input.template_path ?? "");
   if (forbidden) reasons.push(`${forbidden} is a project no tool may touch`);
   if ((cfg.protected_roots ?? []).some((r) => isInside(root, r))) reasons.push(`${root} is inside a protected root: originals are never written`);
 

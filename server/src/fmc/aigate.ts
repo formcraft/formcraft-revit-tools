@@ -11,6 +11,7 @@ import { currentClient } from "./fairqueue.js";
 import { memoryGate } from "./memory.js";
 import { batchLease } from "./target.js";
 import { appendSyncAutoLog, damagedNames, judgeAiSync, readDamageDialogs, syncAutoInEffect, type SyncSource } from "./syncauto.js";
+import { CENTRAL_PERSON_ONLY_COMMANDS, CENTRAL_PERSON_ONLY_REASON } from "./centralguard.js";
 
 /**
  * The live-model lock's one new case (AI-assisted modeller, Phase A). Called only after the lock has refused a
@@ -23,6 +24,9 @@ export interface Gate { ok: boolean; reason: string; user?: string; run?: <T>(ex
 
 export async function aiGate(command: string, params: any, active: DocInfo | null | undefined, cfg: GuardConfig,
   send: (command: string, params: object) => Promise<any>, env: NodeJS.ProcessEnv = process.env): Promise<Gate> {
+  // Save-as-central and the rule-13 sync have no AI path, even with access=full and even with no document.
+  if ((CENTRAL_PERSON_ONLY_COMMANDS as readonly string[]).includes(command))
+    return { ok: false, reason: CENTRAL_PERSON_ONLY_REASON, user: USER_LINE.admin(CENTRAL_PERSON_ONLY_REASON) };
   if (!active) return { ok: false, reason: "" };
   const { book } = loadRulebook(cfg);
   const ai = loadAiConfig(cfg, env);
