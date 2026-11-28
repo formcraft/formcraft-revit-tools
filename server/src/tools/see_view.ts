@@ -155,8 +155,10 @@ export function registerSeeViewTool(server: McpServer) {
     "Formcraft (owner 27 Oct, a slow model), read-only: what makes the model heavy to draw. Materials with their texture " +
       "files (found or missing, pixels, MB), model surface patterns, unused and duplicate materials, unused render " +
       "appearances, views in Realistic, the heaviest families (faces and mesh triangles x instances), CAD imports, and " +
-      "advice in words. textures false skips reading the files, families false the families; limit per list (default 40). " +
-      "Then modify_model display_mode navigate | render switches the views; purge clears the unused.",
+      "advice in words. textures false skips reading the files (summary.textures_checked false: texture_files 0 is then not " +
+      "proof of no textures), families false the families (families_checked false); limit per list (default 40). This tool " +
+      "never purges or changes the model (read_only true, purged false). Then modify_model display_mode navigate | render " +
+      "switches the views; modify_model purge (a write, with approval) clears the unused.",
     {
       textures: z.boolean().optional(), families: z.boolean().optional(), limit: z.number().int().min(1).max(500).optional(),
     },
