@@ -261,6 +261,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_avf_apply",
   // A toposolid from survey points. One transaction. The dry run is server-side and sends nothing to this command.
   "fmc_survey_apply",
+  // Autodesk Docs: Document.SaveAsCloudModel after a dry run and a named approver. Never syncs or publishes.
+  "fmc_cloud_save_as",
 ]);
 
 /**
@@ -339,6 +341,9 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_survey",
   // The change ledger: start and stop register a read-only updater and an event hook, never a model change. No transaction.
   "fmc_watch",
+  // Autodesk Docs cloud model facts and GUIDs to a cloud path. No transaction, nothing opened, no file system access.
+  "fmc_cloud_facts",
+  "fmc_cloud_path",
 ]);
 
 /**
