@@ -125,7 +125,7 @@ test("the copies file can't be the guard file, and a copy under a protected root
     const was = process.env.FMC_GUARD_CONFIG;
     // The state file's own path pointed at the guard file: refused before any write
     process.env.APPDATA = process.platform === "win32" ? path.join(root, "appdata") : "appdata";
-    assert.throws(() => addCopy(copy, { ...process.env, APPDATA: "appdata", FMC_GUARD_CONFIG: copiesFile() }), new RegExp(GUARD_FILE_WRITE));
+    assert.throws(() => addCopy(copy, { ...process.env, APPDATA: process.env.APPDATA, FMC_GUARD_CONFIG: copiesFile() }), new RegExp(GUARD_FILE_WRITE));
     process.env.FMC_GUARD_CONFIG = was;
     // A tampered ai_copies.json that names a protected original is ignored by loadAiConfig
     fs.mkdirSync(path.dirname(copiesFile()), { recursive: true });

@@ -55,6 +55,7 @@ test("a CIS that can't be read is refused, never guessed", () => {
 
 import { BRIEF_NOT_APPROVED, briefApproval } from "./brief.js";
 import { runFmcBrief } from "../tools/fmc_brief.js";
+import { fileURLToPath } from "node:url";
 import fsx from "node:fs";
 import osx from "node:os";
 import pathx from "node:path";
@@ -93,7 +94,7 @@ test("fmc_brief apply with dry_run false is refused for an unapproved CIS before
 });
 
 test("fmc_brief source: the approval check sits between the plan and the Revit apply, and only dry_run false needs it", () => {
-  const src = fsx.readFileSync(pathx.resolve(pathx.dirname(new URL(import.meta.url).pathname), "..", "..", "src", "tools", "fmc_brief.ts"), "utf8");
+  const src = fsx.readFileSync(pathx.resolve(pathx.dirname(fileURLToPath(import.meta.url)), "..", "..", "src", "tools", "fmc_brief.ts"), "utf8");
   const check = src.indexOf("if (!dry && !approval.approved)");
   assert.ok(check > 0);
   assert.ok(check < src.indexOf('sendCommand("fmc_brief_apply"'), "refused before fmc_brief_apply is sent");
