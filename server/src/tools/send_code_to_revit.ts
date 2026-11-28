@@ -106,7 +106,7 @@ export function sendCodeGate(args: SendCodeArgs, env: NodeJS.ProcessEnv = proces
   let open: Array<{ title: string; path: string; workshared?: boolean; family?: boolean }> = [];
   try { open = readInstances(env).flatMap((i) => i.documents ?? []); } catch { open = []; }
   const { doc, problem } = jailDocumentOf(open, documentTarget.getStore());
-  const document = doc ? (doc.path || doc.title) : "";
+  const document: string = doc ? (doc.path || doc.title || "") : "";
   const lease = batchLease.getStore();
   const bound = boundParams(call);
   const queued = document ? readItem(batchKey("send_code_to_revit", bound, document), env) : null;
