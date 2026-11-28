@@ -223,7 +223,7 @@ export class RevitClientConnection {
 
   /** Drop elements another user owns, or that are not current. An older add-in has no currency command: the write still goes. */
   private async screenOwnership(command: string, params: any, aimed: string | undefined): Promise<{ params: any; skipped: SkippedElement[]; stopped: boolean }> {
-    if (command === "fmc_revit_file" || command === "fmc_undo" || command === "fmc_new_local" || command === "fmc_elem_currency") {
+    if (command === "fmc_revit_file" || command === "fmc_undo" || command === "fmc_new_local" || command === "fmc_elem_currency" || command === "fmc_hw_free") {
       return { params, skipped: [], stopped: false };
     }
     const ids = [...new Set(namedElementIds(params))];
@@ -275,6 +275,10 @@ export class RevitClientConnection {
       if (command === "fmc_grids_from_link") {
         const wire = wireGrids(params ?? {});
         return stampAppliedDocument(await this.sendRaw(wire.command, wire.params, timeoutMs, long), active, params);
+      }
+      // The gate saw fmc_hw_free; the add-in command is fmc_hw with action free.
+      if (command === "fmc_hw_free") {
+        return stampAppliedDocument(await this.sendRaw("fmc_hw", { ...(params ?? {}), action: "free" }, timeoutMs, long), active, params);
       }
       return stampAppliedDocument(await this.sendRaw(command, params, timeoutMs, long), active, params);
     };

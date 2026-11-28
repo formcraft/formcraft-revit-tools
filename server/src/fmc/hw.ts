@@ -4,6 +4,7 @@
  *
  * The GPU draws views. It does not hold the Revit model, and it does not run the Revit API.
  */
+import fs from "node:fs";
 import os from "node:os";
 import { spawn } from "node:child_process";
 import { memoryGate, type MemoryView } from "./memory.js";
@@ -694,6 +695,8 @@ export interface HwIo {
   writeIni?: (text: string) => void;
   writePreference?: (exe: string, value: string) => void;
   revit?: (action: string, body: Record<string, unknown>) => Promise<unknown>;
+  /** A model-changing Revit call through sendCommand (lease, memory, live-model lock, AI gate). */
+  revitWrite?: (command: string, body: Record<string, unknown>) => Promise<unknown>;
   gpuRunner?: GpuRunner | null;
   config?: GuardConfig;
   savedAt?: (file: string) => number | null;
@@ -735,7 +738,20 @@ export async function primeHardwareScan(io: HwIo = {}): Promise<HardwareScan> {
   catch { return rememberScan(parseHost(hostFromOs())); }
 }
 
+/** Revit.ini is replaced whole: the file as it was is kept beside it as Revit.ini.bak first. */
+export function writeIniWithBackup(file: string, text: string): { backup: string | null } {
+  let backup: string | null = null;
+  if (fs.existsSync(file)) {
+    backup = `${file}.bak`;
+    fs.copyFileSync(file, backup);
+  }
+  fs.writeFileSync(file, text, "utf8");
+  return { backup };
+}
+
 export async function autoFreeIfHard(io: HwIo = {}): Promise<{ ran: boolean; reason: string }> {
+  // Closing views with no person: only when a person turned it on for this PC (hw_auto_free in fmc_guard.json).
+  if (loadGuard(io).hw_auto_free !== true) return { ran: false, reason: "hw_auto_free is off in fmc_guard.json. Auto free stays off; a person runs fmc_hw free." };
   const view = memoryGate.view();
   if (view.pause_below_mb <= 0) return { ran: false, reason: "ram_pause_free_mb is 0. Auto free stays off." };
   if (view.tier !== "hard") return { ran: false, reason: "Auto free runs only in the hard tier." };

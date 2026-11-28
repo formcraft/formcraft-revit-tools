@@ -8,7 +8,7 @@ import { onMemoryHard } from "../fmc/memory.js";
 import {
   HONESTY, advise, applyGraphicsText, autoFreeIfHard, autosaveWouldSave, buildScan, dedicatedGpu,
   defaultIniPath, graphicsPlan, gpuPreferencePlan, loadGuard, memoryReport, planFree, primeHardwareScan,
-  readGraphics, runOffloadJobs, type HwIo, type OpenDoc,
+  readGraphics, runOffloadJobs, writeIniWithBackup, type HwIo, type OpenDoc,
 } from "../fmc/hw.js";
 import { probeDirectMl, type GpuRunner } from "../fmc/hwgpu.js";
 
@@ -16,12 +16,13 @@ export const FMC_HW_DESCRIPTION =
   "Formcraft hardware and memory. One tool. The GPU cannot replace system RAM, and the Revit API runs on the CPU. " +
   "Video memory is for views. The model database, regeneration and transactions stay on the CPU and in RAM. " +
   "actions: scan (GPUs, RAM, page file, disks, CPU, the Revit process, which GPU Revit is on, hardware acceleration; cached at startup and shown on /health hw), " +
-  "gpu_prefer (Windows high-performance GPU for Revit.exe; dry_run true unless you pass false; confirm:true to apply; next Revit start; never writes Revit.ini), " +
+  "gpu_prefer (Windows high-performance GPU for Revit.exe; dry_run true unless you pass false; confirm:true to apply, and only when a person turned on hw_host_writes for this PC (FMC-HW-PERSON otherwise); next Revit start; never writes Revit.ini), " +
   "memory (per-document estimate, working-set trend, open views, links, images, undo when known, and the soft or hard pause), " +
-  "free (close non-active, non-pinned views beyond keep, drop plugin image buffers; a save only when the existing autosave would save; dry_run true by default), " +
+  "free (close non-active, non-pinned views beyond keep, drop plugin image buffers; a save only when the existing autosave would save; dry_run true by default; " +
+  "a real free needs confirm:true and document, and goes through the batch lease, the live-model lock and the AI gate like any model change), " +
   "advice (a short list, each with the effect you should expect), " +
   "offload (report graphics settings and recommend hardware acceleration, the dedicated GPU, GPU anti-aliasing and optimize-view-navigation; " +
-  "apply those ini keys only with confirm:true, effective at the next Revit start; run point, clash and ray/voxel samples on the CPU, " +
+  "apply those ini keys only with confirm:true and hw_host_writes on for this PC, keeping Revit.ini.bak, effective at the next Revit start; run point, clash and ray/voxel samples on the CPU, " +
   "or on an optional GPU library when it matches the CPU). " +
   "Soft pause (FMC-MEMORY-SOFT) keeps reads and small writes and queues heavy writes, Dynamo and scripts. " +
   "Hard pause (FMC-MEMORY-HARD) waits on every model-changing call. Reads still run. Thresholds are the existing ram_pause_free_mb and its 1.5× resume line. " +
@@ -30,7 +31,8 @@ export const FMC_HW_DESCRIPTION =
 export const FMC_HW_SHAPE = {
   action: z.enum(["scan", "gpu_prefer", "memory", "free", "advice", "offload"]).describe("What to do."),
   dry_run: z.boolean().optional().default(true).describe("For gpu_prefer, free and offload. True returns the plan and changes nothing."),
-  confirm: z.boolean().optional().default(false).describe("Required with dry_run false before gpu_prefer or offload writes anything."),
+  confirm: z.boolean().optional().default(false).describe("Required with dry_run false before gpu_prefer, free or offload changes anything."),
+  document: z.string().optional().default("").describe("free with dry_run false: the one open document (title or full path) whose spare views close."),
   keep: z.number().int().min(1).max(20).optional().default(2).describe("free: how many views to leave open on a document, never closing the last one."),
   purge_undo: z.boolean().optional().default(false).describe("free: ask for a save only where autosave would already save. A local save does not clear Revit's undo list."),
   points: z.array(z.array(z.number())).max(200).optional().describe("offload: sample points, millimetres. Omitted: a built-in sample, not the open model."),
@@ -42,6 +44,7 @@ export type FmcHwArgs = {
   action: "scan" | "gpu_prefer" | "memory" | "free" | "advice" | "offload";
   dry_run?: boolean;
   confirm?: boolean;
+  document?: string;
   keep?: number;
   purge_undo?: boolean;
   points?: number[][];
@@ -52,6 +55,22 @@ export type FmcHwArgs = {
 function reply(body: unknown, isError = false) {
   return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
 }
+
+/** Registry and Revit.ini are machine settings: a person decides them (hw_host_writes), never an AI call on its own. */
+function hostWriteRefusal(io: HwIo, action: "gpu_prefer" | "offload"): Record<string, unknown> | null {
+  if (loadGuard(io).hw_host_writes === true) return null;
+  return {
+    tool: "fmc_hw", action, refused: true, code: "FMC-HW-PERSON", dry_run: true, applied: false,
+    message: `${action} changes a machine setting (${action === "gpu_prefer" ? "the Windows GPU preference" : "Revit.ini"}), not a model, so a person decides it: ` +
+      "set it in Revit Options > Graphics or Windows Graphics settings, or a person turns on hw_host_writes in fmc_guard.json for this PC. Nothing was written.",
+    honesty: HONESTY,
+  };
+}
+
+const sameDoc = (doc: OpenDoc, name: string) => {
+  const key = name.trim().toLowerCase();
+  return (doc.title ?? "").toLowerCase() === key || (doc.path ?? "").toLowerCase() === key;
+};
 
 function failed(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
@@ -70,9 +89,10 @@ function defaultIo(over: HwIo = {}): HwIo {
     writeIni: (text) => {
       const file = defaultIniPath();
       if (!file) throw new Error("[FMC-HW] Revit.ini path is not set.");
-      fs.writeFileSync(file, text, "utf8");
+      writeIniWithBackup(file, text);
     },
     revit: (action, body) => withRevitConnection((client) => client.sendRaw("fmc_hw", { action, ...body }, 120000)),
+    revitWrite: (command, body) => withRevitConnection((client) => client.sendCommand(command, body, 120000)),
     savedAt: (file) => {
       try { return fs.statSync(file).mtimeMs; } catch { return null; }
     },
@@ -99,6 +119,10 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
       return reply({ tool: "fmc_hw", action: "advice", advice: advise(scan, now), honesty: HONESTY });
     }
     if (args.action === "gpu_prefer") {
+      if (args.dry_run === false && args.confirm === true) {
+        const stop = hostWriteRefusal(full, "gpu_prefer");
+        if (stop) return reply(stop, true);
+      }
       const scan = await buildScan(full, false);
       const body = await gpuPreferencePlan(scan, full, { dry_run: args.dry_run !== false, confirm: args.confirm === true });
       const refused = body.refused === true;
@@ -144,8 +168,30 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
       if (args.dry_run !== false) {
         return reply({ tool: "fmc_hw", action: "free", dry_run: true, applied: false, memory: view, plan, honesty: HONESTY });
       }
-      const result = full.revit ? await full.revit("free", { dry_run: false, memory_pause: pause, keep: args.keep ?? 2, close: plan.close, saves: plan.saves }) : null;
-      return reply({ tool: "fmc_hw", action: "free", dry_run: false, applied: true, memory: view, plan, result, honesty: HONESTY });
+      if (args.confirm !== true) {
+        return reply({
+          tool: "fmc_hw", action: "free", refused: true, code: "FMC-HW-CONFIRM", dry_run: true, applied: false, memory: view, plan,
+          message: "Pass confirm:true and document to close these views (a person's yes first). Nothing was closed.",
+          honesty: HONESTY,
+        }, true);
+      }
+      const named = (args.document ?? "").trim();
+      const target = named ? docs.find((doc) => sameDoc(doc, named)) : undefined;
+      if (!target) {
+        return reply({
+          tool: "fmc_hw", action: "free", refused: true, code: "FMC-DOC-REQUIRED", dry_run: true, applied: false,
+          message: named ? `${named} is not open. Nothing was closed.` : "free with dry_run false needs document: one open document's title or path. Nothing was closed.",
+          open: docs.map((doc) => doc.path || doc.title),
+          honesty: HONESTY,
+        }, true);
+      }
+      const name = target.path || target.title;
+      const close = plan.close.filter((row) => row.document === name);
+      const saves = plan.saves.filter((row) => row === name);
+      if (!full.revitWrite) throw new Error("[FMC-HW] No gated Revit write was given, so nothing was closed.");
+      // fmc_hw_free is a write: batch lease, live-model lock and AI gate (it is exempt only from the memory hold).
+      const result = await full.revitWrite("fmc_hw_free", { document: name, dry_run: false, memory_pause: pause, keep: args.keep ?? 2, close, saves });
+      return reply({ tool: "fmc_hw", action: "free", dry_run: false, applied: true, document: name, memory: view, plan: { ...plan, close, saves }, result, honesty: HONESTY });
     }
     const scan = await buildScan(full, true);
     const ini = full.readIni ? full.readIni() : null;
@@ -168,6 +214,10 @@ export async function runFmcHw(args: FmcHwArgs, io: HwIo = {}) {
         moved_to_gpu: jobs.moved_to_gpu, cannot_move: jobs.cannot_move, sample: jobs.sample,
         honesty: HONESTY,
       }, true);
+    }
+    if (!dry && args.confirm === true) {
+      const stop = hostWriteRefusal(full, "offload");
+      if (stop) return reply({ ...stop, graphics, planned_writes: plan.writes, recommended: plan.recommended }, true);
     }
     let applied = false;
     let written: string[] = [];

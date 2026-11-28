@@ -71,6 +71,15 @@ export interface GuardConfig {
    * They resume above 1.5× this value (1536 when this is 1024). 0 turns the pause off.
    */
   ram_pause_free_mb?: number;
+  /**
+   * fmc_hw auto free: close spare views by itself when the memory pause is hard. Off unless true (a person turns it on).
+   */
+  hw_auto_free?: boolean;
+  /**
+   * fmc_hw gpu_prefer and offload write the Windows registry and Revit.ini: machine settings, not a model. Off unless true,
+   * so an AI caller can't change them; a person sets them in Revit Options or turns this on for the PC.
+   */
+  hw_host_writes?: boolean;
   /** Longest send_code_to_revit script, in characters. Default 1_000_000. */
   script_max_chars?: number;
   /** Minutes of changes between syncs of a workshared model. Default 15. 0 turns the timer off. */
@@ -243,6 +252,8 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_close_local_apply",
   // Close spare documents or purge unused elements. Status stays on fmc_memory.
   "fmc_memory_apply",
+  // fmc_hw free closes views in an open document. The add-in command is fmc_hw (action free); the gate sees fmc_hw_free.
+  "fmc_hw_free",
 ]);
 
 /**
