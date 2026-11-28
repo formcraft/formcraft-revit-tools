@@ -245,6 +245,8 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private const double Tol = 10 / 304.8;
         private int _limit = 50;
+        // elements a check could not look at (an odd family, an element the filter refused). Counted, never silent.
+        private int _skipped;
 
         public void Execute(UIApplication app)
         {
@@ -273,11 +275,27 @@ namespace RevitMCPCommandSet.Services.Fmc
             var model = new FilteredElementCollector(doc).WhereElementIsNotElementType().Where(e => e.Category != null && e.Category.CategoryType == CategoryType.Model && OnLevel(e)).ToList();
             var r = new JObject();
             // night test 26 Oct: one check meeting an odd element ("the input curve is not bound") no longer stops the report
+            // A check that throws is NOT a check that found nothing. It used to be stored as count 0 + check_failed, the
+            // total summed to 0 and "next" said "No problems found". Now it is recorded as failed and the report becomes
+            // status "error" (see below), whatever the other checks found.
+            var failed = new JArray();
+            int skippedTotal = 0;
             void Run(string name, Func<JObject> check)
             {
                 if (!On(name)) return;
-                try { r[name] = check(); }
-                catch (Exception e) { r[name] = new JObject { ["count"] = 0, ["check_failed"] = e.Message }; }
+                _skipped = 0;
+                try
+                {
+                    JObject one = check();
+                    if (_skipped > 0) { one["skipped"] = _skipped; skippedTotal += _skipped; }
+                    r[name] = one;
+                }
+                catch (Exception e)
+                {
+                    string why = e.GetType().Name + ": " + (string.IsNullOrWhiteSpace(e.Message) ? "no message" : e.Message);
+                    r[name] = new JObject { ["count"] = 0, ["failed"] = true, ["check_failed"] = why };
+                    failed.Add(new JObject { ["check"] = name, ["error"] = why });
+                }
             }
             var walls = model.OfType<Wall>().Where(w => w.Location is LocationCurve lc && lc.Curve is Line l && l.IsBound).ToList();
             Run("revit_warnings", () => Warnings(doc, level));
@@ -290,8 +308,20 @@ namespace RevitMCPCommandSet.Services.Fmc
             Run("clashes", () => Clashes(doc, model));
             Run("blind_openings", () => Blind(doc, model));
             int total = r.Properties().Sum(p => p.Value.Value<int?>("count") ?? 0);
-            return new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["level"] = Parameters["level"], ["problems"] = total, ["checks"] = r,
-                ["next"] = total == 0 ? "No problems found by these checks" : "Look at each with see_view ids [...]; fix with modify_model" };
+            // error: a check threw, or none ran. partial: elements were skipped. ok: ran clean and found nothing. problems: found some.
+            string status = failed.Count > 0 || r.Count == 0 ? "error" : skippedTotal > 0 ? "partial" : total == 0 ? "ok" : "problems";
+            string listed = "Look at each with see_view ids [...]; fix with modify_model";
+            string next;
+            if (status == "error")
+                next = r.Count == 0
+                    ? "ERROR: no check ran (look at the names in checks). This is NOT a clean model."
+                    : $"ERROR: {failed.Count} check(s) threw and did not finish ({string.Join(", ", failed.Select(f => f.Value<string>("check")))}). Their problems are unknown: this is NOT 'no problems'. See checks_failed, then rerun those checks."
+                      + (total > 0 ? " Problems found by the other checks are listed. " + listed : "");
+            else if (status == "partial")
+                next = $"INCOMPLETE: {skippedTotal} element(s) could not be checked (skipped, per check)." + (total > 0 ? " " + listed : " This is NOT proof the model is clean.");
+            else next = total == 0 ? "No problems found by these checks" : listed;
+            return new JObject { ["model"] = doc.Title, ["path"] = doc.PathName ?? "", ["read_only"] = doc.IsDetached || doc.IsLinked || FmcVerifySession.Contains(doc), ["level"] = Parameters["level"], ["problems"] = total,
+                ["status"] = status, ["complete"] = status == "ok" || status == "problems", ["checks_failed"] = failed, ["skipped"] = skippedTotal, ["checks"] = r, ["next"] = next };
         }
 
         private JObject List(IEnumerable<JObject> items)
@@ -412,7 +442,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                     if (inWall > wall.Width * 0.5)
                         items.Add(new JObject { ["sentence"] = $"{fi.Category.Name} {fi.Name} doesn't cut its wall (blind opening): delete and place it again", ["ids"] = new JArray(fi.Id.Value, wall.Id.Value), ["at_mm"] = Mm(mid) });
                 }
-                catch (Exception) { /* an unusual family: skipped */ }
+                catch (Exception) { _skipped++; /* an unusual family: counted and reported as skipped, never silent */ }
             }
             return List(items);
         }
@@ -430,7 +460,7 @@ namespace RevitMCPCommandSet.Services.Fmc
                 if (items.Count >= _limit) break;
                 IEnumerable<ElementId> hits;
                 try { hits = new FilteredElementCollector(doc).WhereElementIsNotElementType().WherePasses(new ElementIntersectsElementFilter(a)).ToElementIds(); }
-                catch (Exception) { continue; }
+                catch (Exception) { _skipped++; continue; }
                 foreach (ElementId bId in hits)
                 {
                     Element b = doc.GetElement(bId);

@@ -5,6 +5,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { withRevitConnection } from "../utils/ConnectionManager.js";
 import { loadConfig } from "../fmc/policy.js";
 import { imageDir, keptImagePath } from "../fmc/images.js";
+import { guardModelCheck } from "../fmc/modelcheck.js";
 
 type Content = { type: "text"; text: string } | { type: "image"; data: string; mimeType: string };
 
@@ -130,7 +131,9 @@ export function registerSeeViewTool(server: McpServer) {
     async (args) => {
       try {
         const r = await withRevitConnection((c) => c.sendCommand("fmc_model_check", args));
-        return { content: [{ type: "text" as const, text: JSON.stringify(r, null, 2) }] };
+        // a check that threw is an error, never "No problems found" (see fmc/modelcheck.ts)
+        const g = guardModelCheck(r);
+        return { content: [{ type: "text" as const, text: JSON.stringify(g.body, null, 2) }], ...(g.isError ? { isError: true } : {}) };
       } catch (e) {
         return { content: [{ type: "text" as const, text: `model_check: ${e instanceof Error ? e.message : String(e)}` }], isError: true };
       }
