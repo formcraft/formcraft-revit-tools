@@ -92,11 +92,19 @@ namespace RevitMCPCommandSet.Services.Fmc
                     // Save a family out of the project (Save As Library Family)
                     string fname = Parameters.Value<string>("family") ?? throw new InvalidOperationException("export_family needs family");
                     Family f = new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().FirstOrDefault(x => string.Equals(x.Name, fname, StringComparison.OrdinalIgnoreCase)) ?? throw new InvalidOperationException($"no family {fname}");
+                    // BSF-3: the path is a jail write (the project's folder; never the kit, standards or shared state); an
+                    // existing .rfa is replaced only with overwrite: true and the server's archive of it (archive_path).
+                    string raw = path ?? throw new InvalidOperationException("export_family needs path (.rfa)");
+                    if (!raw.EndsWith(".rfa", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException($"[{FmcFamilySafe.PathCode}] export_family path must end in .rfa");
+                    FmcPathJail.Roots jr = FmcPathJail.For(doc);
+                    string to = FmcPathJail.Require("write", raw, jr, "path");
+                    bool overwrite = Parameters.Value<bool?>("overwrite") ?? false;
+                    string archivedFile = File.Exists(to) ? FmcFamilySafe.RequireFileArchived(to, overwrite, Parameters.Value<string>("archive_path"), jr) : null;
+                    if (f.IsInPlace || !f.IsEditable) throw new InvalidOperationException($"{fname} can't be exported (in-place or not editable)");
                     Document fd = doc.EditFamily(f);
-                    string to = path ?? throw new InvalidOperationException("export_family needs path (.rfa)");
-                    fd.SaveAs(to, new SaveAsOptions { OverwriteExistingFile = Parameters.Value<bool?>("overwrite") ?? false, MaximumBackups = 1 });
-                    fd.Close(false);
-                    return new JObject { ["family"] = fname, ["saved"] = to };
+                    try { fd.SaveAs(to, new SaveAsOptions { OverwriteExistingFile = archivedFile != null, MaximumBackups = 1 }); }
+                    finally { fd.Close(false); }
+                    return new JObject { ["family"] = fname, ["saved"] = to, ["archived"] = archivedFile };
                 }
                 case "link_cad":
                 case "import_cad":
@@ -137,16 +145,36 @@ namespace RevitMCPCommandSet.Services.Fmc
                         var inst = RevitLinkInstance.Create(doc, r.ElementId, (Parameters.Value<string>("placement") ?? "shared") == "origin" ? ImportPlacement.Origin : ImportPlacement.Shared);
                         return new JObject { ["link"] = inst.Id.Value };
                     });
+                case "family_preview":
+                {
+                    // BSF-3 (read only): the family's types in this project with instance counts, before any overwrite
+                    string fname = Parameters.Value<string>("family") ?? (path != null ? System.IO.Path.GetFileNameWithoutExtension(path) : null)
+                        ?? throw new InvalidOperationException("family_preview needs family (name) or path (.rfa)");
+                    var incoming = (Parameters["incoming_types"] as JArray)?.Select(t => t.ToString());
+                    return FmcFamilySafe.Preview(doc, fname, incoming);
+                }
                 case "load_family":
+                {
+                    // BSF-3 (Emlyn 13:24 EAT): overwrite defaults to false (the Ogala night report: it used to overwrite,
+                    // parameters too). The project must be a saved, non-forbidden local or model inside its jail; the .rfa
+                    // must be readable (the project's folder or the kit/standards); a family already in the project is
+                    // refused without overwrite: true, and with it the old family is archived to archive_path first.
+                    string src = path ?? throw new InvalidOperationException("load_family needs path");
+                    if (!src.EndsWith(".rfa", StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException($"[{FmcFamilySafe.PathCode}] load_family path must be an .rfa");
+                    if (doc.IsFamilyDocument) throw new InvalidOperationException("load_family loads into a project: name the project document");
+                    FmcPathJail.RequireLoadTarget(doc);
+                    src = FmcPathJail.Require("read", src, FmcPathJail.For(doc), "path");
+                    bool overwrite = Parameters.Value<bool?>("overwrite") ?? false;
+                    string fname = System.IO.Path.GetFileNameWithoutExtension(src);
+                    var incoming = (Parameters["incoming_types"] as JArray)?.Select(t => t.ToString());
+                    JObject archived = FmcFamilySafe.BeforeLoad(doc, fname, overwrite, Parameters.Value<string>("archive_path"), incoming);
                     return InTx(doc, () =>
                     {
-                        // Ogala night report: an existing family is overwritten (parameters too) unless overwrite is false
-                        bool overwrite = Parameters.Value<bool?>("overwrite") ?? true;
-                        bool loaded = doc.LoadFamily(path ?? throw new InvalidOperationException("load_family needs path"), new OverwriteFamily(overwrite), out Family f);
-                        string fname = System.IO.Path.GetFileNameWithoutExtension(path);
-                        if (!loaded) return new JObject { ["family"] = fname, ["unchanged"] = true, ["note"] = overwrite ? "Revit found nothing to change" : "already loaded (overwrite false)" };
-                        return new JObject { ["family"] = f?.Name ?? fname, ["overwritten"] = overwrite };
+                        bool loaded = doc.LoadFamily(src, new OverwriteFamily(archived != null), out Family f);
+                        if (!loaded) return new JObject { ["family"] = fname, ["unchanged"] = true, ["archived"] = archived?["archived"], ["note"] = archived != null ? "Revit found nothing to change" : "not loaded" };
+                        return new JObject { ["family"] = f?.Name ?? fname, ["overwritten"] = archived != null, ["archived"] = archived?["archived"], ["preview"] = archived?["preview"] };
                     });
+                }
                 case "point_cloud":
                     return InTx(doc, () =>
                     {

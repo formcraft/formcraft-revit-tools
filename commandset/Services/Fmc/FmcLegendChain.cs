@@ -50,11 +50,14 @@ namespace RevitMCPCommandSet.Services.Fmc
 
         private static double Mm(double v) => UnitUtils.ConvertToInternalUnits(v, UnitTypeId.Millimeters);
 
+        /// <summary>BSF-3: the chain test overwrites a family the template already has only when the caller asks (overwrite: true).</summary>
         private sealed class Overwrite : IFamilyLoadOptions
         {
-            public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues) { overwriteParameterValues = true; return true; }
+            private readonly bool _on;
+            public Overwrite(bool on = false) { _on = on; }
+            public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues) { overwriteParameterValues = _on; return _on; }
             public bool OnSharedFamilyFound(Family sharedFamily, bool familyInUse, out FamilySource source, out bool overwriteParameterValues)
-            { source = FamilySource.Family; overwriteParameterValues = true; return true; }
+            { source = FamilySource.Family; overwriteParameterValues = _on; return _on; }
         }
 
         private sealed class Quiet : IFailuresPreprocessor
@@ -120,7 +123,10 @@ namespace RevitMCPCommandSet.Services.Fmc
                         var row = new JObject { ["family"] = Path.GetFileNameWithoutExtension(path), ["host"] = host };
                         try
                         {
-                            if (!doc.LoadFamily(path, new Overwrite(), out Family family) || family == null)
+                            bool inTemplate = new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>().Any(x => x.Name == Path.GetFileNameWithoutExtension(path));
+                            if (inTemplate && p.Value<bool?>("overwrite") != true)
+                                row["note"] = "the template already has this family: the chain test used the template's copy (overwrite: true replaces it in the chain-test document only)";
+                            if (!doc.LoadFamily(path, new Overwrite(p.Value<bool?>("overwrite") == true), out Family family) || family == null)
                                 family = new FilteredElementCollector(doc).OfClass(typeof(Family)).Cast<Family>()
                                     .FirstOrDefault(x => x.Name == Path.GetFileNameWithoutExtension(path)) ?? throw new InvalidOperationException("couldn't load " + path);
                             var symbols = family.GetFamilySymbolIds().Select(id => (FamilySymbol)doc.GetElement(id)).OrderBy(s => s.Name).ToList();

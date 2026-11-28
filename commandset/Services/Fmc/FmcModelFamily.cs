@@ -127,10 +127,11 @@ namespace RevitMCPCommandSet.Services.Fmc
                     // only with overwrite: true. Checked now and again right before the save.
                     bool overwrite = op.Value<bool?>("overwrite") ?? false;
                     string project = op.Value<string>("project");
-                    string target = FamilySaveTarget(doc, path, project, overwrite);
+                    string archivePath = op.Value<string>("archive_path");
+                    string target = FamilySaveTarget(doc, path, project, overwrite, archivePath);
                     _after.Add(() =>
                     {
-                        string t = FamilySaveTarget(doc, path, project, overwrite);
+                        string t = FamilySaveTarget(doc, path, project, overwrite, archivePath);
                         if (path == null || FmcTarget.SamePath(t, doc.PathName ?? "")) doc.Save();
                         else doc.SaveAs(t, new SaveAsOptions { OverwriteExistingFile = overwrite, MaximumBackups = 1 });
                         return new JObject { ["saved"] = doc.PathName };
@@ -152,8 +153,13 @@ namespace RevitMCPCommandSet.Services.Fmc
                             ?? throw new InvalidOperationException(title == null ? (projects.Count == 0 ? "no project is open" : "several projects are open: name project") : $"{title} isn't open");
                         FmcPathJail.RequireLoadTarget(target);
                         if (!string.IsNullOrEmpty(doc.PathName)) FmcPathJail.Require("read", doc.PathName, FmcPathJail.For(doc, target), "family");
-                        Family fam = doc.LoadFamily(target, new LoadOptions(overwrite));
-                        return new JObject { ["loaded_into"] = target.Title, ["family"] = fam?.Name ?? doc.Title };
+                        // BSF-3: a family already in the project is refused without overwrite: true (FMC-FAM-EXISTS with the
+                        // preview); with it, the project's old family is archived to archive_path first.
+                        var incoming = doc.FamilyManager.Types.Cast<FamilyType>().Select(t => t.Name).ToList();
+                        JObject archived = FmcFamilySafe.BeforeLoad(target, doc.Title.EndsWith(".rfa", StringComparison.OrdinalIgnoreCase) ? doc.Title.Substring(0, doc.Title.Length - 4) : doc.Title,
+                            overwrite, op.Value<string>("archive_path"), incoming);
+                        Family fam = doc.LoadFamily(target, new LoadOptions(archived != null));
+                        return new JObject { ["loaded_into"] = target.Title, ["family"] = fam?.Name ?? doc.Title, ["overwritten"] = archived != null, ["archived"] = archived?["archived"], ["preview"] = archived?["preview"] };
                     });
                     return new JObject { ["load"] = title ?? "the open project" };
                 }
@@ -162,7 +168,7 @@ namespace RevitMCPCommandSet.Services.Fmc
         }
 
         /// <summary>save_family's target through the project-folder gate (FmcPathJail); throws the refusal.</summary>
-        private static string FamilySaveTarget(Document doc, string path, string project, bool overwrite)
+        private static string FamilySaveTarget(Document doc, string path, string project, bool overwrite, string archivePath = null)
         {
             FmcPathJail.Roots roots = FmcPathJail.ForFamily(doc, project);
             if (path == null)
@@ -171,8 +177,8 @@ namespace RevitMCPCommandSet.Services.Fmc
                 return FmcPathJail.Require("write", doc.PathName, roots, "save_family");
             }
             string c = FmcPathJail.Require("write", path, roots, "path");
-            if (File.Exists(c) && !overwrite && !FmcTarget.SamePath(c, doc.PathName ?? ""))
-                throw new InvalidOperationException($"{c} already exists: pass overwrite: true to replace it (default false)");
+            // BSF-3: another existing .rfa is replaced only with overwrite: true and the server's archive of it
+            if (File.Exists(c) && !FmcTarget.SamePath(c, doc.PathName ?? "")) FmcFamilySafe.RequireFileArchived(c, overwrite, archivePath, roots);
             return c;
         }
 
@@ -313,14 +319,22 @@ namespace RevitMCPCommandSet.Services.Fmc
                 Document project = FmcPathJail.ProjectFor(app.Application, Parameters.Value<string>("project"));
                 FmcPathJail.Roots roots = FmcPathJail.For(project);
                 string target = FmcPathJail.Require("write", path, roots, "path");
-                if (File.Exists(target) && !overwrite) throw new InvalidOperationException($"{target} already exists: pass overwrite: true to replace it (default false)");
+                // BSF-3: an existing .rfa is replaced only with overwrite: true and the server's archive of it
+                string archivedFile = File.Exists(target) ? FmcFamilySafe.RequireFileArchived(target, overwrite, Parameters.Value<string>("archive_path"), roots) : null;
                 string file = File.Exists(tpl) ? tpl : FindTemplate(app.Application.FamilyTemplatePath, tpl)
                     ?? throw new InvalidOperationException($"no family template {tpl} under {app.Application.FamilyTemplatePath}");
                 file = FmcPathJail.Require("read", file, roots, "template");
+                // NF-2: a dry run checks the path, the template and the overwrite, and writes nothing
+                if (Parameters.Value<bool?>("dry_run") == true)
+                {
+                    Result = new JObject { ["dry_run"] = true, ["would_save"] = target, ["template"] = file, ["exists"] = File.Exists(target), ["archived"] = archivedFile,
+                        ["next"] = "Run again with dry_run false to make it" };
+                    return;
+                }
                 Document fam = app.Application.NewFamilyDocument(file);
                 target = FmcPathJail.Require("write", path, roots, "path");
                 Directory.CreateDirectory(Path.GetDirectoryName(target));
-                fam.SaveAs(target, new SaveAsOptions { OverwriteExistingFile = overwrite, MaximumBackups = 1 });
+                fam.SaveAs(target, new SaveAsOptions { OverwriteExistingFile = archivedFile != null, MaximumBackups = 1 });
                 path = target;
                 fam.Close(false);
                 app.OpenAndActivateDocument(path);
