@@ -7,7 +7,8 @@ import { GuardConfig, loadConfig } from "../fmc/policy.js";
 import { saveBlocked } from "../fmc/savepolicy.js";
 import { kitPaths } from "../fmc/context.js";
 import { documentRequired } from "../fmc/fairqueue.js";
-import type { OpenDocRef } from "../fmc/docresolve.js";
+import { asOpenDocs, looksLikeRevitPath, matchesOpenDoc, type OpenDocRef } from "../fmc/docresolve.js";
+import { readInstances } from "../fmc/connect.js";
 import { isMat4 } from "../fmc/coordmath.js";
 import {
   CheckItem, CheckReport, ControlPoint, CoordRecord, Snapshot, Tolerances, Xform,
@@ -99,11 +100,20 @@ export interface CoordDeps {
   revit?: (command: string, params: Record<string, unknown>, write: boolean) => Promise<unknown>;
 }
 
-function projectFolderOf(given: string, document: string): string {
+/** The folder above 01_WIP in a document path; empty when the path has no 01_WIP segment. */
+export function projectFolderFromDocument(document: string): string {
+  const unified = document.replace(/\\/g, "/");
+  const at = unified.toLowerCase().indexOf("/01_wip/");
+  if (at <= 0) return "";
+  const folder = unified.slice(0, at);
+  // Keep the document's own separators so the record path still opens on this machine.
+  return /\\/.test(document) && !/^\//.test(document) ? folder.replace(/\//g, "\\") : folder;
+}
+
+/** Write-side folder (publish / import). An explicit project_folder still wins; this path is not changed in F99. */
+function writeProjectFolder(given: string, document: string): string {
   if (given.trim()) return given.trim();
-  const norm = document.replace(/\//g, "\\");
-  const at = norm.toLowerCase().indexOf("\\01_wip\\");
-  return at > 0 ? norm.slice(0, at) : "";
+  return projectFolderFromDocument(document);
 }
 
 function projectKeyOf(project: string, folder: string, document: string): string {
@@ -114,6 +124,80 @@ function projectKeyOf(project: string, folder: string, document: string): string
     return base.replace(/\.(rvt|rfa|rte|rft)$/i, "");
   }
   return "";
+}
+
+function openDocsOf(deps: CoordDeps): OpenDocRef[] {
+  if (deps.open) return asOpenDocs(deps.open);
+  try {
+    return readInstances(deps.env ?? process.env).flatMap((instance) =>
+      (instance.documents ?? []).map((d) => ({ title: d.title ?? "", path: d.path ?? "", family: d.family === true })));
+  } catch {
+    return [];
+  }
+}
+
+/** Title or path ? the open document's path when it is unique; otherwise the argument itself. */
+export function documentPathOf(document: string, open: OpenDocRef[]): string {
+  const named = document.trim();
+  if (!named) return "";
+  const hits = open.filter((d) => matchesOpenDoc(d, named) && (d.path ?? "").trim());
+  if (hits.length === 1) return hits[0].path;
+  if (looksLikeRevitPath(named) || /[\\/]/.test(named)) return named;
+  return named;
+}
+
+/** Join a child name onto a project folder using that folder's own separators (Windows or POSIX). */
+function joinUnder(folder: string, name: string): string {
+  return /\\/.test(folder) && !/^\//.test(folder) ? win.join(folder, name) : path.join(folder, name);
+}
+
+function has01Wip(folder: string): boolean {
+  if (!folder.trim()) return false;
+  try { return fs.existsSync(joinUnder(folder, "01_WIP")); } catch { return false; }
+}
+
+export interface CoordBinding {
+  /** Folder used to look up FMC_Coord.json (read, export, check, align, place). */
+  folder: string;
+  /** Folder publish / import would write next to. Unchanged from the pre-F99 rule. */
+  write_folder: string;
+  project: string;
+  from: ProjectKeyFrom;
+  document_path: string;
+  ignored_project_folder?: string;
+  write_folder_note?: string;
+}
+
+/**
+ * F99: the record key and the read folder bind to the named document's project folder
+ * (the folder above 01_WIP, resolved from the open document list when the argument is a title).
+ * A leftover project_folder such as out-files does not override that. An explicit `project` still wins as the key.
+ * publish / import keep writing next to the given project_folder (safety: that write path is Builder 1).
+ */
+export function bindCoordRecord(project: string, givenFolder: string, document: string, open: OpenDocRef[] = []): CoordBinding {
+  const given = givenFolder.trim();
+  const write_folder = writeProjectFolder(given, document);
+  const document_path = documentPathOf(document, open);
+  const fromDoc = projectFolderFromDocument(document_path);
+  let folder = "";
+  if (fromDoc) folder = fromDoc;
+  else if (given && !document.trim()) folder = given;
+  else if (given && document.trim() && has01Wip(given)) folder = given;
+
+  const from: ProjectKeyFrom = project.trim() ? "project"
+    : folder && !fromDoc ? "project_folder"
+    : (document.trim() || document_path) ? "document"
+    : folder ? "project_folder"
+    : "none";
+  const key = projectKeyOf(project, folder, document);
+  const out: CoordBinding = { folder, write_folder, project: key, from, document_path };
+  if (given && folder.toLowerCase() !== given.replace(/[\\/]+$/, "").toLowerCase()) out.ignored_project_folder = given;
+  if (write_folder && folder && win.normalize(write_folder).toLowerCase() !== win.normalize(folder).toLowerCase()) {
+    out.write_folder_note = `A real publish would still write FMC_Coord.json next to ${write_folder} (the project_folder argument), not this document's project folder ${folder}. That write path is unchanged (Builder 1).`;
+  } else if (write_folder && !folder && document.trim()) {
+    out.write_folder_note = `A real publish would still write FMC_Coord.json next to ${write_folder} (the project_folder argument), not under this document's name. That write path is unchanged (Builder 1).`;
+  }
+  return out;
 }
 
 export type ProjectKeyFrom = "project" | "project_folder" | "document" | "none";
@@ -129,10 +213,10 @@ export function projectKeyFrom(project: string, folder: string, document: string
 export function recordLookup(folder: string, project: string, from: ProjectKeyFrom, env: NodeJS.ProcessEnv) {
   const record_files = [...(folder.trim() ? [projectRecordPath(folder)] : []), appRecordPath(project, env)];
   const out: { project_key_from: ProjectKeyFrom; record_files: string[]; folder_has_01_wip?: boolean; key_warning?: string } = { project_key_from: from, record_files };
-  if (folder.trim()) out.folder_has_01_wip = fs.existsSync(win.join(folder, "01_WIP"));
+  if (folder.trim()) out.folder_has_01_wip = has01Wip(folder);
   if (from !== "project") {
-    out.key_warning = `The project key "${project}" was taken from the ${from === "project_folder" ? "project folder name" : "document name"}. ` +
-      "Name project to be sure this is the record you mean.";
+    const source = from === "project_folder" ? "project folder name" : folder.trim() ? "document's project folder name" : "document name";
+    out.key_warning = `The project key "${project}" was taken from the ${source}. Name project to be sure this is the record you mean.`;
   }
   return out;
 }
@@ -239,8 +323,10 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
   const cfg = deps.guard ?? loadConfig().config;
   const dry = args.dry_run !== false;
   const level = (args.level ?? "model") as Level;
-  const folder = projectFolderOf(args.project_folder ?? "", args.document ?? "");
-  const project = projectKeyOf(args.project ?? "", folder, args.document ?? "");
+  const bound = bindCoordRecord(args.project ?? "", args.project_folder ?? "", args.document ?? "", openDocsOf(deps));
+  const folder = bound.folder;
+  const writeFolder = bound.write_folder;
+  const project = bound.project;
   const tols = loadTolerances(deps, cfg, folder);
 
   const finish = (body: object, isError = false, detail = "") => {
@@ -262,15 +348,20 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
 
     if (args.action === "read") {
       const found = readRecord(folder, project, env);
-      const lookup = recordLookup(folder, project, projectKeyFrom(args.project ?? "", folder, args.document ?? ""), env);
+      const lookup = recordLookup(folder, project, bound.from, env);
+      const extra = {
+        ...(bound.ignored_project_folder ? { ignored_project_folder: bound.ignored_project_folder } : {}),
+        ...(bound.document_path ? { document_path: bound.document_path } : {}),
+        ...(bound.write_folder_note ? { write_folder_note: bound.write_folder_note } : {}),
+      };
       if (!found.record) {
         return finish({
-          exists: false, project, ...lookup,
+          exists: false, project, ...lookup, ...extra,
           message: "[FMC-COORD-EMPTY] No coordination record for this project yet.",
-          next: { tool: "fmc_coord", args: { action: "publish", document: "<open document>", project, ...(folder ? { project_folder: folder } : {}), dry_run: true } },
+          next: { tool: "fmc_coord", args: { action: "publish", document: args.document || "<open document>", project, ...(folder ? { project_folder: folder } : {}), dry_run: true } },
         }, false, "read empty");
       }
-      return finish({ exists: true, project, project_key_from: lookup.project_key_from, file: found.file, version: found.record.version, record: found.record, summary: summaryOf(found.record) }, false, "read");
+      return finish({ exists: true, project, project_key_from: lookup.project_key_from, file: found.file, version: found.record.version, record: found.record, summary: summaryOf(found.record), ...extra }, false, "read");
     }
 
     if (args.action === "import") {
@@ -281,8 +372,8 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
       const points = parseImport(text, source);
       const existing = readRecord(folder, project, env).record ?? emptyRecord(project, at);
       const next = mergePoints(existing, points, at);
-      const plan = planRecordWrite(folder, project, cfg, env);
-      if (dry) return finish({ dry_run: true, project, would_add: points.map((point) => point.name), count: points.length, project_skipped: plan.project_skipped, next: "Run again with dry_run=false" }, false, `${points.length} points`);
+      const plan = planRecordWrite(writeFolder, project, cfg, env);
+      if (dry) return finish({ dry_run: true, project, would_add: points.map((point) => point.name), count: points.length, project_skipped: plan.project_skipped, ...(bound.write_folder_note ? { write_folder_note: bound.write_folder_note } : {}), next: "Run again with dry_run=false" }, false, `${points.length} points`);
       const files = writeRecordFiles(next, plan);
       return finish({ dry_run: false, project, imported: points.length, files, project_skipped: plan.project_skipped, summary: summaryOf(next) }, false, `${points.length} points`);
     }
@@ -326,11 +417,12 @@ export async function runFmcCoord(args: FmcCoordArgs, deps: CoordDeps = {}) {
       if (snap.error || snap.code) return finish({ error: snap.error || snap.code, code: snap.code, resolved_document: snap.resolved_document }, true);
       let next = mergeSnapshot(record ?? emptyRecord(project, at), snap, level, at);
       if (extra.points.length) next = mergePoints(next, extra.points, at);
-      const plan = planRecordWrite(folder, project, cfg, env);
+      const plan = planRecordWrite(writeFolder, project, cfg, env);
       const body = {
         dry_run: dry, project, level, summary: summaryOf(next), ids: idsOf(snap),
         project_skipped: plan.project_skipped, resolved_document: snap.resolved_document ?? snap.document,
         tolerances: tols,
+        ...(bound.write_folder_note ? { write_folder_note: bound.write_folder_note } : {}),
       };
       if (dry) return finish({ ...body, would_write: [plan.app_file, plan.project_file].filter(Boolean), next: "Run again with dry_run=false" }, false, "publish dry run");
       const files = writeRecordFiles(next, plan);

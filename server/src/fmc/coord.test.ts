@@ -14,7 +14,7 @@ import {
   mergeSnapshot, parseCsvPoints, parseImport, planRecordWrite, poseOf, projectWriteBlock, readRecord, tolerancesFrom,
   writeExport, writeRecordFiles, type ControlPoint, type Snapshot,
 } from "./coordrecord.js";
-import { FMC_COORD_SHAPE, explainItem, projectKeyFrom, rowIds, runFmcCoord, withExplain, type FmcCoordArgs } from "../tools/fmc_coord.js";
+import { FMC_COORD_SHAPE, bindCoordRecord, explainItem, projectKeyFrom, rowIds, runFmcCoord, withExplain, type FmcCoordArgs } from "../tools/fmc_coord.js";
 
 const approved = {
   "coord.tol_mm": { value: 5, unit: "mm", status: "approved", clause: "STD 8.5" },
@@ -334,6 +334,66 @@ test("fmc_coord read: an empty record is not an error and says where it looked (
   assert.match(String(body(none).error), /FMC-COORD-PROJECT/);
   assert.equal(projectKeyFrom("", "", "D:\\x\\A.rvt"), "document");
   assert.equal(projectKeyFrom("", "", ""), "none");
+});
+
+test("F99: read binds the record to the named document's project folder, not a sticky project_folder", async () => {
+  const dir = tmp();
+  const env = envOf(dir);
+  const base = { env, guard: guard(), standards: approved, now: () => "2026-11-28T09:22:44Z" };
+  const sticky = path.join(dir, "revit-tests", "out-files");
+  fs.mkdirSync(sticky, { recursive: true });
+  const house = path.join(dir, "FMC_PROJECTS", "F26902_TestHouse");
+  const plumbing = path.join(house, "01_WIP", "P", "plumbing_USER.rvt");
+  const electrical = path.join(house, "01_WIP", "E", "electrical_USER.rvt");
+  fs.mkdirSync(path.dirname(plumbing), { recursive: true });
+  fs.mkdirSync(path.dirname(electrical), { recursive: true });
+  const open = [
+    { title: "plumbing_USER", path: plumbing },
+    { title: "electrical_USER", path: electrical },
+    { title: "Project1", path: "" },
+  ];
+
+  const emptyA = await runFmcCoord(args({ action: "read", document: "plumbing_USER", project_folder: sticky }), { ...base, open });
+  assert.equal(emptyA.isError, false);
+  const a = body(emptyA);
+  assert.equal(a.exists, false);
+  assert.equal(a.project, "F26902_TestHouse");
+  assert.equal(a.project_key_from, "document");
+  assert.equal((a.record_files as string[])[0], path.join(house, "FMC_Coord.json"));
+  assert.equal(a.folder_has_01_wip, true);
+  assert.equal(a.ignored_project_folder, sticky);
+  assert.match(String(a.key_warning), /document's project folder name/);
+  assert.match(String(a.write_folder_note), /would still write/);
+
+  const b = body(await runFmcCoord(args({ action: "read", document: "electrical_USER", project_folder: sticky }), { ...base, open }));
+  assert.equal(b.project, "F26902_TestHouse");
+
+  const c = body(await runFmcCoord(args({ action: "read", document: "Project1", project_folder: sticky }), { ...base, open }));
+  assert.equal(c.project, "Project1");
+  assert.equal(c.project_key_from, "document");
+  assert.notEqual(c.project, "out-files");
+
+  const d = body(await runFmcCoord(args({ action: "read", document: "plumbing_USER", project: "Ogala", project_folder: sticky }), { ...base, open }));
+  assert.equal(d.project, "Ogala");
+  assert.equal(d.project_key_from, "project");
+  assert.equal(d.key_warning, undefined);
+  assert.equal((d.record_files as string[])[0], path.join(house, "FMC_Coord.json"));
+
+  const e = body(await runFmcCoord(args({ action: "read", project_folder: sticky }), base));
+  assert.equal(e.project, "out-files");
+  assert.equal(e.project_key_from, "project_folder");
+
+  const bound = bindCoordRecord("", sticky, "plumbing_USER", open);
+  assert.equal(bound.project, "F26902_TestHouse");
+  assert.equal(bound.write_folder, sticky, "publish write path is unchanged");
+
+  const shot = snap("plumbing_USER", 0, 0);
+  const revit = async () => shot;
+  const pub = body(await runFmcCoord(args({ action: "publish", document: "plumbing_USER", project_folder: sticky }), { ...base, open, revit }));
+  assert.equal(pub.dry_run, true);
+  assert.equal(pub.project, "F26902_TestHouse");
+  assert.ok((pub.would_write as string[]).some((p) => p.includes("out-files")), "dry-run still plans to write next to the given folder");
+  assert.match(String(pub.write_folder_note), /would still write/);
 });
 
 test("fmc_coord check explain, verdict, and moved/created ids", async () => {
