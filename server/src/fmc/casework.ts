@@ -15,5 +15,6 @@
 
 export * from "./casework_standards.js";
 export * from "./casework_layout.js";
+export * from "./casework_fitted.js";
 export * from "./casework_parts.js";
 export * from "./casework_cost.js";

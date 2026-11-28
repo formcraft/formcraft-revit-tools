@@ -1,5 +1,5 @@
 /** Casework in the model: shop-drawing sheets from the kit's register and rulebook, and the A3 layout. Part of casework_place.ts. */
-import { Standards, Unit } from "./casework.js";
+import { Standards, Unit, boxOf } from "./casework.js";
 
 export interface SheetRow { number: string; name: string; scale: number; placed: string }
 
@@ -46,7 +46,7 @@ export interface ShopView { mark: string; sheet: string; centre: [number, number
 
 /** Model size of a unit's front elevation with its margin, mm: width × height (base and tall units on their legs). */
 export function elevationSize(u: Unit, s: Standards, margin: number): [number, number] {
-  const box = u.kind === "wall" ? s.wall : u.kind === "tall" ? s.tall : s.base;
+  const box = boxOf(u, s);
   const h = box.height + (u.kind === "wall" ? 0 : s.plinth);
   return [u.width + 2 * margin, h + 2 * margin];
 }

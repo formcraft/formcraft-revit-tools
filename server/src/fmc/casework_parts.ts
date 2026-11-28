@@ -19,23 +19,37 @@ export interface Part {
 function shelvesOf(u: Unit, s: Standards): number {
   if (u.kind === "wall") return s.shelves.wall;
   if (u.kind === "tall") return s.shelves.tall;
-  if (u.kind === "sink" || /drawer$/.test(u.fronts)) return 0;
+  if (u.kind === "sink" || u.kind === "basin" || /drawer$/.test(u.fronts)) return 0;
+  if (u.kind === "wardrobe") return s.shelves.wardrobe ?? 0;
+  if (u.kind === "vanity") return s.shelves.vanity ?? 0;
   return s.shelves.base;
 }
+
+/** The carcass box a unit is built to: wall, tall, wardrobe, vanity (and basin), else base. */
+export function boxOf(u: Pick<Unit, "kind">, s: Standards): { height: number; depth: number } {
+  if (u.kind === "wall") return s.wall;
+  if (u.kind === "tall") return s.tall;
+  if (u.kind === "wardrobe" && s.wardrobe) return s.wardrobe;
+  if ((u.kind === "vanity" || u.kind === "basin") && s.vanity) return s.vanity;
+  return s.base;
+}
+
+/** Units with a full top panel (no top rails): wall, tall and wardrobe. */
+const TOPPED = new Set(["wall", "tall", "wardrobe"]);
 
 export function partsFor(u: Unit, s: Standards): { parts: Part[]; problems: string[] } {
   const P: Part[] = [];
   const problems: string[] = [];
   if (u.kind === "gap") return { parts: P, problems };
-  const box = u.kind === "wall" ? s.wall : u.kind === "tall" ? s.tall : s.base;
+  const box = boxOf(u, s);
   const H = box.height, D = box.depth, W = u.width, T = s.carcass_thickness, c = s.construction;
   const car = s.carcass_board, fr = s.front_board, back = s.back_board;
   const inner = W - 2 * T;
   if (inner <= 0) { problems.push(`${u.mark}: ${W} is narrower than two carcass sides`); return { parts: P, problems }; }
   P.push({ mark: u.mark, part: "Side", length: H, width: D, material: car, qty: 2, edges: [H] });
   P.push({ mark: u.mark, part: "Bottom", length: inner, width: D, material: car, qty: 1, edges: [inner] });
-  if (u.kind === "wall" || u.kind === "tall") P.push({ mark: u.mark, part: "Top", length: inner, width: D, material: car, qty: 1, edges: [inner] });
-  else P.push({ mark: u.mark, part: "Top rail", length: inner, width: c.top_rail, material: car, qty: u.kind === "sink" ? c.sink_top_rails : c.top_rails, edges: [inner] });
+  if (TOPPED.has(u.kind)) P.push({ mark: u.mark, part: "Top", length: inner, width: D, material: car, qty: 1, edges: [inner] });
+  else P.push({ mark: u.mark, part: "Top rail", length: inner, width: c.top_rail, material: car, qty: u.kind === "sink" || u.kind === "basin" ? c.sink_top_rails : c.top_rails, edges: [inner] });
   P.push({ mark: u.mark, part: "Back", length: W - c.back_clearance, width: H - c.back_clearance, material: back, qty: 1, edges: [] });
   const shelves = shelvesOf(u, s);
   if (shelves) P.push({ mark: u.mark, part: "Shelf", length: inner - c.shelf_clearance, width: D - c.shelf_setback, material: car, qty: shelves, edges: [inner - c.shelf_clearance] });
@@ -152,17 +166,20 @@ export interface HardwareRow { item: string; qty: number; unit: "nr" | "m" }
 
 export function hardware(units: Unit[], s: Standards): HardwareRow[] {
   const h = s.hardware;
-  let hinges = 0, runners = 0, handles = 0, legs = 0, pins = 0, hangers = 0, kick = 0;
+  let hinges = 0, runners = 0, handles = 0, legs = 0, pins = 0, hangers = 0, kick = 0, rail = 0, brackets = 0;
   for (const u of units) {
     if (u.kind === "gap") continue;
     const doors = u.fronts === "door" ? 1 : u.fronts === "2door" ? 2 : 0;
-    hinges += doors * (u.kind === "tall" ? h.hinges_per_tall_door : h.hinges_per_door);
+    hinges += doors * (u.kind === "tall" || u.kind === "wardrobe" ? h.hinges_per_tall_door : h.hinges_per_door);
     if (/drawer$/.test(u.fronts)) { const n = Number(u.fronts[0]); runners += n; handles += n; }
     handles += doors;
     if (u.kind !== "wall") { legs += u.width < h.legs_wide_from ? h.legs : h.legs_wide; kick += u.width; }
     pins += h.shelf_pins_per_shelf * shelvesOf(u, s);
     if (u.kind === "wall") hangers += h.hangers_per_wall_unit;
+    if (u.kind === "wardrobe") { rail += u.width - 2 * s.carcass_thickness; brackets += 2; }
   }
+  // wardrobe rows only when there are wardrobes, so a kitchen's hardware list (and its pack files) is unchanged
+  const robe: HardwareRow[] = rail > 0 ? [{ item: "Hanging rail", qty: Math.round(rail / 100) / 10, unit: "m" }, { item: "Rail brackets", qty: brackets, unit: "nr" }] : [];
   return [
     { item: "Hinges", qty: hinges, unit: "nr" },
     { item: `Drawer runners (pairs, ${h.runner_length} mm)`, qty: runners, unit: "nr" },
@@ -171,6 +188,7 @@ export function hardware(units: Unit[], s: Standards): HardwareRow[] {
     { item: "Shelf pins", qty: pins, unit: "nr" },
     { item: "Wall-unit hangers", qty: hangers, unit: "nr" },
     { item: "Kick board", qty: Math.round(kick / 100) / 10, unit: "m" },
+    ...robe,
   ];
 }
 

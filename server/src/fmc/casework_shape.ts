@@ -4,7 +4,7 @@ import { STANDARD_FIELDS } from "./casework.js";
 
 const OPENING = z.object({ kind: z.enum(["window", "door"]), offset: z.number(), width: z.number().positive() });
 const FIXED = z.object({
-  kind: z.enum(["sink", "cooker", "fridge", "dishwasher", "washer", "appliance"]),
+  kind: z.enum(["sink", "basin", "cooker", "fridge", "dishwasher", "washer", "appliance"]),
   offset: z.number(), width: z.number().positive(),
   hood: z.boolean().optional().describe("cooker: a hood above (a gap in the wall units)"),
   tall: z.boolean().optional().describe("rises above the worktop (fridge is tall unless false)"),
@@ -23,6 +23,7 @@ const WALL = z.object({
   wall_id: z.number().optional(),
 });
 const RUN = z.object({
+  kind: z.enum(["kitchen", "wardrobe", "vanity"]).optional().describe("kitchen (default), wardrobe or vanity: wardrobe and vanity runs are straight (no corner or tall units) and need the kit's wardrobe/vanity sizes"),
   walls: z.array(WALL).min(1),
   modules: z.array(z.number().positive()).min(1).describe("unit widths the fill may use, mm"),
   wall_modules: z.array(z.number().positive()).optional(),
@@ -32,7 +33,7 @@ const RUN = z.object({
   mark_prefix: z.object({ base: z.string().optional(), wall: z.string().optional() }).optional(),
 });
 const UNIT = z.object({
-  mark: z.string(), kind: z.enum(["corner", "base", "sink", "tall", "wall", "gap"]), width: z.number().positive(),
+  mark: z.string(), kind: z.enum(["corner", "base", "sink", "tall", "wall", "gap", "wardrobe", "vanity", "basin"]), width: z.number().positive(),
   wall: z.string().optional().default(""), offset: z.number().optional().default(0), fronts: z.string().optional().default(""),
   layer: z.enum(["base", "wall"]).optional(), drawer_heights: z.array(z.number().positive()).optional(),
 });

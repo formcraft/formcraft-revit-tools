@@ -179,7 +179,7 @@ export function placementPlan(units: Unit[], walls: RunWall[], s: Standards, o: 
     ops.push({ mark: u.mark, kind: u.kind, type: t.type, width: u.width, wall: u.wall,
       at: [r1(f.origin[0] + f.dir[0] * along), r1(f.origin[1] + f.dir[1] * along), z], facing: [Math.round(f.normal[0] * 1e6) / 1e6 + 0, Math.round(f.normal[1] * 1e6) / 1e6 + 0], params });
     setType(t.type, "FMC_Carcass_Spec", carcass);
-    if (u.layer === "base" && u.kind !== "tall") setType(t.type, "FMC_Worktop_Spec", worktop);
+    if (u.layer === "base" && u.kind !== "tall" && u.kind !== "wardrobe") setType(t.type, "FMC_Worktop_Spec", worktop);
   }
   const gaps = skipped.filter((x) => /space/.test(x.why)).length;
   if (gaps) notes.push(`${gaps} appliance or hood space(s) stay empty: no appliance family is placed`);

@@ -41,7 +41,10 @@ export interface Standards {
       heights: Record<string, number[]>;
     };
   };
-  shelves: { base: number; wall: number; tall: number };
+  /** Wardrobe and vanity boxes: needed only by a wardrobe or vanity run (KIND_FIELDS) */
+  wardrobe?: { height: number; depth: number };
+  vanity?: { height: number; depth: number };
+  shelves: { base: number; wall: number; tall: number; wardrobe?: number; vanity?: number };
   hardware: {
     hinges_per_door: number;
     hinges_per_tall_door: number;
@@ -104,4 +107,18 @@ export function checkStandards(s: unknown): { standards: Standards | null; missi
     if (get(s, f) === 0) problems.push(`${f} can't be 0`);
   if (missing.length || problems.length) return { standards: null, missing, problems };
   return { standards: s as unknown as Standards, missing, problems };
+}
+
+/** Fields only a wardrobe or vanity run needs: not in STANDARD_FIELDS, so kitchen kits stay complete without them. */
+export const KIND_FIELDS: Record<"wardrobe" | "vanity", string[]> = {
+  wardrobe: ["wardrobe.height", "wardrobe.depth", "shelves.wardrobe"],
+  vanity: ["vanity.height", "vanity.depth", "shelves.vanity"],
+};
+
+/** The kind fields these units need that the standards don't give (or give as something other than a number >= 0). */
+export function missingForKinds(s: Standards, kinds: string[]): string[] {
+  const need = new Set<string>();
+  if (kinds.includes("wardrobe")) KIND_FIELDS.wardrobe.forEach((f) => need.add(f));
+  if (kinds.includes("vanity") || kinds.includes("basin")) KIND_FIELDS.vanity.forEach((f) => need.add(f));
+  return [...need].filter((f) => { const v = get(s, f); return typeof v !== "number" || !(v >= 0) || (!f.startsWith("shelves") && v === 0); });
 }

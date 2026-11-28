@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { GuardConfig, csvLine, expandEnv } from "./policy.js";
-import { Casework, KitRequest, LibMaterial, Standards, Unit, checkStandards, checkUnits, compute, costs, layoutRun, mergeStandards, readLibrary, Run } from "./casework.js";
+import { Casework, KitRequest, LibMaterial, Standards, Unit, checkStandards, checkUnits, compute, costs, layoutAny, mergeStandards, missingForKinds, readLibrary, Run } from "./casework.js";
 import { KitFamily, RoomRead, coordinationChecks, matchWalls, registerFamily, runFromRoom } from "./casework_place.js";
 import { csvRow } from "../tools/fmc_sheets.js";
 import { StandardsRevision, standardsRevision, unitsHash } from "./casework_run.js";
@@ -136,7 +136,7 @@ export function prepare(args: FmcCaseworkArgs, config: GuardConfig): { ok: Prepa
   let units: Unit[];
   let layout;
   if (args.run) {
-    layout = layoutRun(args.run as Run, s);
+    layout = layoutAny(args.run as Run, s);
     units = layout.units;
   } else if (args.units?.length) {
     units = args.units.map((u) => ({ ...u, layer: u.layer ?? (u.kind === "wall" || (u.kind === "gap" && u.fronts === "hood") ? "wall" : "base") })) as Unit[];
@@ -144,6 +144,10 @@ export function prepare(args: FmcCaseworkArgs, config: GuardConfig): { ok: Prepa
   } else {
     return { refused: { refused: true, reasons: ["Give a run (walls, openings, fixed items, modules) or a unit list"] } };
   }
+  const kindMissing = missingForKinds(s, units.map((u) => u.kind));
+  if (kindMissing.length)
+    return { refused: { refused: true, reasons: ["Wardrobe and vanity sizes are design inputs and some are missing; nothing is filled in (rules 5 and 7)"],
+      missing: kindMissing, kit_standards: kit ? kitFile : `none at ${kitFile}`, kit_requests: requests } };
   const libFile = expandEnv(config.materials_file);
   const lib = (() => { const j = readJson(libFile); return j ? readLibrary(j) : null; })();
   const from = kit ? (args.standards ? `${kitFile} with the call's values over it` : kitFile) : "the call (the kit has none)";

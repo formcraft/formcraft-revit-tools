@@ -100,7 +100,7 @@ export function coordinationChecks(units: Unit[], walls: RunWall[], services: Se
 
   for (const u of units) {
     const list = byWall.get(u.wall) ?? [];
-    if (u.kind === "sink") {
+    if (u.kind === "sink" || u.kind === "basin") {
       for (const kind of ["waste", "water"] as const) {
         const here = within(list, u, kind);
         out.push(here.length

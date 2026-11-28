@@ -4,7 +4,8 @@ import { Standards } from "./casework_standards.js";
 // ---------------------------------------------------------------------------------------------------------------
 // Units
 
-export type UnitKind = "corner" | "base" | "sink" | "tall" | "wall" | "gap";
+/** wardrobe, vanity and basin are the fitted-room kinds (casework_fitted.ts) */
+export type UnitKind = "corner" | "base" | "sink" | "tall" | "wall" | "gap" | "wardrobe" | "vanity" | "basin";
 export interface Unit {
   mark: string;
   kind: UnitKind;
@@ -22,8 +23,8 @@ export interface WorktopRun { wall: string; from: number; to: number; length: nu
 
 export interface Opening { kind: "window" | "door"; offset: number; width: number }
 export interface Fixed {
-  /** sink is a unit; the rest are gaps for appliances */
-  kind: "sink" | "cooker" | "fridge" | "dishwasher" | "washer" | "appliance";
+  /** sink (kitchen) and basin (vanity) are units; the rest are gaps for appliances */
+  kind: "sink" | "basin" | "cooker" | "fridge" | "dishwasher" | "washer" | "appliance";
   offset: number;
   width: number;
   /** cooker: a hood above it (a gap in the wall units) */
@@ -54,6 +55,8 @@ export interface RunWall {
   wall_id?: number;
 }
 export interface Run {
+  /** kitchen (the default), wardrobe or vanity */
+  kind?: "kitchen" | "wardrobe" | "vanity";
   walls: RunWall[];
   /** Unit widths the fill may use, mm */
   modules: number[];
@@ -69,10 +72,10 @@ export interface Run {
 
 export interface Layout { units: Unit[]; fillers: Filler[]; worktop: WorktopRun[]; problems: string[]; notes: string[] }
 
-const FRONTS = /^(door|2door|[1-6]drawer|none)$/;
+export const FRONTS = /^(door|2door|[1-6]drawer|none)$/;
 
-function defaultFronts(kind: UnitKind, width: number): string {
-  if (kind === "sink" || kind === "tall") return "2door";
+export function defaultFronts(kind: UnitKind, width: number): string {
+  if (kind === "sink" || kind === "tall" || kind === "basin") return "2door";
   if (kind === "corner") return "door";
   return width <= 600 ? "door" : "2door";
 }
