@@ -1132,5 +1132,14 @@
     "status": "In progress",
     "ref": "fmc_central_health, docs/tools/fmc_central_health.md",
     "note": "Read-and-plan only. Reports the central file size and growth over time (history file, record needs dry_run false), the backup folder (state, count, size), stale local copies, and borrowed worksets by owner, then plans a scheduled audit and compact. Every plan line is needs_person true: the tool never audits, compacts, syncs, relinquishes or deletes a backup, and reads file size and date only. Offline tests only so far; needs a Revit check on a staging central."
+  },
+  {
+    "id": "F127",
+    "area": "Engine",
+    "group": "Manage",
+    "feature": "Workshare owners (fmc_workshare_owners)",
+    "status": "In progress",
+    "ref": "fmc_workshare_owners, fmc_workshare_facts, fmc_elem_currency, docs/tools/fmc_workshare_owners.md",
+    "note": "Read-only. Shows who owns each workset, and for named element ids whether you can edit them (checked out by another user, not current with central, workset owned by someone else, or free to borrow), and which planned operations someone else's ownership would block, with what a person should do. Sends only fmc_workshare_facts and fmc_elem_currency. Never relinquishes, syncs, saves or checks out, and never grants an editing request. Gaps: elements are checked one id at a time (no model-wide list of borrowed elements), the element workset must be passed in, and Revit 2025 cannot list editing requests. No add-in change. Offline tests only so far; needs a Revit check on a staging model with two users."
   }
 ]
