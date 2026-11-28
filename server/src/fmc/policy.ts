@@ -301,6 +301,8 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_transfer_read",
   // GAP-14: imported and linked CAD, CAD in families, import line styles and raster images. No transaction; families closed unsaved.
   "fmc_cad_audit",
+  // GAP-24: material volumes and areas by material, category and type. No transaction.
+  "fmc_carbon",
 ]);
 
 /**

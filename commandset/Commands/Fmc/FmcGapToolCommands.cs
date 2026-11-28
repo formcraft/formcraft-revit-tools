@@ -65,3 +65,24 @@ namespace RevitMCPCommandSet.Commands.Fmc
         }
     }
 }
+
+namespace RevitMCPCommandSet.Commands.Fmc
+{
+    public class FmcCarbonCommand : ExternalEventCommandBase
+    {
+        private static readonly object _lock = new object();
+        private FmcCarbonHandler H => (FmcCarbonHandler)Handler;
+        public FmcCarbonCommand(UIApplication uiApp) : base(new FmcCarbonHandler(), uiApp) { }
+        public override string CommandName => "fmc_carbon";
+        public override object Execute(JObject parameters, string requestId)
+        {
+            lock (_lock)
+            {
+                H.Parameters = parameters ?? new JObject();
+                if (!RaiseAndWaitForCompletion(600000)) throw new TimeoutException("fmc_carbon timed out");
+                if (!string.IsNullOrEmpty(H.Error)) throw new Exception("fmc_carbon: " + H.Error);
+                return H.Result;
+            }
+        }
+    }
+}
