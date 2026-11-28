@@ -249,3 +249,10 @@ export function writeLegendReport(env: NodeJS.ProcessEnv, body: unknown, dir = l
   fs.writeFileSync(file, JSON.stringify(body, null, 2));
   return file;
 }
+
+/** P-fmc_keynote_legend-01: why a plan is PROVISIONAL and cannot PASS, in one line the bot can repeat. */
+export function legendSpecNote(source: "kit" | "sample" | "file", provisional: boolean): string {
+  if (source === "sample") return "The spec is the provisional sample: the kit file 03_Master_Data/FMC_KeynoteLegend.json is not on disk (K-14). The plan is usable for a look, but it cannot PASS (can_pass false) until the kit file exists.";
+  if (provisional) return `The ${source} spec is still marked provisional, so the plan cannot PASS (can_pass false) until the spec is approved.`;
+  return `The spec is the ${source} file; the plan can PASS.`;
+}

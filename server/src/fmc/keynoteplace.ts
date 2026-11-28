@@ -400,3 +400,12 @@ export function normalizeKeynote(raw: unknown): KeynoteSnapshot {
   if (!documents.length && (body.title || body.views || body.tags)) return { documents: [body as unknown as KeynoteDoc] };
   return { documents, resolved_document: body.resolved_document as KeynoteSnapshot["resolved_document"] };
 }
+
+/** P-fmc_keynote_place-02: NOTHING_TO_PLACE says why, so a dry run with 0 tags is never read as a good plan. */
+export function placeStatus(code: string | undefined, counts: { hosts: number; placed: number; skipped: number }): { status: "PLANNED" | "NOTHING_TO_PLACE"; ok: boolean; status_reason: string } {
+  if (counts.placed > 0) return { status: "PLANNED", ok: true, status_reason: `${counts.placed} tag(s) planned${counts.skipped ? `, ${counts.skipped} host(s) skipped` : ""}.` };
+  const why = code === "FMC-KEYNOTE-SEED-MISSING"
+    ? `No seed: no linked keynote tag is in the model and the kit seed is not on disk (K-02). ${counts.skipped} host(s) skipped. Nothing can be placed until a seed exists.`
+    : code ? `${code}: nothing can be placed.` : counts.hosts === 0 ? "No hosts in the views." : `Every host is skipped (${counts.skipped}).`;
+  return { status: "NOTHING_TO_PLACE", ok: false, status_reason: why };
+}

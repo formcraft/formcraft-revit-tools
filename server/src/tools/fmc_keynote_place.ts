@@ -11,6 +11,7 @@ import { protectedRoots } from "../fmc/opencopy.js";
 import {
   KEYNOTE_FIX, keynoteSeedPath, normalizeKeynote, planKeynotes, referenceProblems, writeKeynoteReport,
   type KeyBy, type KeynoteDoc,
+  placeStatus,
 } from "../fmc/keynoteplace.js";
 
 function reply(body: object, isError = false) {
@@ -24,7 +25,8 @@ export const FMC_KEYNOTE_PLACE_DESCRIPTION =
   "by is element, material or user. views is all_plans or a list of plan names. categories limits the hosts. " +
   "one_per_key true (the default) keeps one tag per keynote value per view, on the element nearest the middle of that value. Hosts with an empty key are not collapsed. " +
   "leader true (the default) puts the head off the wall face along the wall normal, past half the wall width, with a leader. " +
-  "status is PLANNED or NOTHING_TO_PLACE (0 hosts can be tagged); summary is one line; seed_check says whether a linked tag is in the model and whether the kit seed is on disk. " +
+  "The dry run is plan-only: one Revit read, no transaction (read_only true), safe on any model. " +
+  "status is PLANNED or NOTHING_TO_PLACE (0 hosts can be tagged, ok false, can_apply false, status_reason says why: FMC-KEYNOTE-SEED-MISSING is no seed); summary is one line; seed_check says whether a linked tag is in the model and whether the kit seed is on disk. " +
   "The tag box for overlap tests is the seed tag's own size, else the median linked tag of this type, else 900 x 450 mm (tag_size.source). " +
   "A head that overlaps an existing tag box is shifted. If every offset overlaps, the host is FMC-KEYNOTE-OVERLAP and is not tagged. The answer includes counts. " +
   "dry_run defaults to true and returns the per-view plan. A write is fmc_keynote_place_apply, one transaction, one subtransaction per host, " +
@@ -140,7 +142,8 @@ export async function runFmcKeynotePlace(args: FmcKeynotePlaceArgs, io: KeynoteP
       ...(plan.seed.route === "document" || exists ? {} : { how_to: "Place one keynote tag of this type (by " + by + ") by hand in any plan view, pick its keynote value so it is linked, then run fmc_keynote_place again. Or add the kit seed (K-02)." }),
     };
     const summary = stamp({
-      status: plan.counts.placed === 0 ? "NOTHING_TO_PLACE" : "PLANNED",
+      ...placeStatus(plan.code, plan.counts),
+      ...(plan.counts.placed === 0 ? { can_apply: false } : {}),
       summary: `${viewsTagged} of ${viewsTotal} views can be tagged, ${plan.counts.placed} tags planned${why ? ": " + why : ""}.`,
       seed_check: seedCheck,
       tag_size: plan.tag_size,

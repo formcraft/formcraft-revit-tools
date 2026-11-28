@@ -112,3 +112,10 @@ test("research 52: plan-only wording, zone check and same-point note", async () 
   const placed = planLegend([busy, free, edge], spec, { role: "plan", filter_by_sheet: true });
   assert.deepEqual(placed.placements.map((row) => row.zone_check), ["overlaps", "clear", "off_titleblock"]);
 });
+
+test("P-fmc_keynote_legend-01: the sample spec says why it cannot pass", async () => {
+  const { legendSpecNote } = await import("./keynotelegend.js");
+  assert.match(legendSpecNote("sample", true), /K-14/);
+  assert.match(legendSpecNote("sample", true), /can_pass false/);
+  assert.match(legendSpecNote("kit", false), /can PASS/);
+});

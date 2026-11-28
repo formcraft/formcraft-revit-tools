@@ -8,6 +8,7 @@ import { configPath, loadConfig, type GuardConfig } from "../fmc/policy.js";
 import { protectedRoots } from "../fmc/opencopy.js";
 import {
   LEGEND_FIX, loadLegendSpec, planLegend, referenceProblems, writeLegendReport, type LegendSheet,
+  legendSpecNote,
 } from "../fmc/keynotelegend.js";
 
 function reply(body: object, isError = false) {
@@ -16,7 +17,8 @@ function reply(body: object, isError = false) {
 
 export const FMC_KEYNOTE_LEGEND_DESCRIPTION =
   "Create the FMC keynote legend, filter it by sheet, and place it on each sheet. " +
-  "The dry run is plan-only: one Revit read and no transaction; it writes only the local JSON report. " +
+  "The dry run is plan-only: one Revit read and no transaction (read_only true, plan_only true); it writes only the local JSON report, so it is safe on any model. " +
+  "spec_source sample means the kit legend file is missing: status is PROVISIONAL and can_pass false, with status_reason saying why. " +
   "Each planned point has zone_check: clear, overlaps (a viewport or schedule is under the legend box, size_mm in the spec), off_titleblock or not_checked. " +
   "sheets is a list of sheet numbers or names. With sheets omitted, role (default plan) selects the sheets. " +
   "filter_by_sheet defaults to true. The point is the title-block parameter FMC_Legend_Zone (text x,y millimetres) or FMC_Legend_X and FMC_Legend_Y. " +
@@ -127,6 +129,7 @@ export async function runFmcKeynoteLegend(args: FmcKeynoteLegendArgs, io: Keynot
       provisional,
       status: provisional ? "PROVISIONAL" : "PASS",
       can_pass: !provisional,
+      status_reason: legendSpecNote(loaded.source, provisional),
       legend: { name: plan.name, filter_by_sheet: plan.filter_by_sheet },
       sheets: plan.placements,
       skipped: plan.skipped,

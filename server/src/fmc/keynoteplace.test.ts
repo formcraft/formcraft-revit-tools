@@ -165,3 +165,12 @@ test("research 53: NOTHING_TO_PLACE status with a summary line, seed check, and 
   assert.equal(some.seed_check.how_to, undefined);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test("P-fmc_keynote_place-02: a missing seed is NOTHING_TO_PLACE with ok false and the reason", async () => {
+  const { placeStatus } = await import("./keynoteplace.js");
+  const seedless = placeStatus("FMC-KEYNOTE-SEED-MISSING", { hosts: 21, placed: 0, skipped: 21 });
+  assert.equal(seedless.status, "NOTHING_TO_PLACE");
+  assert.equal(seedless.ok, false);
+  assert.match(seedless.status_reason, /K-02/);
+  assert.equal(placeStatus(undefined, { hosts: 3, placed: 2, skipped: 1 }).status, "PLANNED");
+});
