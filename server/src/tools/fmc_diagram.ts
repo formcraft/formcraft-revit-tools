@@ -24,7 +24,7 @@ function log(cfg: GuardConfig, action: string, dryRun: boolean, target: string, 
 }
 
 function reply(body: object, isError = false) {
-  return { content: [{ type: "text" as const, text: JSON.stringify(body, null, 2) }], isError };
+  return { content: [{ type: "text" as const, text: JSON.stringify(body) }], isError };
 }
 
 export const FMC_DIAGRAM_DESCRIPTION =
@@ -32,7 +32,9 @@ export const FMC_DIAGRAM_DESCRIPTION =
     "zone charts (BS 5839), ELV risers, fire fighting (BS EN 12845), water and drainage schematics, refrigerant and " +
     "lightning protection schematics, and the building controls network riser with its points list (m_controls). Values come only from the model: a missing value prints TBC and is listed; nothing " +
     "is sized, rated or computed. scan (read-only) reads the systems and returns per diagram the node and edge counts and " +
-    "the gaps. plan (read-only) scans and lays out the views and returns per view its name, item counts, TBC count, " +
+    "the gaps (gap_total counts real gaps; kinds with nothing in the model are listed under not_applicable; each diagram " +
+    "has an id from its root board, and a placeholder supply the add-in adds is counted as synthetic_supply with a " +
+    "'no modelled supply' gap). plan (read-only) scans and lays out the views and returns per view its name, item counts, TBC count, " +
     "collisions and warnings; nothing is drawn (save: true writes the draw spec JSON to the reports folder). draw scans, " +
     "lays out and makes one drafting view per diagram: a dry run unless dry_run is false, and dry_run=false needs " +
     "confirm=true after a person said yes to the dry run. scan and plan work on every model, live and shared ones too. " +
@@ -61,20 +63,53 @@ export const FMC_DIAGRAM_SHAPE = {
 
 export type FmcDiagramArgs = z.infer<z.ZodObject<typeof FMC_DIAGRAM_SHAPE>>;
 
+/** The add-in's line for a diagram kind with nothing in the model (FmcDiagramScan.cs). Not a fault: reported as not_applicable. */
+export const NOTHING_YET = "Nothing in the model for this diagram yet.";
+
+/** The add-in adds a "supply:<board>" node and feeder for every root board, whatever the model holds (P-fmc_diagram-01). */
+export function isSyntheticSupply(n: { id: string; kind: string; category?: string; family?: string }): boolean {
+  return n.kind === "supply" && n.id.startsWith("supply:") && !n.category && !n.family;
+}
+
 /** The scan in a few lines: counts per diagram and the gaps, never the graph. */
 export function scanSummary(scan: ScanResult) {
+  const systemCount = new Map<string, number>();
+  for (const d of scan.diagrams) systemCount.set(`${d.kind}|${d.system}`, (systemCount.get(`${d.kind}|${d.system}`) ?? 0) + 1);
+  const extraGaps: Array<{ kind: DiagramKind; element_id: string | null; message: string }> = [];
   const diagrams = scan.diagrams.map((d) => {
     const by_kind: Record<string, number> = {};
-    for (const n of d.nodes) by_kind[n.kind] = (by_kind[n.kind] ?? 0) + 1;
-    return { kind: d.kind, system: d.system, nodes: d.nodes.length, edges: d.edges.length, by_kind };
+    let synthetic = 0;
+    for (const n of d.nodes) {
+      if (isSyntheticSupply(n)) { synthetic++; continue; }
+      by_kind[n.kind] = (by_kind[n.kind] ?? 0) + 1;
+    }
+    // P-fmc_diagram-02: the root the diagram starts from (the board the made-up supply feeds, else the first board or node).
+    const synthIds = new Set(d.nodes.filter(isSyntheticSupply).map((n) => n.id));
+    const fedRoot = d.edges.find((e) => synthIds.has(e.from))?.to;
+    const root_id = fedRoot ?? d.nodes.find((n) => n.kind === "board")?.id ?? d.nodes.find((n) => !isSyntheticSupply(n))?.id ?? null;
+    if (synthetic && !by_kind.supply) {
+      extraGaps.push({ kind: d.kind, element_id: root_id, message: `Board ${d.system} has no modelled supply (the diagram draws a placeholder supply).` });
+    }
+    return {
+      id: `${d.kind}:${root_id ?? d.system}`, kind: d.kind, system: d.system, root_id,
+      ...((systemCount.get(`${d.kind}|${d.system}`) ?? 0) > 1 ? { same_name_as_another: true } : {}),
+      nodes: d.nodes.length - synthetic, edges: d.edges.length, by_kind,
+      ...(synthetic ? { synthetic_supply: synthetic } : {}),
+    };
   });
   const gaps: Record<string, { count: number; first: string[] }> = {};
-  for (const g of scan.gaps) {
+  const not_applicable: string[] = [];
+  for (const g of [...scan.gaps, ...extraGaps]) {
+    if (!g.element_id && g.message.trim() === NOTHING_YET) {
+      if (!not_applicable.includes(g.kind)) not_applicable.push(g.kind);
+      continue;
+    }
     const e = gaps[g.kind] ?? (gaps[g.kind] = { count: 0, first: [] });
     e.count++;
     if (e.first.length < 20) e.first.push(g.element_id ? `${g.message} (${g.element_id})` : g.message);
   }
-  return { model: scan.model, levels: scan.levels.length, diagrams, gaps };
+  const gap_total = Object.values(gaps).reduce((sum, e) => sum + e.count, 0);
+  return { model: scan.model, levels: scan.levels.length, diagrams, gaps, gap_total, not_applicable };
 }
 
 function kitFolderOf(args: FmcDiagramArgs, cfg: GuardConfig): string {
