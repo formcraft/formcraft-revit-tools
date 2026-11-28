@@ -251,6 +251,10 @@ export const WRITE_COMMANDS = new Set<string>([
   "fmc_schedule_data_apply",
   // fmc_wipe (GAP-02): deletes model clutter in one transaction under a batch lease
   "fmc_wipe_apply",
+  // Copy type, instance parameters and view overrides between same-category elements. One transaction. Reads stay on fmc_match.
+  "fmc_match_apply",
+  // Bind kit shared parameters, copy values between parameters, fill values from a CSV. One transaction. Reads stay on fmc_params.
+  "fmc_params_apply",
 ]);
 
 /**
@@ -284,6 +288,10 @@ export const READ_VIA_SEND_COMMAND = new Set<string>([
   "fmc_family_params",
   // Clear headroom. No transaction.
   "fmc_headroom",
+  // The source and target elements, their type, instance parameters and view overrides. No transaction.
+  "fmc_match",
+  // Project parameter bindings and parameter values on elements. No transaction.
+  "fmc_params",
   // Keynote tags, hosts and plan views. No transaction.
   "fmc_keynote_place",
   // Sheet outlines, view sizes and sheet parameters. No transaction.
