@@ -320,10 +320,13 @@ function ensureWindowsPoll(): void {
   timer.unref?.();
 }
 
+/** The service log the memory gate writes its [FMC-RAM] lines to; fmc_hw auto free writes [FMC-HW-AUTO-FREE] here too. */
+export const serviceLog = (line: string): void => { console.error(line); };
+
 export const memoryGate = new MemoryGate(
   sampleHost,
   () => memoryLimits(loadConfig().config.ram_pause_free_mb),
-  (line) => console.error(line),
+  serviceLog,
   1000,
   fireResumeListeners,
   fireHardListeners,
