@@ -76,7 +76,7 @@ test("provisional defaults are labelled and never PASS, and a null status is UNK
   assert.equal(missing.value, 10);
   assert.match(missing.clause, /PROVISIONAL default/);
   assert.equal(verdictFor(true, missing), "PROVISIONAL");
-  assert.equal(verdictFor(false, missing), "FAIL");
+  assert.equal(verdictFor(false, missing), "PROVISIONAL");
 
   const nulled = citeJoins("joins.gap_mm", { "joins.gap_mm": { value: null, status: "approved", clause: "STD joins" } });
   assert.equal(nulled.source, "provisional");
@@ -479,4 +479,20 @@ test("research 51: 0 elements is NOT_CHECKED, a pair listed both ways counts onc
   assert.notEqual(body.verdict, "NOT_CHECKED");
   const limitsReply = textOf(await runFmcJoins(args({ action: "limits" }), { bank: approved }));
   assert.ok(limitsReply.bank_shapes, "limits still shows the bank shapes");
+});
+
+test("P-fmc_joins-02/03: findings against provisional limits are PROVISIONAL, and a pair listed both ways is one finding", () => {
+  const twice = model({ pairs: [
+    { relation: "wall_wall", a: "315005", b: "315008", end: null, open_end: false, gap_mm: 80, overlap_mm: 0, xyz: { x: 1, y: 0, z: 0 } },
+    { relation: "wall_wall", a: "315008", b: "315005", end: null, open_end: false, gap_mm: 80, overlap_mm: 0, xyz: { x: 2, y: 0, z: 0 } },
+    { relation: "wall_end", a: "1", b: "2", end: 0, open_end: false, gap_mm: null, overlap_mm: 40, xyz: { x: 0, y: 0, z: 0 } },
+    { relation: "wall_end", a: "2", b: "1", end: 1, open_end: false, gap_mm: null, overlap_mm: 40, xyz: { x: 0.2, y: 0, z: 0 } },
+  ] } as never);
+  const advisory = auditFindings(twice, limits());
+  assert.equal(advisory.length, 2);
+  assert.ok(advisory.every((item) => item.verdict === "PROVISIONAL"));
+  assert.equal(overallVerdict(advisory, standardsFor(auditKeys(), limits().cited)), "PROVISIONAL");
+  const real = auditFindings(twice, limits(approved));
+  assert.ok(real.some((item) => item.verdict === "FAIL"));
+  assert.equal(overallVerdict(real, standardsFor(auditKeys(), limits(approved).cited)), "FAIL");
 });

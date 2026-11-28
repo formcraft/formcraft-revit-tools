@@ -543,7 +543,9 @@ export function dedupePairs(pairs: PairRow[]): { pairs: PairRow[]; duplicates: n
   for (const pair of pairs) {
     const ids = [pair.a, pair.b].sort().join("|");
     const at = pair.xyz ? Object.values(pair.xyz as unknown as Record<string, number>).map((v) => Math.round(Number(v) * 100)).join(",") : "";
-    const key = `${pair.relation}|${ids}|${pair.end ?? ""}|${at}`;
+    // P-fmc_joins-03: a pair with two elements is one finding whichever element the read started from (A,B = B,A),
+    // whatever end or point it was measured at. A row with one element (an open end) stays per end.
+    const key = pair.a && pair.b ? `${pair.relation}|${ids}` : `${pair.relation}|${ids}|${pair.end ?? ""}|${at}`;
     if (seen.has(key)) continue;
     seen.add(key);
     out.push(pair);
@@ -678,6 +680,8 @@ export function worstVerdict(list: JoinsVerdict[]): JoinsVerdict {
 
 export function overallVerdict(findings: JoinsFinding[], cited: CitedValue[]): JoinsVerdict {
   if (findings.some((item) => item.verdict === "FAIL")) return "FAIL";
+  // P-fmc_joins-02: findings against provisional limits are advisory: PROVISIONAL, never FAIL.
+  if (findings.some((item) => item.verdict === "PROVISIONAL")) return cited.some((item) => item.source === "unknown" || item.value == null) ? "UNKNOWN" : "PROVISIONAL";
   if (findings.some((item) => item.verdict === "UNKNOWN")) return "UNKNOWN";
   if (cited.some((item) => item.source === "unknown" || item.value == null)) return "UNKNOWN";
   if (cited.some((item) => item.source === "provisional")) return "PROVISIONAL";

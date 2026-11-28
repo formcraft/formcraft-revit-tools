@@ -257,6 +257,11 @@ function summarized(findings: JoinsFinding[], citedKeys: string[], limits: Resol
     findings: summarizeFindings(findings, sample),
     verdict: overallVerdict(findings, standards),
     pass: overallVerdict(findings, standards) === "PASS",
+    // P-fmc_joins-02: say when the findings are advisory because their limits are not in the standards bank yet.
+    advisory: findings.filter((item) => item.verdict === "PROVISIONAL").length,
+    ...(findings.some((item) => item.verdict === "PROVISIONAL")
+      ? { verdict_reason: `${findings.filter((item) => item.verdict === "PROVISIONAL").length} finding(s) are against PROVISIONAL limits (not in the standards bank, K-25): advisory, not FAIL, until the keys are draft or approved.` }
+      : {}),
     standards,
     counts: {
       findings: findings.length,

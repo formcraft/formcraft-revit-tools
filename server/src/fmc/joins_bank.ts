@@ -107,11 +107,14 @@ export function citeJoins(key: string, bank?: Record<string, JoinsBankEntry>): C
 
 export type JoinsVerdict = "PASS" | "FAIL" | "PROVISIONAL" | "UNKNOWN";
 
-/** A clean check passes only against a draft or approved entry that has a clause. Provisional never passes. Null is UNKNOWN. */
+/**
+ * A clean check passes only against a draft or approved entry that has a clause. Provisional never passes. Null is UNKNOWN.
+ * P-fmc_joins-02: a finding against a provisional limit is not FAIL either; it is PROVISIONAL (advisory) until the key is draft or approved.
+ */
 export function verdictFor(ok: boolean, cited: CitedValue): JoinsVerdict {
   if (cited.source === "unknown" || cited.value == null) return "UNKNOWN";
-  if (!ok) return "FAIL";
   if (cited.source === "provisional") return "PROVISIONAL";
+  if (!ok) return "FAIL";
   return "PASS";
 }
 
