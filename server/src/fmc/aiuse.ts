@@ -106,6 +106,7 @@ export const NEVER: Record<string, string> = {
   fmc_hw_free: "closing views to free memory",
   // B4 / P-fmc_connect_fixture-01: out of the AI set until a typed add-in command with dry_run exists.
   fmc_connect_fixture: "connecting fixtures (a person runs it until the typed command with dry_run exists)",
+  fmc_hw_host: "changing this PC's graphics settings (GPU preference or Revit.ini)",
 };
 
 /** Refused at the AI gate whatever the access level (NEVER alone does not bind under access full). */

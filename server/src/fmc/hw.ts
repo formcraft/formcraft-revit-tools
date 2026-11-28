@@ -4,13 +4,13 @@
  *
  * The GPU draws views. It does not hold the Revit model, and it does not run the Revit API.
  */
-import fs from "node:fs";
 import os from "node:os";
 import { spawn } from "node:child_process";
 import { memoryGate, type MemoryView } from "./memory.js";
 import { saveBlocked } from "./savepolicy.js";
 import { loadConfig, type GuardConfig } from "./policy.js";
 import { parseConfig } from "./aiuse.js";
+import type { IniFs } from "./hwapproval.js";
 import {
   clashPairs, dispatchJob, nearestPointMm, pointBoxDistanceMm, probeDirectMl, rayVoxelHits,
   type GpuRunner, type JobRun, type Ray,
@@ -701,23 +701,46 @@ export interface HwIo {
   config?: GuardConfig;
   savedAt?: (file: string) => number | null;
   idle?: () => boolean;
-  /** P-fmc_hw-02 hooks: the open documents (this Revit's announced list), the memory view, and the log line sink. */
-  openDocuments?: () => Array<{ title?: string; path?: string; family?: boolean }> | Promise<Array<{ title?: string; path?: string; family?: boolean }>>;
-  memoryView?: () => { pause_below_mb: number; tier: string };
+  /** Auto-free hooks: the memory view (free_mb is read before and after a run) and the log line sink. */
+  memoryView?: () => { pause_below_mb: number; tier: string; free_mb?: number };
   log?: (line: string) => void;
+  /** FINAL 2.4: the live Revit.ini path (tests: a temp file) and the file calls of the backup plus atomic replace. */
+  iniPath?: string;
+  iniFs?: IniFs;
+  /** FINAL 2.2-2.3: environment of the approval queue and Stop AI, the caller lease's documents, and the Stop AI switch. */
+  env?: NodeJS.ProcessEnv;
+  leaseDocuments?: () => string[];
+  stopAi?: () => boolean;
 }
 
-/** Test hook: forget the one-minute auto-free throttle. */
-export function resetAutoFreeThrottle(): void { lastAutoFree = 0; }
+/** Test hook: forget the one-minute auto-free throttle and the last notice. */
+export function resetAutoFreeThrottle(): void { lastAutoFree = 0; lastNotice = null; }
 
 export interface AutoFreeResult {
   ran: boolean;
   reason: string;
-  /** How many documents were open when it ran (P-fmc_hw-02: two or more no longer skip it). */
+  /** How many documents the snapshot listed (P-fmc_hw-02: two or more no longer skip it). */
   documents_open?: number;
   freed?: Array<{ document: string; closed: number; view_ids: string[] }>;
   skipped?: Array<{ document: string; reason: string }>;
 }
+
+/** FINAL 3.4: the latest auto-free notice, also on GET /health and fmc_health as last_auto_free. */
+export interface AutoFreeNotice {
+  at: string;
+  ran: boolean;
+  documents_open: number;
+  closed: Array<{ document: string; view: string; view_id: string }>;
+  views_closed: number;
+  free_mb_before: number | null;
+  free_mb_after: number | null;
+  free_mb_change: number | null;
+  error?: string;
+  text: string;
+}
+
+let lastNotice: AutoFreeNotice | null = null;
+export function lastAutoFree(): AutoFreeNotice | null { return lastNotice; }
 
 let lastAutoFree = 0;
 
@@ -754,71 +777,76 @@ export async function primeHardwareScan(io: HwIo = {}): Promise<HardwareScan> {
   catch { return rememberScan(parseHost(hostFromOs())); }
 }
 
-/** Revit.ini is replaced whole: the file as it was is kept beside it as Revit.ini.bak first. */
-export function writeIniWithBackup(file: string, text: string): { backup: string | null } {
-  let backup: string | null = null;
-  if (fs.existsSync(file)) {
-    backup = `${file}.bak`;
-    fs.copyFileSync(file, backup);
-  }
-  fs.writeFileSync(file, text, "utf8");
-  return { backup };
-}
+/** FINAL 2.4: Revit.ini.<yyyyMMdd-HHmmss>.bak first, then <file>.tmp renamed over the live file (hwapproval.ts). */
+export { writeIniAtomic } from "./hwapproval.js";
 
+/**
+ * Auto-free is a system action (FINAL section 4): started by the memory gate entering the hard latch, not by an MCP
+ * call, so it takes none of the AI-write gates (lease, live-model lock, AI gate, Stop AI, confirm, hw_free approval).
+ * It stays on this internal path; it is never routed through the AI free action. It is on by default; a person may
+ * turn it off for this PC with hw_auto_free: false in fmc_guard.json.
+ */
 export async function autoFreeIfHard(io: HwIo = {}): Promise<AutoFreeResult> {
-  // Closing views with no person: only when a person turned it on for this PC (hw_auto_free in fmc_guard.json).
-  if (loadGuard(io).hw_auto_free !== true) return { ran: false, reason: "hw_auto_free is off in fmc_guard.json. Auto free stays off; a person runs fmc_hw free." };
-  const view = io.memoryView ? io.memoryView() : memoryGate.view();
+  if (loadGuard(io).hw_auto_free === false) return { ran: false, reason: "hw_auto_free is false in fmc_guard.json. Auto free is off on this PC; a person runs fmc_hw free." };
+  const sample = () => io.memoryView ? io.memoryView() : memoryGate.view();
+  const view = sample();
   if (view.pause_below_mb <= 0) return { ran: false, reason: "ram_pause_free_mb is 0. Auto free stays off." };
   if (view.tier !== "hard") return { ran: false, reason: "Auto free runs only in the hard tier." };
   if (io.idle && !io.idle()) return { ran: false, reason: "Revit is not idle." };
   if (Date.now() - lastAutoFree < 60_000) return { ran: false, reason: "Auto free already ran in the last minute." };
-  lastAutoFree = Date.now();
   if (!io.revit) return { ran: false, reason: "No Revit connection was given, so nothing was closed." };
   const log = io.log ?? ((line: string) => console.error(line));
   const say = (line: string) => { try { log(line); } catch { /* the log never stops a free */ } };
-  // P-fmc_hw-02 (owner 28 Nov): two or more open documents used to make every call FMC-DOC-REQUIRED, so the hard tier
-  // never freed. Each call now names a document; the add-in's free still closes only the view ids it is given.
-  let listed: Array<{ title?: string; path?: string; family?: boolean }> = [];
-  try { listed = (await io.openDocuments?.()) ?? []; } catch { listed = []; }
-  const open = listed.filter((doc) => (doc.path || doc.title));
-  const projects = open.filter((doc) => !doc.family);
-  const first = (projects[0] ?? open[0]);
+  const before = typeof view.free_mb === "number" ? view.free_mb : null;
+  // fmc_hw is a session command (fairqueue SESSION_COMMANDS), so with two or more documents open the snapshot and the
+  // free reach the add-in without a document name, and the add-in walks every open document.
+  let docs: OpenDoc[];
   try {
-    const snapshot = await io.revit("memory", first ? { document: first.path || first.title } : {}) as { documents?: OpenDoc[] };
-    const docs = Array.isArray(snapshot?.documents) ? snapshot.documents : [];
-    const plan = planFree({
-      documents: docs,
-      keep: 2,
-      memory_pause: true,
-      purge_undo: false,
-      autosave_due: () => false,
-    });
-    const documentsOpen = Math.max(docs.length, open.length);
-    const freed: NonNullable<AutoFreeResult["freed"]> = [];
-    const skipped: NonNullable<AutoFreeResult["skipped"]> = [...plan.skipped];
-    const byDoc = new Map<string, typeof plan.close>();
-    for (const row of plan.close) byDoc.set(row.document, [...(byDoc.get(row.document) ?? []), row]);
-    for (const [document, close] of byDoc) {
-      try {
-        const reply = await io.revit("free", { document, dry_run: false, memory_pause: true, keep: 2, close, saves: [] }) as { closed?: Array<{ view_id?: string }>; skipped?: Array<{ document?: string; reason?: string }> };
-        const ids = Array.isArray(reply?.closed) ? reply.closed.map((row) => String(row?.view_id ?? "")).filter(Boolean) : [];
-        freed.push({ document, closed: ids.length, view_ids: ids });
-        for (const row of Array.isArray(reply?.skipped) ? reply.skipped : []) skipped.push({ document: String(row?.document ?? document), reason: String(row?.reason ?? "") });
-      } catch (error) {
-        skipped.push({ document, reason: error instanceof Error ? error.message : String(error) });
-      }
-    }
-    const total = freed.reduce((sum, row) => sum + row.closed, 0);
-    const reason = `Hard pause is on and Revit was idle. ${documentsOpen} document${documentsOpen === 1 ? " was" : "s were"} open. ` +
-      `Closed ${total} view${total === 1 ? "" : "s"}` + (freed.length ? ` (${freed.map((row) => `${row.document}: ${row.closed}`).join("; ")})` : "") +
-      `, non-active and non-pinned beyond 2 per document, where the add-in allowed. No save was added.`;
-    say(`[FMC-HW-AUTOFREE] ${reason}` + (skipped.length ? ` Skipped: ${skipped.map((row) => `${row.document}: ${row.reason}`).join("; ")}` : ""));
-    return { ran: true, reason, documents_open: documentsOpen, freed, skipped };
+    const snapshot = await io.revit("memory", {}) as { documents?: OpenDoc[] };
+    docs = Array.isArray(snapshot?.documents) ? snapshot.documents : [];
   } catch (error) {
-    const reason = error instanceof Error ? error.message : String(error);
-    say(`[FMC-HW-AUTOFREE] did not run: ${reason} (${open.length} document${open.length === 1 ? "" : "s"} open)`);
-    return { ran: false, reason, documents_open: open.length };
+    // A refused snapshot does not start the cooldown (B2) and has no document list, so no notice (3.2 item 4).
+    return { ran: false, reason: error instanceof Error ? error.message : String(error) };
+  }
+  const plan = planFree({ documents: docs, keep: 2, memory_pause: true, purge_undo: false, autosave_due: () => false });
+  const documentsOpen = docs.length;
+  const notice = (ran: boolean, closed: AutoFreeNotice["closed"], error?: string): AutoFreeNotice => {
+    let after: number | null = null;
+    try { const next = sample().free_mb; after = typeof next === "number" ? next : null; } catch { after = null; }
+    const change = before != null && after != null ? after - before : null;
+    const views = closed.length ? closed.map((row) => `${row.document}: ${row.view} (${row.view_id})`).join("; ") : "none";
+    const mb = `free_mb before ${before ?? "unknown"}, after ${after ?? "unknown"}${change != null ? ` (${change >= 0 ? "+" : ""}${change} MB)` : ""}`;
+    const text = ran
+      ? `Hard pause is on and Revit was idle. documents_open: ${documentsOpen}. Closed ${closed.length} view${closed.length === 1 ? "" : "s"}: ${views}. ${mb}. Non-active and non-pinned beyond 2 per document; no save was added.`
+      : `Auto free did not finish. documents_open: ${documentsOpen}. Attempted to close ${plan.close.length} view${plan.close.length === 1 ? "" : "s"}. ${mb}. Error: ${error}`;
+    const row: AutoFreeNotice = {
+      at: new Date().toISOString(), ran, documents_open: documentsOpen, closed, views_closed: closed.length,
+      free_mb_before: before, free_mb_after: after, free_mb_change: change, ...(error ? { error } : {}), text,
+    };
+    lastNotice = row;
+    say(`[FMC-HW-AUTO-FREE] ${text}`);
+    return row;
+  };
+  try {
+    const reply = await io.revit("free", { dry_run: false, memory_pause: true, keep: 2, close: plan.close, saves: [] }) as { closed?: Array<{ view_id?: string; document?: string; view?: string }>; skipped?: Array<{ document?: string; reason?: string }> };
+    const ids = Array.isArray(reply?.closed) ? reply.closed.map((row) => String(row?.view_id ?? "")).filter(Boolean) : [];
+    const closed = ids.map((id) => {
+      const plannedRow = plan.close.find((row) => row.view_id === id);
+      const sent = reply.closed?.find((row) => String(row?.view_id ?? "") === id);
+      return { document: plannedRow?.document ?? String(sent?.document ?? ""), view: plannedRow?.view ?? String(sent?.view ?? ""), view_id: id };
+    });
+    lastAutoFree = Date.now(); // B2: the cooldown starts only after a successful free.
+    const skipped: NonNullable<AutoFreeResult["skipped"]> = [...plan.skipped];
+    for (const row of Array.isArray(reply?.skipped) ? reply.skipped : []) skipped.push({ document: String(row?.document ?? ""), reason: String(row?.reason ?? "") });
+    const byDoc = new Map<string, string[]>();
+    for (const row of closed) byDoc.set(row.document, [...(byDoc.get(row.document) ?? []), row.view_id]);
+    const freed = [...byDoc].map(([document, viewIds]) => ({ document, closed: viewIds.length, view_ids: viewIds }));
+    const row = notice(true, closed);
+    return { ran: true, reason: row.text, documents_open: documentsOpen, freed, skipped };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const row = notice(false, [], message);
+    return { ran: false, reason: row.text, documents_open: documentsOpen };
   }
 }
 
