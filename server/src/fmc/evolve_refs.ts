@@ -196,9 +196,12 @@ export interface ReloadRow {
   project: string; document: string | null; path: string; open: boolean; workshared: boolean | null; listed_only: boolean;
   evidence: Evidence[]; reload_plan: string[];
 }
+/** Plain sentence on every where_used reply: hand-placed instances are not in the list. */
+export const HAND_PLACED_NOTE = "Hand-placed instances aren't covered: this list is only what the plugin's own records show, not every use in a model.";
+
 export interface WhereUsed {
   families: string[]; new_version: string; read_only: true; projects: number; files_read: number; rows: ReloadRow[];
-  sources: string[]; not_covered: string[]; refused: string[];
+  summary: string; sources: string[]; not_covered: string[]; refused: string[];
 }
 
 /** Every string under a key named family (any depth) that is the family, or "family: type". */
@@ -277,9 +280,10 @@ export function whereUsed(families: string[], newFile: string, projectFolders: s
   }
   return {
     families, new_version: newFile, read_only: true, projects: folders.size, files_read: filesRead, rows, refused,
+    summary: HAND_PLACED_NOTE,
     sources: WHERE_USED_DIRS.map((d) => `<project>\\01_WIP\\${d} (.json, .jsonl)`).concat("the documents open in Revit (instance files)"),
     not_covered: [
-      "A family hand-placed in a model has no record here: only what the plugin's own tools recorded is found.",
+      HAND_PLACED_NOTE,
       "A project that isn't open and wasn't named in project_folders is not looked at.",
       "No project file (.rvt) is opened, so instance counts are the records' counts, not the model's.",
     ],
@@ -313,7 +317,7 @@ export function repointToken(p: RepointPlan): string {
   return "RP-" + h.slice(0, 16);
 }
 
-/** Problems that stop a real repoint: no lease held, a protected model leased, AI off or stopped. [] when it may run. */
+/** Problems that stop a real repoint: no lease held, a protected model leased, or the library-write AI gate (ai_modeller; refuses if missing or off). This library-write gate is separate from the project-model AI gate in aigate.ts. [] when it may run. */
 export function gateProblems(io: Pick<RefsIo, "lease" | "ai">): string[] {
   const out: string[] = [];
   const lease = io.lease();

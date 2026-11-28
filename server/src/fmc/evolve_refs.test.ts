@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import path from "node:path";
-import { INDEX_SCHEMA, PROTECTED_MODEL, RefsIo, catalogueFiles, gateProblems, indexFile, planRepoint, readIndex, readNewVersion, reloadSteps, repointCatalogue,
+import { HAND_PLACED_NOTE, INDEX_SCHEMA, PROTECTED_MODEL, RefsIo, catalogueFiles, gateProblems, indexFile, planRepoint, readIndex, readNewVersion, reloadSteps, repointCatalogue,
   repointIndex, repointToken, whereUsed, writeProblems } from "./evolve_refs.js";
 import { EvolveIo, FMC_FAMILY_EVOLVE_SHAPE, runFmcFamilyEvolve } from "../tools/fmc_family_evolve.js";
 import { z } from "zod";
@@ -149,6 +149,8 @@ test("where used reads only plugin records (.json / .jsonl) and never a project 
   assert.equal(m.reads.some((p) => /_Other/.test(p)), false);
   assert.equal(m.writes.length, 0);
   assert.equal(wu.files_read, 3);
+  assert.equal(wu.summary, HAND_PLACED_NOTE);
+  assert.ok(wu.not_covered.includes(HAND_PLACED_NOTE));
   assert.ok(wu.not_covered.length >= 3);
   // a named project with no open model: a row with the 'not open' plan, and this tool never opens it
   m.set("D:\\Jobs\\F26902\\01_WIP\\_Tree\\rooms\\R.json", SEED_USE);
@@ -230,6 +232,9 @@ test("repoint is a dry run by default: it plans, answers a token and writes noth
   assert.equal(r.index.superseded[0].file, ORIGINAL);
   assert.equal(r.catalogues[0].repointed, 1);
   assert.equal(r.where_used.rows.length, 1);
+  assert.equal(r.where_used.summary, HAND_PLACED_NOTE);
+  assert.ok(r.where_used.not_covered.includes(HAND_PLACED_NOTE));
+  assert.match(r.next, /Hand-placed instances aren't covered/);
   assert.deepEqual(r.apply_needs, []);
   assert.equal(m.writes.length, 0);
   assert.deepEqual(new Map(m.fs), before);
@@ -266,6 +271,8 @@ test("a real repoint writes the index and the catalogue, keeps the old entries a
   assert.equal(r.repointed, true);
   assert.equal(r.project_files_written, 0);
   assert.equal(r.lease, "L-1");
+  assert.equal(r.where_used.summary, HAND_PLACED_NOTE);
+  assert.match(r.next, /Hand-placed instances aren't covered/);
   // the library index
   const idx = readIndex(indexFile(STAGING), m);
   assert.equal(idx.invalid, false);
@@ -286,6 +293,7 @@ test("a real repoint writes the index and the catalogue, keeps the old entries a
   const dry2 = body(await runFmcFamilyEvolve(args({}), toolIo(m)));
   assert.equal(dry2.index.change, "skip");
   assert.match(dry2.next, /Nothing to repoint/);
+  assert.match(dry2.next, /Hand-placed instances aren't covered/);
   await runFmcFamilyEvolve(args({ dry_run: false, token: dry2.token }), toolIo(m));
   assert.equal(m.writes.length, n);
 });
@@ -332,8 +340,16 @@ test("where_used as a tool action is read only, and repoint is refused where the
   assert.equal(r.read_only, true);
   assert.equal(r.rows.length, 1);
   assert.equal(r.rows[0].open, false);
+  assert.equal(r.summary, HAND_PLACED_NOTE);
+  assert.ok(r.not_covered.includes(HAND_PLACED_NOTE));
+  assert.match(r.next, /Hand-placed instances aren't covered/);
   assert.equal(m.writes.length, 0);
   assert.deepEqual(r.families, ["FMC_A_Door_SteelFanlight"]);
+  // an empty list still carries the same coverage sentence
+  const empty = body(await runFmcFamilyEvolve(args({ action: "where_used", project_folders: ["D:\\Jobs\\F26999"] }), toolIo(m)));
+  assert.equal(empty.rows.length, 0);
+  assert.equal(empty.summary, HAND_PLACED_NOTE);
+  assert.match(empty.next, /Hand-placed instances aren't covered/);
   const none = body(await runFmcFamilyEvolve(args({}), toolIo(m, false)));
   assert.equal(none.refused, true);
   assert.equal(planRepoint(V2, [], m) !== null, true);

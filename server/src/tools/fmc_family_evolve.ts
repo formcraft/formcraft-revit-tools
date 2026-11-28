@@ -10,7 +10,7 @@ import {
   EVOLVE_FOLDER, EvolveFacts, EvolveKit, EvolveOptions, Evaluation, Fix, GateResult, ParamFact, PlaneFact, VersionEntry, applyProblems, diffFacts,
   diffGates, evaluateGates, expectedAfter, flexRegressions, orderedOps, planVersions, proposalToken, readVersions, vName,
 } from "../fmc/evolve.js";
-import { RefsIo, RepointPlan, gateProblems, indexFile, planRepoint, readNewVersion, repointToken, whereUsed, writeProblems } from "../fmc/evolve_refs.js";
+import { HAND_PLACED_NOTE, RefsIo, RepointPlan, gateProblems, indexFile, planRepoint, readNewVersion, repointToken, whereUsed, writeProblems } from "../fmc/evolve_refs.js";
 import { readInstances } from "../fmc/connect.js";
 import { loadAiConfig } from "../fmc/aiuse_io.js";
 import { currentClient } from "../fmc/fairqueue.js";
@@ -359,7 +359,7 @@ function repointPreview(newFile: string, io: EvolveIo): Record<string, unknown> 
     if (!r) return null;
     const plan = planRepoint(newFile, [], r);
     if (!("version" in plan)) return { dry_run: true, problems: plan.problems };
-    return { dry_run: true, token: plan.problems.length ? "" : repointToken(plan), ...planSummary(plan), where_used_rows: plan.where_used.rows.length, problems: plan.problems };
+    return { dry_run: true, token: plan.problems.length ? "" : repointToken(plan), ...planSummary(plan), where_used_rows: plan.where_used.rows.length, where_used_summary: plan.where_used.summary, problems: plan.problems };
   } catch (e) { return { dry_run: true, error: e instanceof Error ? e.message : String(e) }; }
 }
 
@@ -372,7 +372,7 @@ export function runWhereUsed(a: FmcFamilyEvolveArgs, io: EvolveIo) {
   const families = v ? [v.family, v.name] : [win.basename(file).replace(/\.rfa$/i, "")];
   const wu = whereUsed([...new Set(families)], file, a.project_folders ?? [], r);
   io.log("evolve_where_used", file, "done", `${wu.rows.length} rows · ${wu.files_read} records read`);
-  return reply({ ...wu, next: wu.rows.length ? "A person reloads each model from its plan; this tool never opens or writes a project file" : "No plugin record names this family in the projects looked at (see not_covered)" });
+  return reply({ ...wu, next: `${wu.summary} ` + (wu.rows.length ? "A person reloads each model from its plan; this tool never opens or writes a project file." : "No plugin record names this family in the projects looked at.") });
 }
 
 export function runRepoint(a: FmcFamilyEvolveArgs, io: EvolveIo) {
@@ -391,8 +391,8 @@ export function runRepoint(a: FmcFamilyEvolveArgs, io: EvolveIo) {
       dry_run: true, family: plan.version.family, new_version: file, ...summary, where_used: plan.where_used, token: plan.problems.length ? "" : token,
       apply_needs: gate, problems: plan.problems,
       next: plan.problems.length ? `Can't repoint: ${plan.problems.join("; ")}`
-        : plan.index.change === "skip" && plan.catalogues.every((c) => c.change !== "update") ? "Nothing to repoint: the index and the catalogues already point at this version"
-        : `Run repoint with dry_run false, token ${token} and a batch_lease to write the index${plan.catalogues.some((c) => c.change === "update") ? " and the catalogues" : ""}. The reload in each model stays a person's step`,
+        : plan.index.change === "skip" && plan.catalogues.every((c) => c.change !== "update") ? `Nothing to repoint: the index and the catalogues already point at this version. ${HAND_PLACED_NOTE}`
+        : `Run repoint with dry_run false, token ${token} and a batch_lease to write the index${plan.catalogues.some((c) => c.change === "update") ? " and the catalogues" : ""}. The reload in each model stays a person's step. ${HAND_PLACED_NOTE}`,
     });
   }
   // a real repoint: the token, then the lease and the AI gate, then only library and staging files
@@ -425,7 +425,7 @@ export function runRepoint(a: FmcFamilyEvolveArgs, io: EvolveIo) {
   return reply({
     repointed: verified, family: plan.version.family, new_version: file, token, lease: lease.id, ...summary, written, skipped,
     where_used_rows: plan.where_used.rows.length, where_used: plan.where_used, project_files_written: 0,
-    next: `The index and catalogues point at ${win.basename(file)}; older entries are kept as superseded. Reloading it into each model in where_used is a person's step`,
+    next: `The index and catalogues point at ${win.basename(file)}; older entries are kept as superseded. Reloading it into each model in where_used is a person's step. ${HAND_PLACED_NOTE}`,
   });
 }
 
