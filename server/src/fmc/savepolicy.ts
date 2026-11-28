@@ -2,10 +2,10 @@
  * Who autosave may write.
  *
  * protected_roots (the check autoSave used to make on its own) is a folder-prefix list. isInside compares
- * path segments, case-insensitively, and "*" matches one folder. RV-6: an empty or missing list fails closed to
- * D:\Fomcraft (PROTECTED_ROOTS_FLOOR), so a file such as D:\Fomcraft\FMC_PROJECTS_27\THE OGALA RESIDENCE\01_WIP\S\....rvt
- * is not saved until a person names protected_roots. It is not a search for "Fomcraft" inside a longer folder name.
- * The forbidden-project floor (A-0001, HEBERT HOSTELS, plus forbidden_projects) is never saved or synced.
+ * path segments, case-insensitively, and "*" matches one folder. An empty list matches nothing, so a file
+ * such as D:\Fomcraft\FMC_PROJECTS_27\THE OGALA RESIDENCE\01_WIP\S\....rvt is saved (owner 28 Nov: the AI works there;
+ * /health warns that protected_roots is not set). It is not a title match and not a search for "Fomcraft" inside a
+ * longer folder name. The forbidden-project floor (A-0001, HEBERT HOSTELS, plus forbidden_projects) is never saved or synced.
  *
  * Autosave skips save_exclude, sync_exclude and protected_paths together.
  * A listed title also covers a local of that model: "HEBERT HOSTELS" matches "HEBERT HOSTELS_USER".

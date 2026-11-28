@@ -4,7 +4,7 @@
  * Nothing here saves, syncs, publishes or relinquishes.
  */
 import path from "node:path";
-import { DocInfo, GuardConfig, PROTECTED_ROOTS_FLOOR, forbiddenProject, isInside } from "./policy.js";
+import { DocInfo, GuardConfig, forbiddenProject, isInside } from "./policy.js";
 
 const win = path.win32;
 
@@ -70,11 +70,33 @@ export function clearRememberedProtected(): void {
   remembered.clear();
 }
 
-/** The guard file's protected_roots, or PROTECTED_ROOTS_FLOOR when it names none (RV-6: fail closed), plus extras. */
+/**
+ * The guard file's protected_roots plus extras. RV-6 (owner 28 Nov): an empty or missing list protects no tree (the AI
+ * works under D:\Fomcraft); originals are then guarded by the forbidden-project floor alone, and a warning is logged once
+ * and shown on /health (guard_warnings).
+ */
 export function protectedRoots(cfg: GuardConfig, extra?: string[]): string[] {
   const named = configuredProtectedRoots(cfg);
-  const fromCfg = named.length ? named : [...PROTECTED_ROOTS_FLOOR];
-  return [...fromCfg, ...(extra ?? []), ...remembered];
+  if (!named.length) noteProtectedRootsUnset();
+  return [...named, ...(extra ?? []), ...remembered];
+}
+
+export const PROTECTED_ROOTS_UNSET =
+  "protected_roots is not set in fmc_guard.json: no originals folder is protected by path. Only the forbidden-project floor (A-0001, HEBERT HOSTELS, plus forbidden_projects) refuses writes, saves and syncs. A person should name the originals roots.";
+
+let warnedUnset = false;
+
+/** Logs the warning once per process. Test hook: pass a logger and reset. */
+export function noteProtectedRootsUnset(log: (line: string) => void = (line) => console.error(line), reset = false): void {
+  if (reset) { warnedUnset = false; return; }
+  if (warnedUnset) return;
+  warnedUnset = true;
+  try { log(`[FMC-GUARD] ${PROTECTED_ROOTS_UNSET}`); } catch { /* logging must not stop a guard */ }
+}
+
+/** The guard warnings /health shows. */
+export function guardWarnings(cfg: GuardConfig | null | undefined): string[] {
+  return configuredProtectedRoots(cfg).length ? [] : [PROTECTED_ROOTS_UNSET];
 }
 
 /** Only what the guard file names (no floor). */
